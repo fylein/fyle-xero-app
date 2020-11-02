@@ -1,0 +1,58 @@
+<div class="internal-loader" fxLayout="column" fxLayoutAlign="center center" *ngIf="isLoading" fxFlexFill>
+    <app-loader></app-loader>
+  </div>
+  
+  <div *ngIf="!isLoading" fxLayout="column" fxLayoutAlign="start stretch">
+    <div class="export-header" fxLayout="row" fxLayoutAlign="start center">
+      Export Expenses to NetSuite. <a href="https://www.fylehq.com/help/en/articles/4424242-fyle-netsuite-integration" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start center">
+      <mat-card class="export-card">
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div>
+              <div>
+                <div *ngIf="!isExporting">
+                  {{exportableExpenseGroups.length}} expense groups can be exported
+                </div>
+                <div *ngIf="isExporting">
+                  {{exportableExpenseGroups.length}} expense groups are being exported
+                </div>
+              </div>
+            </div>
+            <div>
+              <button type="button" [disabled]="isExporting" *ngIf="exportableExpenseGroups.length > 0" mat-flat-button color="primary" (click)="createNetSuiteItems()">
+                <div *ngIf="!isExporting">
+                  Export
+                </div>
+                <div *ngIf="isExporting">
+                  Exporting
+                </div>
+              </button>
+            </div>
+          </div>
+          <div class="export-card--loader" *ngIf="isExporting">
+            <mat-progress-bar mode="buffer"></mat-progress-bar>
+          </div>
+  
+          <div class="export-card--stats" fxLayout="row" fxLayoutAlign="start center" *ngIf="failedExpenseGroupCount">
+            <div>
+              {{failedExpenseGroupCount}} line <span *ngIf="failedExpenseGroupCount > 1">entries</span><span *ngIf="failedExpenseGroupCount === 1">entry</span> failed export
+            </div>
+            <mat-icon class="export-card--icon cursor-pointer" (click)="openFailedExports()">
+              open_in_new
+            </mat-icon>
+          </div>
+  
+          <div class="export-card--stats" fxLayout="row" fxLayoutAlign="start center" *ngIf="successfulExpenseGroupCount">
+            <div>
+              {{successfulExpenseGroupCount}} line <span *ngIf="successfulExpenseGroupCount > 1">entries</span><span *ngIf="successfulExpenseGroupCount === 1">entry</span> exported
+            </div>
+            <mat-icon class="export-card--icon cursor-pointer" (click)="openSuccessfulExports()">
+              open_in_new
+            </mat-icon>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>

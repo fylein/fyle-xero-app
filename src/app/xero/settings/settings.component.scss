@@ -1,0 +1,41 @@
+@import 'variables.scss';
+
+$fy-settings-background: #f2f2f2;
+
+body {
+  background-color: $fy-settings-background;
+}
+
+.mappings {
+  &--header {
+    border-bottom: 1px solid $fy-layout-background;
+  }
+}
+
+.mappings-dialog {
+  &--header {
+    color: $fy-nav-text;
+  }
+
+  &--form {
+    color: $fy-nav-text;
+    font-size: 14px;
+  }
+
+  &--field {
+    margin: 12px 0;
+  }
+
+  &--label {
+    font-weight: 500;
+  }
+
+  &--error {
+    font-size: 14px;
+  }
+
+  &--save-btn {
+    background-color: $fy-primary;
+    color: $fy-white;
+  }
+}

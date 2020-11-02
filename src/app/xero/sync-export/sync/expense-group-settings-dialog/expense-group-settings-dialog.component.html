@@ -1,0 +1,88 @@
+<h2 mat-dialog-title>
+  <div class="dialog--header" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="mat-title">
+      Configure Expense Groups
+    </div>
+    <div>
+      <mat-icon class="mappings-dialog--close cursor-pointer" aria-hidden="false" aria-label="close this dialog" mat-dialog-close>close</mat-icon>
+    </div>
+  </div>
+</h2>
+
+<mat-dialog-content>
+  <div class="internal-loader" fxLayoutAlign="center start" *ngIf="isLoading" fxFlexFill>
+    <app-loader></app-loader>
+  </div>
+  <form *ngIf="!isLoading" class="dialog--form" [formGroup]="importExpensesForm">
+      <div fxLayout="column" fxLayoutAlign="start stretch">
+        <div class="dialog--label">
+          Group Expenses reported by an Employee by
+        </div>
+        <mat-form-field floatLabel="always" class="dialog--field" appearance="outline" required>
+          <mat-select placeholder="Choose Expense fields to group Expenses"
+            formControlName="expenseGroupConfiguration" multiple>
+            <mat-option value="settlement_id">
+              Payment
+            </mat-option>
+            <mat-option value="claim_number">
+              Expense Report
+            </mat-option>
+            <mat-option value="category">
+              Category
+            </mat-option>
+            <mat-option value="vendor">
+              Merchant
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="dialog--label">
+          Import Expenses in State:
+        </div>
+        <mat-form-field floatLabel="always" class="dialog--field" appearance="outline" required>
+          <mat-select placeholder="Choose State of Expenses to be fetched" formControlName="expenseState">
+            <mat-option value="PAYMENT_PENDING">
+              Payment Pending
+            </mat-option>
+            <mat-option value="PAYMENT_PROCESSING">
+              Payment Processing
+            </mat-option>
+            <mat-option value="PAID">
+              Paid
+            </mat-option>
+          </mat-select>
+          <mat-error class="dialog--error" *ngIf="importExpensesForm.controls.expenseState.errors?.required">
+            Please select atleast 1 state
+          </mat-error>
+        </mat-form-field>
+
+        <div class="dialog--label">
+          Date when Exporting Expenses to NetSuite.
+        </div>
+        <mat-form-field floatLabel="always" class="dialog--field" appearance="outline">
+          <mat-select placeholder="Choose Date when Exporting Expenses" formControlName="exportDate">
+            <mat-option value="current_date">
+              Current Date
+            </mat-option>
+            <mat-option value="verified_at">
+              Verification Date
+            </mat-option>
+            <mat-option value="spent_at">
+              Spend Date
+            </mat-option>
+            <mat-option value="approved_at">
+              Approval Date
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <form *ngIf="!isLoading" class="dialog--form" [formGroup]="importExpensesForm">
+    <button type="button" mat-flat-button mat-dialog-close>Cancel</button>
+    <button class="dialog--save-btn" [disabled]='importExpensesForm.controls.expenseState.errors?.required' mat-flat-button color="primary" type="submit" (click)="save()">
+      Save
+    </button>
+  </form>
+</mat-dialog-actions>

@@ -1,0 +1,46 @@
+<div class="internal-loader" fxLayoutAlign="center start" *ngIf="isLoading" fxFlexFill>
+  <app-loader></app-loader>
+</div>
+<div class="configurations" *ngIf="!isLoading">
+  <div class="page-info">
+    <div fxLayout="row" fxLayoutAlign="start center" class="page-info--description">
+      <div>
+        Please map the following Fyle fields to their Xero equivalent.
+      </div>
+      <a href="https://www.fylehq.com/help/en/articles/4424248-onboarding-process-to-set-up-fyle-netsuite-integration" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+    </div>
+  </div>
+  <form class="configurations--form" [formGroup]="generalSettingsForm">
+    <div fxLayout="column" fxLayoutAlign="start stretch">
+      <div class="configurations--label">
+        Map reimbursable Expenses from Fyle to
+      </div>
+      <mat-form-field floatLabel="always" appearance="outline" required>
+        <mat-select placeholder="Choose Xero equivalent of Reimbursable Expenses"
+          formControlName="reimbursableExpense">
+          <mat-option [value]="'PURCHASE BILL'">
+            Purchase Bill
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="configurations--label">
+        Map Corporate Credit Card Expenses from Fyle to
+      </div>
+      <mat-form-field floatLabel="always" appearance="outline">
+        <mat-select placeholder="Choose Xero equivalent of Corporate Credit Card Expenses"
+          formControlName="cccExpense">
+          <mat-option>
+            None
+          </mat-option>
+          <mat-option [value]="'BANK TRANSACTION'">
+            Bank Transaction
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button [disabled]="isSaveDisabled || !generalSettingsForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="save()" type="submit">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

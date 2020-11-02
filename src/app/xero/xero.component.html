@@ -1,0 +1,116 @@
+<mat-sidenav-container class="xero" autosize fxFlexFill *ngIf="!isLoading">
+    <mat-sidenav class="xero-sidenav" mode="side" opened>
+      <mat-nav-list class="mat-drawer-inner">
+        <header matSubheader class="xero-sidenav--header">
+          <img alt="Fyle" src="../../assets/images/pngs/fyle-logo.png" class="xero-sidenav--logo" />
+          <mat-icon>add</mat-icon>
+          <img alt="xero" src="../../../assets/images/pngs/xero-logo.png" class="xero-sidenav--nslogo">
+        </header>
+  
+        <a class="mat-h2 xero-sidenav--nav-item" mat-list-item routerLink="{{workspace.id}}/dashboard"
+          routerLinkActive="active">
+          Dashboard
+        </a>
+  
+        <a class="mat-h2 xero-sidenav--nav-item" [ngClass]="{'xero-sidenav--nav-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/sync_export/sync"
+          routerLinkActive="active">
+          Import & Export
+        </a>
+  
+        <a class="mat-h2 xero-sidenav--nav-item" [ngClass]="{'xero-sidenav--nav-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/expense_groups/"
+          routerLinkActive="active">
+          Expense Groups
+        </a>
+  
+        <a class="mat-h3 xero-sidenav--nav-item" mat-list-item>
+          Settings
+        </a>
+        <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="!xeroConnected" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+         routerLink="{{workspace.id}}/settings/configurations/general/" routerLinkActive="active">
+          Configurations
+        </a>
+        <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="xeroConnected" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+         routerLink="{{workspace.id}}/settings/configurations/tenant/" routerLinkActive="active">
+          Configurations
+        </a>
+        <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/general/mappings/"
+          routerLinkActive="active">
+          General Mappings
+        </a>
+        <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+          routerLink="{{workspace.id}}/settings/employee/mappings/" routerLinkActive="active">
+          Employee Mappings
+        </a>
+        <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+          routerLink="{{workspace.id}}/settings/category/mappings/" routerLinkActive="active">
+          Category Mappings
+        </a>
+        <div *ngFor="let setting of mappingSettings">
+          <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="setting.source_field !== 'CATEGORY'" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/{{setting.source_field.toLowerCase()}}/mappings/"
+          routerLinkActive="active">
+            {{ getTitle(setting.source_field) | titlecase }} Mappings
+         </a>
+        </div>
+        <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/schedule/"
+          routerLinkActive="active">
+          Automated Import/Export
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <mat-toolbar fxLayoutAlign="space-between center">
+        <div class="xero--title" fxLayout="row" fxLayoutAlign="space-around center">
+          <div class="mat-small">
+            Fyle Org Name:
+            <span class="xero--title-fyle-org">
+              {{user.org_name}}
+            </span>
+          </div>
+        </div>
+  
+        <mat-menu class="xero--menu" #appMenu="matMenu" xPosition="before">
+          <button type="button" mat-menu-item *ngIf="orgsCount > 0" (click)="switchWorkspace()">
+            <div fxLayoutAlign="space-around center">
+              <mat-icon class="xero--menu-icon">
+                swap_horiz
+              </mat-icon>
+              <strong class="xero--menu-text">
+                Switch Org
+              </strong>
+            </div>
+          </button>
+          <button type="button" mat-menu-item [routerLink]="['../auth/logout']">
+            <div fxLayoutAlign="space-around center">
+              <mat-icon class="xero--menu-icon">
+                power_settings_new
+              </mat-icon>
+              <strong class="xero--menu-text">
+                Sign Out
+              </strong>
+            </div>
+          </button>
+        </mat-menu>
+  
+        <div class="xero--menu" [matMenuTriggerFor]="appMenu">
+          <div fxLayoutAlign="space-around center">
+            <mat-icon class="xero--menu-icon">
+              account_circle
+            </mat-icon>
+            <strong class="xero--menu-text">{{user.full_name}}</strong>
+            <mat-icon class="xero--menu-icon xero--menu-icon__offset">
+              keyboard_arrow_down
+            </mat-icon>
+          </div>
+        </div>
+  
+      </mat-toolbar>
+      <div class="xero-body">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
+  <div fxLayoutAlign="center center" fxFlexFill *ngIf="isLoading">
+    <app-loader></app-loader>
+  </div>

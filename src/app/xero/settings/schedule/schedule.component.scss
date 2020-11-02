@@ -1,0 +1,31 @@
+@import 'variables.scss';
+
+$fy-panel: #f5f5f5;
+
+.schedule {
+  &--header {
+    border-bottom: 1px solid $fy-layout-background;
+  }
+
+  &--toggle-text {
+    font-size: 14px;
+  }
+
+  &--form {
+    color: $fy-nav-text;
+    margin: 24px;
+    max-width: 360px;
+    font-size: 14px;
+  }
+
+  &--inner-form {
+    background-color: $fy-panel;
+    border-radius: 4px;
+    padding: 12px;
+    margin: 16px 0;
+  }
+
+  &--save-btn {
+    max-width: 120px;
+  }
+}

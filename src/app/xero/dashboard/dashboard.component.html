@@ -1,0 +1,224 @@
+<div class="internal-loader" fxLayoutAlign="center start" *ngIf="isLoading" fxFlexFill>
+    <app-loader></app-loader>
+  </div>
+  
+  <div *ngIf="currentState !== allOnboardingStates.isOnboarded && !isLoading"
+    class="onboarding-stepper onboarding-stepper--container" fxLayout="column" fxLayoutAlign="start center">
+    <h1 class="text-center onboarding-stepper--title">Welcome to Fyle App for Xero Integrations</h1>
+    <div fxLayout="row" fxLayoutAlign="center center" class="onboarding-stepper--logos">
+      <img src="../../../assets/images/pngs/fyle-logo.png" alt="Fyle">
+      <mat-icon>add</mat-icon>
+      <img src="../../../assets/images/pngs/xero-logo.png" alt="xero" class="onboarding-stepper--xero-logo">
+    </div>
+    <div class="onboarding-stepper--subheader">
+      Let's get you on board with a few quick steps!
+    </div>
+    <div>
+      <mat-vertical-stepper class="onboarding-stepper--stepper" [disableRipple]="rippleDisabled" [linear]="linearMode"
+        #stepper>
+        <mat-step [completed]="false">
+          <ng-template matStepLabel>
+            <div class="onboarding-stepper--step-header">
+              Connect to your Fyle & Xero accounts
+            </div>
+          </ng-template>
+          <div class="onboarding-stepper--step" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon class="onboarding-stepper--check"
+                [ngClass]="{'onboarding-stepper--check__complete': currentState === allOnboardingStates.fyleConnected || currentState === allOnboardingStates.xeroConnected || currentState === allOnboardingStates.tenantMappingDone || currentState === allOnboardingStates.configurationsDone || currentState === allOnboardingStates.generalMappingsDone || currentState === allOnboardingStates.employeeMappingsDone}">
+                check_circle</mat-icon>
+              <div class="onboarding-stepper--desc">Connect to Fyle Account</div>
+            </div>
+            <div class="onboarding-stepper--navigation cursor-pointer" (click)="connectFyle()"
+              *ngIf="currentState === allOnboardingStates.initialized"
+              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.initialized}">
+              Connect Fyle
+            </div>
+          </div>
+          <div class="onboarding-stepper--step" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon class="onboarding-stepper--check"
+                [ngClass]="{'onboarding-stepper--check__complete': currentState === allOnboardingStates.xeroConnected || currentState === allOnboardingStates.tenantMappingDone || currentState === allOnboardingStates.configurationsDone || currentState === allOnboardingStates.generalMappingsDone || currentState === allOnboardingStates.employeeMappingsDone}">
+                check_circle</mat-icon>
+              <div class="onboarding-stepper--desc">Connect to Xero Account</div>
+            </div>
+            <div (click)="connectXero()" class="onboarding-stepper--navigation cursor-pointer"
+              *ngIf="currentState === allOnboardingStates.fyleConnected"
+              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.fyleConnected}">
+              Connect Xero
+            </div>
+          </div>
+          <div class="onboarding-stepper--step" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon class="onboarding-stepper--check"
+                [ngClass]="{'onboarding-stepper--check__complete': currentState === allOnboardingStates.tenantMappingDone || currentState === allOnboardingStates.configurationsDone || currentState === allOnboardingStates.generalMappingsDone || currentState === allOnboardingStates.employeeMappingsDone}">
+                check_circle</mat-icon>
+              <div class="onboarding-stepper--desc">Select Xero Tenant</div>
+            </div>
+            <div routerLink="../settings/configurations/tenant/" class="onboarding-stepper--navigation cursor-pointer"
+              *ngIf="currentState === allOnboardingStates.xeroConnected"
+              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.xeroConnected}">
+              Select Tenant
+            </div>
+          </div>
+        </mat-step>
+        <mat-step [completed]="false">
+          <ng-template matStepLabel>
+            <div class="onboarding-stepper--step-header">
+              Configure Fyle Xero app
+            </div>
+          </ng-template>
+          <div class="onboarding-stepper--step" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon class="onboarding-stepper--check"
+                [ngClass]="{'onboarding-stepper--check__complete': currentState === allOnboardingStates.configurationsDone || currentState === allOnboardingStates.generalMappingsDone || currentState === allOnboardingStates.employeeMappingsDone}">
+                check_circle</mat-icon>
+              <div class="onboarding-stepper--desc">Map Fyle fields to Xero fields</div>
+            </div>
+            <div routerLink="../settings/configurations/general/" class="onboarding-stepper--navigation cursor-pointer"
+            *ngIf="currentState === allOnboardingStates.tenantMappingDone"
+            [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.tenantMappingDone}">
+              Go to Configurations
+            </div>
+          </div>
+        </mat-step>
+        <mat-step [completed]="false">
+          <ng-template matStepLabel>
+            <div class="onboarding-stepper--step-header">
+              Map Fyle fields to Xero
+            </div>
+          </ng-template>
+          <div class="onboarding-stepper--step" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon class="onboarding-stepper--check"
+                [ngClass]="{'onboarding-stepper--check__complete': currentState === allOnboardingStates.generalMappingsDone || currentState === allOnboardingStates.employeeMappingsDone}">
+                check_circle</mat-icon>
+              <div class="onboarding-stepper--desc">Map Bank Accounts</div>
+            </div>
+            <div routerLink="../settings/general/mappings/" class="onboarding-stepper--navigation cursor-pointer"
+              *ngIf="currentState === allOnboardingStates.configurationsDone"
+              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.configurationsDone}">
+              Go to General Mappings
+            </div>
+          </div>
+          <div class="onboarding-stepper--step" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon class="onboarding-stepper--check"
+                [ngClass]="{'onboarding-stepper--check__complete': currentState === allOnboardingStates.employeeMappingsDone}">
+                check_circle</mat-icon>
+              <div class="onboarding-stepper--desc">Map Employees</div>
+            </div>
+            <div routerLink="../settings/employee/mappings/" class="onboarding-stepper--navigation cursor-pointer"
+              *ngIf="currentState === allOnboardingStates.generalMappingsDone"
+              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.generalMappingsDone}">
+              Go to Employee Mappings
+            </div>
+          </div>
+          <div class="onboarding-stepper--step" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon class="onboarding-stepper--check">check_circle</mat-icon>
+              <div class="onboarding-stepper--desc">Map Categories</div>
+            </div>
+            <div routerLink="../settings/category/mappings/" class="onboarding-stepper--navigation cursor-pointer"
+              *ngIf="currentState === allOnboardingStates.employeeMappingsDone"
+              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.employeeMappingsDone}">
+              Go to Category Mappings
+            </div>
+          </div>
+        </mat-step>
+      </mat-vertical-stepper>
+    </div>
+  </div>
+  
+  <div class="dashboard" *ngIf="currentState === allOnboardingStates.isOnboarded && !isLoading">
+    <div class="mat-h2 dashboard--header">
+      Dashboard
+    </div>
+    <div fxLayout="row">
+      <div class="dashboard--actions" fxLayout="column" fxLayoutAlign="start center">
+        <mat-card class="dashboard--actions-card">
+          <div class="dashboard--actions-content" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="dashboard--actions-header">
+              <span *ngIf="successfulExpenseGroupsCount > 0">
+                Import Expenses from Fyle
+              </span>
+              <span *ngIf="successfulExpenseGroupsCount === 0">
+                Import Expenses from Fyle
+              </span>
+            </div>
+            <div class="dashboard--actions-action cursor-pointer" fxLayout="row" fxLayoutAlign="start center"
+              routerLink="../sync_export/sync/">
+              <div>
+                Import Now
+              </div>
+              <mat-icon>
+                arrow_forward
+              </mat-icon>
+            </div>
+          </div>
+        </mat-card>
+  
+        <mat-card class="dashboard--actions-card">
+          <div class="dashboard--actions-content" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="dashboard--actions-header">
+              Export Expenses to Xero
+            </div>
+            <div class="dashboard--actions-action cursor-pointer" fxLayout="row" fxLayoutAlign="start center"
+              routerLink="../sync_export/export/">
+              <div>
+                Export Now
+              </div>
+              <mat-icon>
+                arrow_forward
+              </mat-icon>
+            </div>
+          </div>
+        </mat-card>
+        <div class="schedule">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="schedule--info-icon">
+              info
+            </mat-icon>
+            <div class="schedule--info-desc">
+              You can also create an automated schedule to import and export your expenses.
+            </div>
+          </div>
+          <div class="schedule--redirect cursor-pointer">
+            <a (click)="openSchedule($event)" class="read-more-link" href="" fxLayout="row" fxLayoutAlign="start center">
+              <div>
+                Go to Automated Import/Export
+              </div>
+              <mat-icon class="schedule--redirect-icon read-more-link--icon">
+                open_in_new
+              </mat-icon>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard--stats" fxLayout="row" fxLayoutAlign="center">
+        <mat-card class="dashboard--stats-card">
+          <mat-list role="list">
+            <mat-list-item role="listitem">
+              <mat-icon class="dashboard--stats-card-icon" mat-list-icon>publish</mat-icon>
+              <div mat-line>{{successfulExpenseGroupsCount}}</div>
+              <div mat-line>
+                <div class="dashboard--stats-card-desc">
+                  Successful exports
+                </div>
+  
+              </div>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+              <mat-icon class="dashboard--stats-card-icon" mat-list-icon>info</mat-icon>
+              <div mat-line>{{failedExpenseGroupsCount}}</div>
+              <div mat-line>
+                <div class="dashboard--stats-card-desc">
+                    Failed exports
+                </div>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </mat-card>
+      </div>
+    </div>
+  </div>

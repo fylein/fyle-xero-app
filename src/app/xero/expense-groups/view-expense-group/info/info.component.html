@@ -1,0 +1,73 @@
+<div class="internal-loader" fxLayoutAlign="center center" fxFlexFill *ngIf="isLoading">
+    <app-loader></app-loader>
+  </div>
+  
+  <div *ngIf="!isLoading">
+    <div class="page-info" fxLayoutAlign="space-between center">
+      <div class="page-info--sub-header-container" fxLayout="row" fxLayoutAlign="start center">
+        <div class="page-info--sub-header" fxLayout="column" fxLayoutAlign="space-between start">
+          <div>
+            Expenses grouped by:
+          </div>
+          <div class="page-info--sub-header-items" *ngFor="let key of expenseGroupFields">
+            <div *ngIf="key === 'spent_at'">
+              <strong>Spent on</strong> - {{ expenseGroup.description[key] | date }}
+            </div>
+            <div *ngIf="key === 'approved_at'">
+              <strong>Approved on</strong> - {{ expenseGroup.description[key] | date }}
+            </div>
+            <div *ngIf="key === 'verified_at'">
+              <strong>Verified on</strong> - {{ expenseGroup.description[key] | date }}
+            </div>
+            <div *ngIf="key !== 'report_id' && key !=='employee_email' && key !== 'fund_source' && key !== 'current_date' && key !== 'verified_at' && key !== 'approved_at' && key !== 'spent_at'  && expenseGroup.description[key]">
+              <strong>{{ getTitle(key) | titlecase }}</strong> - {{ expenseGroup.description[key] }}
+            </div>
+          </div>
+          <div class="page-info--sub-header-items">
+            <strong>Expense Type</strong> - {{ expenseGroup.fund_source === 'CCC'? 'Corporate Credit Card': 'Reimbursable' }}
+          </div>
+        </div>
+      </div>
+      <div fxLayoutAlign="end center">
+        <mat-form-field class="simple-search" appearance="outline">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)">
+          <span matPrefix>
+            <mat-icon class="simple-search--icon" aria-hidden="false" aria-label="Search">search </mat-icon>
+          </span>
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <div [hidden]="isLoading">
+        <table mat-table [dataSource]="expenses" class="page-table">
+          <ng-container matColumnDef="expense_number">
+            <th mat-header-cell *matHeaderCellDef> Expense No. </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.expense_number}}
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="claimno">
+            <th mat-header-cell *matHeaderCellDef> Claim No. </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.claim_number}}
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="view">
+            <th mat-header-cell *matHeaderCellDef> View </th>
+            <td mat-cell *matCellDef="let element">
+              <mat-icon class="page-table--icon cursor-pointer" (click)="openExpenseInFyle(element)">
+                open_in_new
+              </mat-icon>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+        </table>
+  
+      </div>
+    </div>
+  </div>

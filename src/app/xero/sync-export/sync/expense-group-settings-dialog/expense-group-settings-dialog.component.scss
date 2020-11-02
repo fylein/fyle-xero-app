@@ -1,0 +1,29 @@
+@import 'variables.scss';
+
+.dialog {
+  &--header {
+    color: $fy-nav-text;
+  }
+
+  &--form {
+    color: $fy-nav-text;
+    font-size: 14px;
+  }
+
+  &--field {
+    margin: 12px 0;
+  }
+
+  &--label {
+    font-weight: 500;
+  }
+
+  &--error {
+    font-size: 14px;
+  }
+
+  &--save-btn {
+    background-color: $fy-primary;
+    color: $fy-white;
+  }
+}

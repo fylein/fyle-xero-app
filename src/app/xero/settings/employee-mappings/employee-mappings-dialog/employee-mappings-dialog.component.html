@@ -1,0 +1,93 @@
+<h2 mat-dialog-title>
+    <div class="mappings-dialog--header" fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="mat-title" *ngIf="!editMapping">
+        Create New Mapping
+      </div>
+      <div class="mat-title" *ngIf="editMapping">
+        Edit Employee Mapping
+      </div>
+      <div>
+        <mat-icon class="mappings-dialog--close cursor-pointer" aria-hidden="false" aria-label="close this dialog" mat-dialog-close>close</mat-icon>
+      </div>
+    </div>
+  </h2>
+  <mat-dialog-content>
+    <div class="internal-loader" fxLayoutAlign="center start" *ngIf="isLoading" fxFlexFill>
+      <app-loader></app-loader>
+    </div>
+    <form *ngIf="!isLoading" class="mappings-dialog--form" [formGroup]="form">
+      <div fxLayout="column" fxLayoutAlign="start stretch">
+        <div class="mat-body-strong">
+          <strong class="mappings-dialog--label">
+            Select an Employee from Fyle
+          </strong>
+        </div>
+        <mat-form-field class="mappings-dialog--form-element" appearance="outline">
+          <input required type="text" formControlName="fyleEmployee" placeholder="Select Fyle Employee" matInput
+            [matAutocomplete]="fyEmp">
+          <mat-autocomplete #fyEmp="matAutocomplete" [displayWith]="mappingDisplay">
+            <mat-option *ngFor="let option of employeeOptions" [value]="option">
+              {{option.value}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error class="mappings-dialog--error" *ngIf="form.controls.fyleEmployee.hasError('forbiddenOption')">
+            Please enter a valid value
+          </mat-error>
+        </mat-form-field>
+        <div class="mat-body-strong" *ngIf="generalSettings.employee_field_mapping === 'VENDOR'">
+          <strong class="mappings-dialog--label">
+            Map to Corresponding NetSuite Vendor
+          </strong>
+        </div>
+        <mat-form-field class="mappings-dialog--form-element" appearance="outline" *ngIf="generalSettings.employee_field_mapping === 'VENDOR'">
+          <input type="text" formControlName="netsuiteVendor" placeholder="Select NetSuite Vendor" matInput [matAutocomplete]="fyEmp">
+          <mat-autocomplete #fyEmp="matAutocomplete" [displayWith]="mappingDisplay">
+            <mat-option *ngFor="let option of netsuiteVendorOptions" [value]="option">
+              {{option.value}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error class="mappings-dialog--error" *ngIf="form.controls.netsuiteVendor.hasError('forbiddenOption')">
+            Please enter a valid value
+          </mat-error>
+        </mat-form-field>
+        <div class="mat-body-strong" *ngIf="generalSettings.employee_field_mapping === 'EMPLOYEE'">
+          <strong class="mappings-dialog--label">
+            Map to Corresponding NetSuite Employee
+          </strong>
+        </div>
+        <mat-form-field class="mappings-dialog--form-element" appearance="outline" *ngIf="generalSettings.employee_field_mapping === 'EMPLOYEE'">
+          <input type="text" formControlName="netsuiteEmployee" placeholder="Select NetSuite Employee" matInput [matAutocomplete]="netsuiteEmp">
+          <mat-autocomplete #netsuiteEmp="matAutocomplete" [displayWith]="mappingDisplay">
+            <mat-option *ngFor="let option of netsuiteEmployeeOptions" [value]="option">
+              {{option.value}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error class="mappings-dialog--error" *ngIf="form.controls.netsuiteEmployee.hasError('forbiddenOption')">
+            Please enter a valid value
+          </mat-error>
+        </mat-form-field>
+        <div class="mat-body-strong" *ngIf="generalSettings.corporate_credit_card_expenses_object && generalSettings.corporate_credit_card_expenses_object !== 'BILL'">
+          <strong class="mappings-dialog--label">
+            Choose Credit Card Account
+          </strong>
+        </div>
+        <mat-form-field class="mappings-dialog--form-element" appearance="outline" *ngIf="generalSettings.corporate_credit_card_expenses_object && generalSettings.corporate_credit_card_expenses_object !== 'BILL'">
+          <input type="text" formControlName="creditCardAccount" placeholder="Corporate credit card account" matInput [matAutocomplete]="fyEmp">
+          <mat-autocomplete #fyEmp="matAutocomplete" [displayWith]="mappingDisplay">
+            <mat-option *ngFor="let option of cccOptions" [value]="option">
+              {{option.value}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error class="mappings-dialog--error" *ngIf="form.controls.creditCardAccount.hasError('forbiddenOption')">
+            Please enter a valid value
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" mat-flat-button mat-dialog-close>Cancel</button>
+    <button class="mappings-dialog--save-btn" mat-flat-button color="primary" type="submit" (click)="submit()">
+      Save
+    </button>
+  </mat-dialog-actions>

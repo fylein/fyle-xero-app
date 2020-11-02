@@ -1,0 +1,23 @@
+<div class="internal-loader" fxLayoutAlign="center start" *ngIf="isParentLoading" fxFlexFill>
+    <app-loader></app-loader>
+  </div>
+  <div class="page-header" *ngIf="!isParentLoading">
+    <div class="page-header--name mat-h2">
+      Configurations
+    </div>
+    <nav mat-tab-nav-bar>
+      <a mat-tab-link (click)="changeState('TENANT')" [active]="state==='TENANT'" *ngIf='netsuiteConnectionDone'>
+        Tenant
+      </a>
+      <a mat-tab-link (click)="changeState('GENERAL')" [active]="state==='GENERAL'">
+        General
+      </a>
+      <a mat-tab-link (click)="changeState('EXPENSE_FIELDS')" *ngIf="showExpenseFields()" [active]="state==='EXPENSE_FIELDS'">
+        Expense Fields
+      </a>
+    </nav>
+  </div>
+  
+  <div *ngIf="!isParentLoading">
+    <router-outlet></router-outlet>
+  </div>

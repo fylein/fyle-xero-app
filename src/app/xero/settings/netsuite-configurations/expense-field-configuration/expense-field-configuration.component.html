@@ -1,0 +1,59 @@
+<div class="internal-loader" fxLayoutAlign="center start" *ngIf="isLoading" fxFlexFill>
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="!isLoading" fxLayout="column" fxLayoutAlign="start stretch">
+    <div class="page-info">
+      <div fxLayout="row" fxLayoutAlign="start center" class="page-info--description">
+        <div>
+          Please map the following Fyle fields to their NetSuite equivalent. Added fields cannot be edited or removed after saving.
+        </div>
+        <a href="https://www.fylehq.com/help/en/articles/4424248-onboarding-process-to-set-up-fyle-netsuite-integration"
+          target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row"
+          fxLayoutAlign="start center">Read
+          more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+      </div>
+    </div>
+    <form class="expense-fields--form" [formGroup]="expenseFieldsForm">
+      <div formArrayName="expenseFields">
+        <div class="row" *ngFor="let expenseField of expenseFieldsForm.controls.expenseFields['controls']; let i = index"
+          [formGroupName]="i">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-form-field floatLabel="always" appearance="outline" fxFlex="35" required>
+              <mat-select placeholder="Choose Fyle Expense field" formControlName="source_field">
+                <mat-option *ngFor="let fyleExpenseField of fyleFormFieldList"
+                  [(value)]="fyleExpenseField.attribute_type">
+                  {{ fyleExpenseField.display_name | titlecase }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div fxFlex="5">
+              <img class="expense-fields--arrow-icon" src="../../../../../assets/images/pngs/arrow-right.png">
+            </div>
+            <mat-form-field floatLabel="always" fxFlex="35" appearance="outline">
+              <mat-select placeholder="Choose NetSuite equivalent" formControlName="destination_field">
+                <mat-option *ngFor="let netsuiteField of netsuiteFormFieldList" [(value)]="netsuiteField.attribute_type">
+                  {{ netsuiteField.display_name | titlecase }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <div fxFlex="25" *ngIf="i !== 0 && !expenseField.disabled">
+              <img class="expense-fields--delete-icon" src="../../../../../assets/images/pngs/delete.png" (click)="removeExpenseField(i)">
+            </div>
+          </div>
+          <div class="expense-fields--errors" md-colors="{color:'warning'}"
+            *ngIf="expenseField.status === 'INVALID' && expenseField.value.source_field && expenseField.value.destination_field">
+              Fyle and NetSuite fields should be unique
+          </div>
+        </div>
+      </div>
+      <div>
+        <img class="expense-fields--add-icon" src="../../../../../assets/images/pngs/add.png" *ngIf="showAddButton()" (click)="addExpenseField()">
+      </div>
+  
+      <button class="expense-fields--save-btn" mat-flat-button color="primary" [disabled]="!expenseFieldsForm.valid"
+        (click)="saveExpenseFields()" type="submit">
+        Save
+      </button>
+    </form>
+  </div> 

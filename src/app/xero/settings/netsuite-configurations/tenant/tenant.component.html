@@ -1,0 +1,31 @@
+<div class="internal-loader" fxLayoutAlign="center start" *ngIf="isLoading" fxFlexFill>
+    <app-loader></app-loader>
+</div>
+<div>
+  <div class="page-info">
+    <div fxLayout="row" fxLayoutAlign="start center" class="page-info--description" *ngIf="!isLoading">
+      Set up Xero Tenant.
+      <a href="https://www.fylehq.com/help/en/articles/4424248-onboarding-process-to-set-up-fyle-netsuite-integration" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+    </div>
+  </div>
+    <form class="general-mappings--form" [formGroup]="tenantForm" (ngSubmit)="submit()">
+
+      <div fxLayout="column" fxLayoutAlign="start stretch" *ngIf="!isLoading">
+        <div class="mat-body-strong">
+          Xero Tenant
+        </div>
+        <mat-form-field floatLabel="always" appearance="outline" required>
+          <mat-select class="general-mappings--input" placeholder="Select Xero Tenant"
+            formControlName="xeroTenant">
+            <mat-option *ngFor="let netsuiteLocation of xeroTenants; let i = index"
+              [value]="xeroTenants[i].destination_id">
+              {{xeroTenants[i].value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button [disabled]="tenantMappingDone" class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>

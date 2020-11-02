@@ -1,0 +1,57 @@
+<div class="internal-loader" fxLayoutAlign="center start" *ngIf="isLoading" fxFlexFill>
+  <app-loader></app-loader>
+</div>
+<div *ngIf="!isLoading">
+  <div class="page-header schedule--header">
+    <div class="page-header--name mat-h2">
+      Automated Import/Export
+    </div>
+  </div>
+  <div class="page-info">
+    <div fxLayout="row" fxLayoutAlign="start center" class="page-info--description">
+      Set up an automatic process for importing expense groups from Fyle and exporting them to NetSuite.
+      <a href="https://www.fylehq.com/help/en/articles/4424242-fyle-netsuite-integration" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+    </div>
+  </div>
+  <form class="schedule--form" [formGroup]="form">
+    <div fxLayout="column" fxLayoutAlign="start stretch">
+      <mat-slide-toggle color="primary" formControlName="scheduleEnabled">
+        <div class="schedule--toggle-text">Enabled</div>
+      </mat-slide-toggle>
+
+      <mat-card *ngIf="form.controls.scheduleEnabled.value" class="mat-elevation-z0 schedule--inner-form">
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+          <div class="mat-body-strong">
+            <strong>
+              Repeat every
+            </strong>
+          </div>
+          <mat-form-field floatLabel="always" appearance="outline" required>
+            <mat-select placeholder="Select hours" formControlName="hours">
+              <mat-option *ngFor="let hour of hours" [value]="hour">
+                {{hour}} hour<span *ngIf="hour>1">s</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="mat-body-strong">
+            <strong>
+              Start Date
+            </strong>
+          </div>
+
+          <mat-form-field floatLabel="always" appearance="outline" required>
+            <input [min]="minDate" placeholder="MMM DD, YYYY" formControlName="datetime" matInput
+              [matDatepicker]="myDatepicker">
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-card>
+      <button *ngIf="form.controls.scheduleEnabled.value" class="schedule--save-btn" mat-flat-button color="primary"
+        type="submit" (click)="submit()">
+        Save
+      </button>
+    </div>
+  </form>
+</div>
