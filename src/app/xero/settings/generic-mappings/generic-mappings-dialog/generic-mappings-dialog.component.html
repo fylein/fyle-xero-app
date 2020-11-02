@@ -37,14 +37,14 @@
 
       <div class="mat-body-strong">
         <strong class="mappings-dialog--label">
-          Map to Corresponding NetSuite {{ getTitle(setting.destination_field) | titlecase}}
+          Map to Corresponding Xero {{ getTitle(setting.destination_field) | titlecase}}
         </strong>
       </div>
       <mat-form-field class="mappings-dialog--field" appearance="outline">
-        <input type="text" formControlName="destinationField" placeholder="Select NetSuite {{ getTitle(setting.destination_field) | titlecase}}" matInput [matAutocomplete]="netsuiteEl"
+        <input type="text" formControlName="destinationField" placeholder="Select Xero {{ getTitle(setting.destination_field) | titlecase}}" matInput [matAutocomplete]="xeroEl"
           [errorStateMatcher]="matcher">
-        <mat-autocomplete #netsuiteEl="matAutocomplete" [displayWith]="mappingDisplay">
-          <mat-option *ngFor="let option of netsuiteOptions" [value]="option">
+        <mat-autocomplete #xeroEl="matAutocomplete" [displayWith]="mappingDisplay">
+          <mat-option *ngFor="let option of xeroOptions" [value]="option">
             {{option.value}}
           </mat-option>
         </mat-autocomplete>

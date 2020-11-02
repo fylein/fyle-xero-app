@@ -24,9 +24,9 @@ export class GenericMappingsDialogComponent implements OnInit {
   isLoading = false;
   form: FormGroup;
   fyleAttributes: any[];
-  netsuiteElements: any[];
+  xeroElements: any[];
   fyleAttributeOptions: any[];
-  netsuiteOptions: any[];
+  xeroOptions: any[];
   setting: any;
   editMapping: boolean;
   matcher = new MappingErrorStateMatcher();
@@ -97,8 +97,8 @@ export class GenericMappingsDialogComponent implements OnInit {
 
     that.form.controls.destinationField.valueChanges.pipe(debounceTime(300)).subscribe((newValue) => {
       if (typeof (newValue) === 'string') {
-        that.netsuiteOptions = that.netsuiteElements
-          .filter(netsuiteElement => new RegExp(newValue.toLowerCase(), 'g').test(netsuiteElement.value.toLowerCase()));
+        that.xeroOptions = that.xeroElements
+          .filter(xeroElement => new RegExp(newValue.toLowerCase(), 'g').test(xeroElement.value.toLowerCase()));
       }
     });
   }
@@ -116,21 +116,21 @@ export class GenericMappingsDialogComponent implements OnInit {
       that.fyleAttributes = attributes;
     });
 
-    const netsuitePromise = that.mappingsService.getXeroTrackingCategories(that.setting.destination_field).toPromise().then(objects => {
-      that.netsuiteElements = objects;
+    const xeroPromise = that.mappingsService.getXeroTrackingCategories(that.setting.destination_field).toPromise().then(objects => {
+      that.xeroElements = objects;
     });
 
     that.isLoading = true;
     forkJoin([
       getFyleAttributes,
-      netsuitePromise
+      xeroPromise
     ]).subscribe(() => {
       that.isLoading = false;
       const sourceField = that.editMapping ? that.fyleAttributes.filter(sourceField => sourceField.value === that.data.rowElement.source.value)[0] : '';
-      const destinationField = that.editMapping ? that.netsuiteElements.filter(destinationField => destinationField.value === that.data.rowElement.destination.value)[0] : '';
+      const destinationField = that.editMapping ? that.xeroElements.filter(destinationField => destinationField.value === that.data.rowElement.destination.value)[0] : '';
       that.form = that.formBuilder.group({
         sourceField: [that.editMapping ? sourceField : Validators.compose([Validators.required, that.forbiddenSelectionValidator(that.fyleAttributes)])],
-        destinationField: [that.editMapping ? destinationField : that.forbiddenSelectionValidator(that.netsuiteElements)],
+        destinationField: [that.editMapping ? destinationField : that.forbiddenSelectionValidator(that.xeroElements)],
       });
 
       if (that.editMapping) {

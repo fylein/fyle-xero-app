@@ -3,8 +3,6 @@ import { ExpenseGroup } from 'src/app/core/models/expense-group.model';
 import { ExpenseGroupsService } from 'src/app/core/services/expense-groups.service';
 import { ActivatedRoute } from '@angular/router';
 import { BillsService } from 'src/app/core/services/bills.service';
-import { JournalEntriesService } from '../../../core/services/journal-entries.service';
-import { ExpenseReportsService } from '../../../core/services/expense-reports.service';
 import { TasksService } from 'src/app/core/services/tasks.service';
 import { interval, from, forkJoin } from 'rxjs';
 import { switchMap, takeWhile } from 'rxjs/operators';
@@ -32,9 +30,7 @@ export class ExportComponent implements OnInit {
     private route: ActivatedRoute,
     private taskService: TasksService,
     private expenseGroupService: ExpenseGroupsService,
-    private journalEntriesService: JournalEntriesService,
     private billsService: BillsService,
-    private expenseReportsService: ExpenseReportsService,
     private snackBar: MatSnackBar,
     private settingsService: SettingsService,
     private windowReferenceService: WindowReferenceService) {
@@ -44,35 +40,23 @@ export class ExportComponent implements OnInit {
   exportReimbursableExpenses(reimbursableExpensesObject) {
     const that = this;
     const handlerMap = {
-      'BILL': (filteredIds) => {
+      'PURCHASE BILL': (filteredIds) => {
         return that.billsService.createBills(filteredIds);
-      },
-      'EXPENSE REPORT': (filteredIds) => {
-        return that.expenseReportsService.createExpenseReports(filteredIds);
-      },
-      'JOURNAL ENTRY': (filteredIds) => {
-        return that.journalEntriesService.createJournalEntries(filteredIds);
       }
     };
 
-    return handlerMap[reimbursableExpensesObject] || handlerMap["JOURNAL ENTRY"];
+    return handlerMap[reimbursableExpensesObject];
   }
 
   exportCCCExpenses(corporateCreditCardExpensesObject) {
     const that = this;
     const handlerMap = {
-      'BILL': (filteredIds) => {
+      'PURCHASE BILL BILLL': (filteredIds) => {
         return that.billsService.createBills(filteredIds);
-      },
-      'EXPENSE REPORT': (filteredIds) => {
-        return that.expenseReportsService.createExpenseReports(filteredIds);
-      },
-      'JOURNAL ENTRY': (filteredIds) => {
-        return that.journalEntriesService.createJournalEntries(filteredIds);
       }
     };
 
-    return handlerMap[corporateCreditCardExpensesObject] || handlerMap["JOURNAL ENTRY"];
+    return handlerMap[corporateCreditCardExpensesObject];
   }
 
   openFailedExports() {
@@ -103,7 +87,7 @@ export class ExportComponent implements OnInit {
     });
   }
 
-  createNetSuiteItems() {
+  createXeroItems() {
     const that = this;
     that.isExporting = true;
     that.settingsService.getCombinedSettings(that.workspaceId).subscribe((settings) => {

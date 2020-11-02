@@ -37,14 +37,6 @@
           routerLinkActive="active">
           General Mappings
         </a>
-        <!-- <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
-          routerLink="{{workspace.id}}/settings/employee/mappings/" routerLinkActive="active">
-          Employee Mappings
-        </a> -->
-        <!-- <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
-          routerLink="{{workspace.id}}/settings/category/mappings/" routerLinkActive="active">
-          Category Mappings
-        </a> -->
         <div *ngFor="let setting of mappingSettings">
           <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/{{setting.source_field.toLowerCase()}}/mappings/"
           routerLinkActive="active">

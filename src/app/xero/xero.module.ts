@@ -44,10 +44,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
-import { NetsuiteConfigurationsComponent } from './settings/netsuite-configurations/netsuite-configurations.component';
-import { TenantComponent } from './settings/netsuite-configurations/tenant/tenant.component';
-import { ConfigurationComponent } from './settings/netsuite-configurations/configuration/configuration.component';
-import { ExpenseFieldConfigurationComponent } from './settings/netsuite-configurations/expense-field-configuration/expense-field-configuration.component';
+import { XeroConfigurationsComponent } from './settings/xero-configurations/xero-configurations.component';
+import { TenantComponent } from './settings/xero-configurations/tenant/tenant.component';
+import { ConfigurationComponent } from './settings/xero-configurations/configuration/configuration.component';
+import { ExpenseFieldConfigurationComponent } from './settings/xero-configurations/expense-field-configuration/expense-field-configuration.component';
 import { ExpenseGroupSettingsDialogComponent } from './sync-export/sync/expense-group-settings-dialog/expense-group-settings-dialog.component';
 import { GenericMappingsComponent } from './settings/generic-mappings/generic-mappings.component';
 import { GenericMappingsDialogComponent } from './settings/generic-mappings/generic-mappings-dialog/generic-mappings-dialog.component';
@@ -69,7 +69,7 @@ import { XeroCallbackComponent } from './settings/xero-callback/xero-callback.co
     ConfigurationComponent,
     GeneralMappingsComponent,
     ScheduleComponent,
-    NetsuiteConfigurationsComponent,
+    XeroConfigurationsComponent,
     TenantComponent,
     ExpenseFieldConfigurationComponent,
     ExpenseGroupSettingsDialogComponent,

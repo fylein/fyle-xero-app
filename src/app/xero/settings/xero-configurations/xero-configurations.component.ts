@@ -5,19 +5,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 
 @Component({
-  selector: 'app-netsuite-configurations',
-  templateUrl: './netsuite-configurations.component.html',
-  styleUrls: ['./netsuite-configurations.component.scss', '../../xero.component.scss']
+  selector: 'app-xero-configurations',
+  templateUrl: './xero-configurations.component.html',
+  styleUrls: ['./xero-configurations.component.scss', '../../xero.component.scss']
 })
-export class NetsuiteConfigurationsComponent implements OnInit {
+export class XeroConfigurationsComponent implements OnInit {
 
   state: string;
   workspaceId: number;
   isParentLoading: boolean;
   fyleFields: any;
   generalSettings: any;
-  netsuiteConnection: any;
-  netsuiteConnectionDone: boolean;
+  xeroConnectionDone: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private mappingsService: MappingsService, private settingsService: SettingsService) { }
 
@@ -51,16 +50,12 @@ export class NetsuiteConfigurationsComponent implements OnInit {
     const that = this;
     
     that.isParentLoading = true;
-
-    that.netsuiteConnection = false;
-
     that.workspaceId = +that.route.parent.snapshot.params.workspace_id;
-    
     that.state = that.route.snapshot.firstChild.routeConfig.path.toUpperCase() || 'TENANT';
     
     that.settingsService.getXeroCredentials(that.workspaceId).subscribe(response => {
       if (response) {
-        that.netsuiteConnectionDone = true;
+        that.xeroConnectionDone = true;
       }
       forkJoin(
         [

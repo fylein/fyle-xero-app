@@ -7,7 +7,7 @@
     </div>
     <div class="page-info">
       <div fxLayout="row" fxLayoutAlign="start center" class="page-info--description">
-        Map {{ getTitle(source_field).toLowerCase() }} items from Fyle to their counterparts on NetSuite.<a href="https://www.fylehq.com/help/en/articles/4424248-onboarding-process-to-set-up-fyle-netsuite-integration" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+        Map {{ getTitle(source_field).toLowerCase() }} items from Fyle to their counterparts on Xero.<a href="https://www.fylehq.com/help/en/articles/4424248-onboarding-process-to-set-up-fyle-netsuite-integration" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
       </div>
       <button class="page-info--primary-action" mat-flat-button color="primary" type="button" (click)="open()">
         New {{ getTitle(source_field) | titlecase }} Mapping
@@ -30,7 +30,7 @@
 
         <ng-container matColumnDef="destinationField">
           <th mat-header-cell *matHeaderCellDef>
-            NetSuite {{ getTitle(setting.destination_field) | titlecase }}
+            Xero {{ getTitle(setting.destination_field) | titlecase }}
           </th>
           <td mat-cell *matCellDef="let element">
             {{element.destination.value}}

@@ -1,6 +1,6 @@
 /* tslint:disable */
 // TODO: Use something for serialization / deserialization
-export class NetSuiteCredentials {
+export class XeroCredentials {
   id: number;
   ns_account_id: string;
   ns_consumer_key: string

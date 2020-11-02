@@ -17,9 +17,8 @@
         <mat-form-field floatLabel="always" appearance="outline" required>
           <mat-select class="general-mappings--input" placeholder="Select Xero Tenant"
             formControlName="xeroTenant">
-            <mat-option *ngFor="let netsuiteLocation of xeroTenants; let i = index"
-              [value]="xeroTenants[i].destination_id">
-              {{xeroTenants[i].value}}
+            <mat-option *ngFor="let tenant of xeroTenants;" [value]="tenant.destination_id">
+              {{tenant.value}}
             </mat-option>
           </mat-select>
         </mat-form-field>

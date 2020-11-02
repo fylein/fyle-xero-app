@@ -45,7 +45,7 @@
       </ng-container>
   
       <ng-container matColumnDef="export">
-        <th mat-header-cell *matHeaderCellDef> Exported to NetSuite as </th>
+        <th mat-header-cell *matHeaderCellDef> Exported to Xero as </th>
         <td mat-cell *matCellDef="let element">
           <div *ngIf="element.fund_source === 'PERSONAL'">
             {{settings.reimbursable_expenses_object | titlecase}}
@@ -64,11 +64,11 @@
         </td>
       </ng-container>
   
-      <ng-container matColumnDef="openNetSuite">
-        <th mat-header-cell *matHeaderCellDef> Open in NetSuite </th>
+      <ng-container matColumnDef="openXero">
+        <th mat-header-cell *matHeaderCellDef> Open in Xero </th>
         <td mat-cell *matCellDef="let element">
           <div class="page-table--redirect-column" fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon class="page-table--icon cursor-pointer" (click)="openInNetSuiteHandler(element)">
+            <mat-icon class="page-table--icon cursor-pointer" (click)="openInXeroHandler(element)">
               open_in_new
             </mat-icon>
           </div>

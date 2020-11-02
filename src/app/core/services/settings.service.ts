@@ -3,14 +3,14 @@ import { Observable, Subject, merge, forkJoin, from } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { Cacheable, CacheBuster, globalCacheBusterNotifier } from 'ngx-cacheable';
 import { FyleCredentials } from '../models/fyle-credentials.model';
-import { NetSuiteCredentials } from '../models/netsuite-credentials.model';
+import { XeroCredentials } from '../models/xero-credentials.model';
 import { Settings } from '../models/settings.model';
 
 const fyleCredentialsCache = new Subject<void>();
-const netsuiteCredentialsCache = new Subject<void>();
+const xeroCredentialsCache = new Subject<void>();
 const generalSettingsCache = new Subject<void>();
 const mappingsSettingsCache = new Subject<void>();
-const subsidiaryMappingCache = new Subject<void>();
+const tenantMappingCache = new Subject<void>();
 
 @Injectable({
   providedIn: 'root',
@@ -34,9 +34,9 @@ export class SettingsService {
   }
 
   @Cacheable({
-    cacheBusterObserver: netsuiteCredentialsCache
+    cacheBusterObserver: xeroCredentialsCache
   })
-  getXeroCredentials(workspaceId: number): Observable<NetSuiteCredentials> {
+  getXeroCredentials(workspaceId: number): Observable<XeroCredentials> {
     return this.apiService.get('/workspaces/' + workspaceId + '/credentials/xero/', {});
   }
 
@@ -52,7 +52,7 @@ export class SettingsService {
 
   // TODO: Add model
   @CacheBuster({
-    cacheBusterNotifier: netsuiteCredentialsCache
+    cacheBusterNotifier: xeroCredentialsCache
   })
   connectXero(workspaceId: number, code) {
     globalCacheBusterNotifier.next();
@@ -109,7 +109,7 @@ export class SettingsService {
   
   // TODO: Add model
   @CacheBuster({
-    cacheBusterNotifier: subsidiaryMappingCache
+    cacheBusterNotifier: tenantMappingCache
   })
   postTenantMappings(workspaceId: number, tenantName: string, tenantId: string) {
     return this.apiService.post(`/workspaces/${workspaceId}/mappings/tenant/`, {

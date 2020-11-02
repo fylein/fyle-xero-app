@@ -95,7 +95,7 @@ export class ExpenseGroupsComponent implements OnInit {
     that.state = that.route.snapshot.queryParams.state || 'FAILED';
     that.settingsService.getCombinedSettings(that.workspaceId).subscribe((settings) => {
       if (that.state === 'COMPLETE') {
-        that.columnsToDisplay = ['export-date', 'employee', 'export', 'expensetype', 'openNetSuite'];
+        that.columnsToDisplay = ['export-date', 'employee', 'export', 'expensetype', 'openXero'];
       } else {
         that.columnsToDisplay = ['employee', 'expensetype'];
       }
@@ -112,7 +112,7 @@ export class ExpenseGroupsComponent implements OnInit {
 
         if (that.pageNumber !== pageNumber || that.pageSize !== pageSize || that.state !== state) {
           if (state === 'COMPLETE') {
-            that.columnsToDisplay = ['export-date', 'employee', 'export', 'expensetype', 'openNetSuite'];
+            that.columnsToDisplay = ['export-date', 'employee', 'export', 'expensetype', 'openXero'];
           } else {
             that.columnsToDisplay = ['employee', 'expensetype'];
           }
@@ -126,12 +126,12 @@ export class ExpenseGroupsComponent implements OnInit {
     });
   }
 
-  openInNetSuite(type, id) {
+  openInXero(type, id) {
     const nsAccountId = JSON.parse(localStorage.getItem('nsAccountId'));
     this.windowReference.open(`https://${nsAccountId}.app.netsuite.com/app/accounting/transactions/${type}.nl?id=${id}`, '_blank');
   }
 
-  openInNetSuiteHandler(clickedExpenseGroup: ExpenseGroup) {
+  openInXeroHandler(clickedExpenseGroup: ExpenseGroup) {
     // tslint:disable-next-line: deprecation
     event.preventDefault();
     // tslint:disable-next-line: deprecation
@@ -158,7 +158,7 @@ export class ExpenseGroupsComponent implements OnInit {
           }
         };
 
-        that.openInNetSuite(typeMap[completeTask.type].type, typeMap[completeTask.type].getId(completeTask));
+        that.openInXero(typeMap[completeTask.type].type, typeMap[completeTask.type].getId(completeTask));
       }
     });
   }

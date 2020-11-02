@@ -15,19 +15,10 @@ import { StorageService } from 'src/app/core/services/storage.service';
 export class GeneralMappingsComponent implements OnInit {
   form: FormGroup;
   workspaceId: number;
-  netsuiteLocations: any[]
-  netsuiteVendors: any[]
-  accountPayableAccounts: any[];
   bankAccounts: any[];
-  cccAccounts: any[];
   generalMappings: any;
   generalSettings: any;
   isLoading = true;
-  accountsPayableIsValid = true;
-  bankAccountIsValid = true;
-  cccAccountIsValid = true;
-  locationIsValid = true;
-  vendorIsValid = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -104,7 +95,6 @@ export class GeneralMappingsComponent implements OnInit {
     that.isLoading = true;
     that.settingsService.getCombinedSettings(that.workspaceId).subscribe(settings => {
       that.generalSettings = settings;
-      console.log(settings)
       that.isLoading = false;
       that.reset();
     });

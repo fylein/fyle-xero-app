@@ -15,10 +15,10 @@ import { SyncComponent } from './sync-export/sync/sync.component';
 import { ExportComponent } from './sync-export/export/export.component';
 import { GeneralMappingsComponent } from './settings/general-mappings/general-mappings.component';
 import { ScheduleComponent } from './settings/schedule/schedule.component';
-import { ConfigurationComponent } from './settings/netsuite-configurations/configuration/configuration.component';
-import { TenantComponent } from './settings/netsuite-configurations/tenant/tenant.component';
-import { NetsuiteConfigurationsComponent } from './settings/netsuite-configurations/netsuite-configurations.component';
-import { ExpenseFieldConfigurationComponent } from './settings/netsuite-configurations/expense-field-configuration/expense-field-configuration.component';
+import { ConfigurationComponent } from './settings/xero-configurations/configuration/configuration.component';
+import { TenantComponent } from './settings/xero-configurations/tenant/tenant.component';
+import { XeroConfigurationsComponent } from './settings/xero-configurations/xero-configurations.component';
+import { ExpenseFieldConfigurationComponent } from './settings/xero-configurations/expense-field-configuration/expense-field-configuration.component';
 import { GenericMappingsComponent } from './settings/generic-mappings/generic-mappings.component';
 import { XeroCallbackComponent } from './settings/xero-callback/xero-callback.component';
 
@@ -80,7 +80,7 @@ const routes: Routes = [{
       children: [
         {
           path: 'configurations',
-          component: NetsuiteConfigurationsComponent,
+          component: XeroConfigurationsComponent,
           children: [
             {
               path: 'general',

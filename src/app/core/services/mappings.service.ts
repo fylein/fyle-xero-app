@@ -13,22 +13,15 @@ export class MappingsService {
   // TODO: Map models to each of these and the methods below
 
   fyleCategories: Observable<any[]>;
-  netsuiteAccounts: Observable<any[]>;
   fyleEmployees: Observable<any[]>;
-  netsuiteVendors: Observable<any[]>;
   xeroContacts: Observable<any[]>;
   fyleProjects: Observable<any[]>;
   fyleExpenseCustomFields: Observable<any[]>;
   xeroTrackingCategories: Observable<any[]>;
-  netsuiteDepartments: Observable<any[]>;
   fyleCostCenters: Observable<any[]>;
-  netsuiteLocations: Observable<any[]>;
-  netsuiteClasses: Observable<any[]>;
-  netsuiteCategories: Observable<any[]>;
-  netsuiteCurrencies: Observable<any[]>;
   generalMappings: Observable<any[]>;
   accountPayables: Observable<any[]>;
-  netsuiteSubsidiaries: Observable<any[]>;
+  xeroTenants: Observable<any[]>;
   xeroAccounts: Observable<any[]>;
   expenseFields: Observable<any[]>;
 
@@ -114,51 +107,6 @@ export class MappingsService {
     return this.xeroTrackingCategories;
   }
 
-  postNetsuiteCustomSegments(data: any) {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.post(`/workspaces/${workspaceId}/netsuite/custom_segments/`, data);
-  }
-
-  postNetSuiteVendors() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    if (!this.netsuiteVendors) {
-      this.netsuiteVendors = this.apiService.post(`/workspaces/${workspaceId}/netsuite/vendors/`, {}).pipe(
-        map(data => data),
-        publishReplay(1),
-        refCount()
-      );
-    }
-    return this.netsuiteVendors;
-  }
-
-  postNetSuiteCurrencies() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    if (!this.netsuiteCurrencies) {
-      this.netsuiteCurrencies = this.apiService.post(`/workspaces/${workspaceId}/netsuite/currencies/`, {}).pipe(
-        map(data => data),
-        publishReplay(1),
-        refCount()
-      );
-    }
-    return this.netsuiteCurrencies;
-  }
-
-  postNetSuiteExpenseCategories() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    if (!this.netsuiteCategories) {
-      this.netsuiteCategories = this.apiService.post(`/workspaces/${workspaceId}/netsuite/expense_categories/`, {}).pipe(
-        map(data => data),
-        publishReplay(1),
-        refCount()
-      );
-    }
-    return this.netsuiteCategories;
-  }
-
   postXeroContacts() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
@@ -172,72 +120,17 @@ export class MappingsService {
     return this.xeroContacts;
   }
 
-  postNetSuiteAccounts() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    if (!this.netsuiteAccounts) {
-      this.netsuiteAccounts = this.apiService.post(
-        `/workspaces/${workspaceId}/netsuite/accounts/`, {}
-      ).pipe(
-        map(data => data),
-        publishReplay(1),
-        refCount()
-      );
-    }
-    return this.netsuiteAccounts;
-  }
-
-  postNetSuiteClasses() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    if (!this.netsuiteClasses) {
-      this.netsuiteClasses = this.apiService.post(`/workspaces/${workspaceId}/netsuite/classifications/`, {}).pipe(
-        map(data => data),
-        publishReplay(1),
-        refCount()
-      );
-    }
-    return this.netsuiteClasses;
-  }
-
-  postNetSuiteDepartments() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    if (!this.netsuiteDepartments) {
-      this.netsuiteDepartments = this.apiService.post(`/workspaces/${workspaceId}/netsuite/departments/`, {}).pipe(
-        map(data => data),
-        publishReplay(1),
-        refCount()
-      );
-    }
-    return this.netsuiteDepartments;
-  }
-
-  postNetSuiteLocations() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    if (!this.netsuiteLocations) {
-      this.netsuiteLocations = this.apiService.post(`/workspaces/${workspaceId}/netsuite/locations/`, {}).pipe(
-        map(data => data),
-        publishReplay(1),
-        refCount()
-      );
-    }
-    return this.netsuiteLocations;
-  }
-
-
   postXeroTenants() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
-    if (!this.netsuiteSubsidiaries) {
-      this.netsuiteSubsidiaries = this.apiService.post(`/workspaces/${workspaceId}/xero/tenants/`, {}).pipe(
+    if (!this.xeroTenants) {
+      this.xeroTenants = this.apiService.post(`/workspaces/${workspaceId}/xero/tenants/`, {}).pipe(
         map(data => data),
         publishReplay(1),
         refCount()
       );
     }
-    return this.netsuiteSubsidiaries;
+    return this.xeroTenants;
   }
 
   postXeroAccounts() {
@@ -272,24 +165,30 @@ export class MappingsService {
     return this.apiService.get(`/workspaces/${workspaceId}/fyle/categories/`, {});
   }
 
-  getNetSuiteVendors() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.get(`/workspaces/${workspaceId}/netsuite/vendors/`, {});
-  }
-
-  getXeroFields() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.get(`/workspaces/${workspaceId}/xero/xero_fields/`, {});
-  }
-
   getFyleExpenseCustomFields(attributeType: string) {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
     return this.apiService.get(`/workspaces/${workspaceId}/fyle/expense_custom_fields/`, {
       attribute_type: attributeType
     });
+  }
+
+  getFyleProjects() {
+    const workspaceId = this.workspaceService.getWorkspaceId();
+
+    return this.apiService.get(`/workspaces/${workspaceId}/fyle/projects/`, {});
+  }
+
+  getFyleCostCenters() {
+    const workspaceId = this.workspaceService.getWorkspaceId();
+
+    return this.apiService.get(`/workspaces/${workspaceId}/fyle/cost_centers/`, {});
+  }
+
+  getXeroFields() {
+    const workspaceId = this.workspaceService.getWorkspaceId();
+
+    return this.apiService.get(`/workspaces/${workspaceId}/xero/xero_fields/`, {});
   }
 
   getXeroTrackingCategories(attributeType: string) {
@@ -300,46 +199,10 @@ export class MappingsService {
     });
   }
 
-  getNetsuiteExpenseSegments() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.get(`/workspaces/${workspaceId}/netsuite/custom_segments/`, {});
-  }
-
   getXeroContacts() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
     return this.apiService.get(`/workspaces/${workspaceId}/xero/contacts/`, {});
-  }
-
-  getNetSuiteLocations() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.get(`/workspaces/${workspaceId}/netsuite/locations/`, {});
-  }
-
-  getFyleProjects() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.get(`/workspaces/${workspaceId}/fyle/projects/`, {});
-  }
-
-  getNetSuiteClasses() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.get(`/workspaces/${workspaceId}/netsuite/classifications/`, {});
-  }
-
-  getNetSuiteDepartments() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.get(`/workspaces/${workspaceId}/netsuite/departments/`, {});
-  }
-
-  getFyleCostCenters() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.get(`/workspaces/${workspaceId}/fyle/cost_centers/`, {});
   }
 
   getExpenseAccounts() {
@@ -358,29 +221,12 @@ export class MappingsService {
     );
   }
 
-  getAccountsPayables() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.get(
-      `/workspaces/${workspaceId}/netsuite/accounts_payables/`, {}
-    );
-  }
-
-  getCreditCardAccounts() {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
-    return this.apiService.get(
-      `/workspaces/${workspaceId}/netsuite/credit_card_accounts/`, {}
-    );
-  }
-
   getXeroTenants() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
     return this.apiService.get(`/workspaces/${workspaceId}/xero/tenants/`, {});
   }
 
-  // TODO: Replace any with proper model
   postGeneralMappings(generalMappings: any) {
     const workspaceId = this.workspaceService.getWorkspaceId();
     return this.apiService.post(`/workspaces/${workspaceId}/mappings/general/`, generalMappings);
@@ -392,7 +238,6 @@ export class MappingsService {
       `/workspaces/${workspaceId}/mappings/general/`, {}
     );
   }
-
 
   getTenantMappings(): Observable<GeneralMapping> {
     const workspaceId = this.workspaceService.getWorkspaceId();

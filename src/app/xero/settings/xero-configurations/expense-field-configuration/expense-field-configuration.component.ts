@@ -20,13 +20,13 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
   isLoading: boolean;
   mappingSettings: any;
   fyleExpenseFields: any;
-  netsuiteFields: any;
+  xeroFields: any;
   fyleFormFieldList: any;
   selectedFyleFields: string[] = [];
-  netsuiteFormFieldList: any;
+  xeroFormFieldList: any;
   windowReference: Window;
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private settingsService: SettingsService, private mappingsService: MappingsService, private netsuite: XeroComponent, private windowReferenceService: WindowReferenceService) {
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private settingsService: SettingsService, private mappingsService: MappingsService, private xero: XeroComponent, private windowReferenceService: WindowReferenceService) {
     this.windowReference = this.windowReferenceService.nativeWindow;
    }
   
@@ -46,7 +46,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
 
   showAddButton() {
     const that = this;
-    if (that.expenseFieldsForm.controls.expenseFields['controls'].length === Math.min(that.fyleExpenseFields.length, that.netsuiteFields.length)) {
+    if (that.expenseFieldsForm.controls.expenseFields['controls'].length === Math.min(that.fyleExpenseFields.length, that.xeroFields.length)) {
       return false;
     }
     return true;
@@ -66,7 +66,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
     const expenseFields = that.expenseFieldsForm.value.expenseFields;
 
     that.settingsService.postMappingSettings(that.workspaceId, expenseFields).subscribe(response => {
-      that.netsuite.getGeneralSettings()
+      that.xero.getGeneralSettings()
       that.router.navigateByUrl(`/workspaces/${that.workspaceId}/dashboard`);
       that.isLoading = false;
     });
@@ -95,11 +95,10 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
       var expenseFieldFormArray;
 
       that.fyleExpenseFields = response[1];
-      that.netsuiteFields = response[2];
-      console.log(that.netsuiteFields)
+      that.xeroFields = response[2];
 
       that.fyleFormFieldList = response[1];
-      that.netsuiteFormFieldList = response[2];
+      that.xeroFormFieldList = response[2];
 
       if (that.mappingSettings.length) {
         expenseFieldFormArray = that.mappingSettings.map(

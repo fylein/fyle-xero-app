@@ -5,7 +5,7 @@
     <div class="page-info">
       <div fxLayout="row" fxLayoutAlign="start center" class="page-info--description">
         <div>
-          Please map the following Fyle fields to their NetSuite equivalent. Added fields cannot be edited or removed after saving.
+          Please map the following Fyle fields to their Xero equivalent. Added fields cannot be edited or removed after saving.
         </div>
         <a href="https://www.fylehq.com/help/en/articles/4424248-onboarding-process-to-set-up-fyle-netsuite-integration"
           target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row"
@@ -30,9 +30,9 @@
               <img class="expense-fields--arrow-icon" src="../../../../../assets/images/pngs/arrow-right.png">
             </div>
             <mat-form-field floatLabel="always" fxFlex="35" appearance="outline">
-              <mat-select placeholder="Choose NetSuite equivalent" formControlName="destination_field">
-                <mat-option *ngFor="let netsuiteField of netsuiteFormFieldList" [(value)]="netsuiteField.attribute_type">
-                  {{ netsuiteField.display_name | titlecase }}
+              <mat-select placeholder="Choose Xero equivalent" formControlName="destination_field">
+                <mat-option *ngFor="let xeroField of xeroFormFieldList" [(value)]="xeroField.attribute_type">
+                  {{ xeroField.display_name | titlecase }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -43,7 +43,7 @@
           </div>
           <div class="expense-fields--errors" md-colors="{color:'warning'}"
             *ngIf="expenseField.status === 'INVALID' && expenseField.value.source_field && expenseField.value.destination_field">
-              Fyle and NetSuite fields should be unique
+              Fyle and Xero fields should be unique
           </div>
         </div>
       </div>

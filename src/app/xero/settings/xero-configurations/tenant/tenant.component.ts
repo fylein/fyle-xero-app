@@ -49,9 +49,7 @@ export class TenantComponent implements OnInit {
   getTenantMappings() {
     const that = this;
     that.mappingsService.getTenantMappings().subscribe(tenantMappings => {
-      console.log(tenantMappings)
       that.tenantMappings = tenantMappings;
-      console.log(that.tenantMappings.tenant_name)
 
       that.tenantForm = that.formBuilder.group({
         xeroTenant: [that.tenantMappings.tenant_name]
@@ -60,14 +58,10 @@ export class TenantComponent implements OnInit {
       that.tenantMappingDone = true;
       this.isLoading = false;
     }, error => {
-      that.mappingsService.getXeroTenants().subscribe(tenants => {
-        that.xeroTenants = tenants;
-        console.log('tenants',tenants)
         this.isLoading = false;
         that.tenantForm = that.formBuilder.group({
           xeroTenant: ['']
         });
-      });
     });
   }
 
@@ -75,6 +69,9 @@ export class TenantComponent implements OnInit {
     const that = this;
     that.workspaceId = that.route.snapshot.parent.parent.params.workspace_id;
     that.isLoading = true;
+    that.mappingsService.getXeroTenants().subscribe(tenants => {
+      that.xeroTenants = tenants;
+    });
     that.getTenantMappings();
   }
 
