@@ -180,12 +180,6 @@ export class DashboardComponent implements OnInit {
     onErrorResumeNext(
       this.mappingsService.postXeroAccounts(),
       this.mappingsService.postXeroContacts(),
-      this.mappingsService.postNetSuiteLocations(),
-      this.mappingsService.postNetSuiteVendors(),
-      this.mappingsService.postNetSuiteCurrencies(),
-      this.mappingsService.postNetSuiteClasses(),
-      this.mappingsService.postNetSuiteDepartments(),
-      that.mappingsService.postNetSuiteAccounts(),
       that.mappingsService.postXeroTrackingCategories()
     ).subscribe(() => {
       this.snackBar.open('Data Successfully imported from Xero');

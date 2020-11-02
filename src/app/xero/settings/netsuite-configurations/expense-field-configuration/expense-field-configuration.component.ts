@@ -66,7 +66,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
     const expenseFields = that.expenseFieldsForm.value.expenseFields;
 
     that.settingsService.postMappingSettings(that.workspaceId, expenseFields).subscribe(response => {
-      this.netsuite.getGeneralSettings()
+      that.netsuite.getGeneralSettings()
       that.router.navigateByUrl(`/workspaces/${that.workspaceId}/dashboard`);
       that.isLoading = false;
     });

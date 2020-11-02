@@ -35,7 +35,13 @@ export class GenericMappingsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      that.getMappings();
+      const onboarded = that.storageService.get('onboarded');
+
+      if (onboarded === true) {
+        that.getMappings();
+      } else {
+        that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
+      }
     });
   }
 

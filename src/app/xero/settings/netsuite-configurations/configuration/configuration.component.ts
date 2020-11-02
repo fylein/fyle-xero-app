@@ -5,6 +5,7 @@ import { SettingsService } from 'src/app/core/services/settings.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { XeroComponent } from 'src/app/xero/xero.component';
 
 @Component({
   selector: 'app-configuration',
@@ -25,7 +26,7 @@ export class ConfigurationComponent implements OnInit {
   projectFieldMapping: any;
   costCenterFieldMapping: any;
 
-  constructor(private formBuilder: FormBuilder, private storageService: StorageService, private settingsService: SettingsService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar) { }
+  constructor(private formBuilder: FormBuilder, private storageService: StorageService, private settingsService: SettingsService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private xero: XeroComponent) { }
 
   getAllSettings() {
     const that = this;
@@ -95,6 +96,7 @@ export class ConfigurationComponent implements OnInit {
         that.isLoading = true;
         that.storageService.set('generalSettings', responses[1])
         that.snackBar.open('Configuration saved successfully');
+        that.xero.getGeneralSettings();
         that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
       });
     } else {
