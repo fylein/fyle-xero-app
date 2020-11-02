@@ -41,12 +41,12 @@
           routerLink="{{workspace.id}}/settings/employee/mappings/" routerLinkActive="active">
           Employee Mappings
         </a>
-        <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+        <!-- <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
           routerLink="{{workspace.id}}/settings/category/mappings/" routerLinkActive="active">
           Category Mappings
-        </a>
+        </a> -->
         <div *ngFor="let setting of mappingSettings">
-          <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="setting.source_field !== 'CATEGORY'" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/{{setting.source_field.toLowerCase()}}/mappings/"
+          <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/{{setting.source_field.toLowerCase()}}/mappings/"
           routerLinkActive="active">
             {{ getTitle(setting.source_field) | titlecase }} Mappings
          </a>

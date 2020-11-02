@@ -39,7 +39,7 @@ export class XeroComponent implements OnInit {
     const that = this;
     that.settingsService.getMappingSettings(that.workspace.id).subscribe((response) => {
       that.mappingSettings = response.results.filter(
-        setting => (setting.source_field !== 'EMPLOYEE' && setting.source_field !== 'CATEGORY')
+        setting => (setting.source_field !== 'EMPLOYEE')
       );
       that.isLoading = false;
     }, () => {
