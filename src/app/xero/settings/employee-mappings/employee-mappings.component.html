@@ -29,23 +29,12 @@
         </ng-container>
   
         <ng-container matColumnDef="xero">
-          <th mat-header-cell *matHeaderCellDef>
-            <span *ngIf="generalSettings?.employee_field_mapping == 'VENDOR'">Vendor Name</span>
-            <span *ngIf="generalSettings?.employee_field_mapping == 'EMPLOYEE'">Employee Name</span>
-          </th>
+          <th mat-header-cell *matHeaderCellDef> Contact Name </th>
           <td mat-cell *matCellDef="let element">
             {{element.netsuite_value}}
           </td>
         </ng-container>
-  
-  
-        <ng-container matColumnDef="ccc">
-          <th mat-header-cell *matHeaderCellDef> Credit Card</th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.ccc_account }}
-          </td>
-        </ng-container>
-  
+
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" (click)="open(row)"></tr>
       </table>

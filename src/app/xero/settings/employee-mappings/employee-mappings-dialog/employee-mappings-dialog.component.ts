@@ -30,7 +30,7 @@ export class EmployeeMappingsDialogComponent implements OnInit {
   netsuiteVendors: any[];
   generalSettings: any;
   employeeOptions: any[];
-  netsuiteEmployeeOptions: any[];
+  xeroContactOptions: any[];
   cccOptions: any[];
   netsuiteVendorOptions: any[];
   generalMappings: any;
@@ -53,30 +53,18 @@ export class EmployeeMappingsDialogComponent implements OnInit {
   submit() {
     const that = this;
     const fyleEmployee = that.form.controls.fyleEmployee.value;
-    const netsuiteVendor = that.generalSettings.employee_field_mapping === 'VENDOR' ? that.form.value.netsuiteVendor : '';
-    const netsuiteEmployee = that.generalSettings.employee_field_mapping === 'EMPLOYEE' ? that.form.value.netsuiteEmployee : '';
-    const creditCardAccount = that.form.value.creditCardAccount ? that.form.value.creditCardAccount.value : that.generalMappings.default_ccc_account_name;
+    const xeroContact = that.form.controls.xeroContact.value;
 
-    if (that.form.valid && (netsuiteVendor || netsuiteEmployee)) {
+    if (that.form.valid && xeroContact) {
       const employeeMapping = [
         that.mappingsService.postMappings({
           source_type: 'EMPLOYEE',
-          destination_type: that.generalSettings.employee_field_mapping,
+          destination_type: 'CONTACT',
           source_value: fyleEmployee.value,
-          destination_value: that.generalSettings.employee_field_mapping === 'VENDOR' ? netsuiteVendor.value : netsuiteEmployee.value
+          destination_value: xeroContact.value
         })
       ];
 
-      if (creditCardAccount || (that.generalSettings.corporate_credit_card_expenses_object && that.generalSettings.corporate_credit_card_expenses_object !== 'BILL')) {
-        employeeMapping.push(
-          that.mappingsService.postMappings({
-            source_type: 'EMPLOYEE',
-            destination_type: 'CREDIT_CARD_ACCOUNT',
-            source_value: fyleEmployee.value,
-            destination_value: creditCardAccount
-          })
-        );
-      }
       that.isLoading = true;
       forkJoin(employeeMapping).subscribe(responses => {
         that.snackBar.open('Mapping saved successfully');
@@ -86,7 +74,6 @@ export class EmployeeMappingsDialogComponent implements OnInit {
         that.snackBar.open('Something went wrong');
         that.isLoading = false;
       });
-
     } else {
       that.snackBar.open('Form has invalid fields');
       that.form.markAllAsTouched();
@@ -116,35 +103,13 @@ export class EmployeeMappingsDialogComponent implements OnInit {
     });
   }
 
-  setupnetsuiteVendorAutocompleteWatcher() {
-    const that = this;
-
-    that.form.controls.netsuiteVendor.valueChanges.pipe(debounceTime(300)).subscribe((newValue) => {
-      if (typeof (newValue) === 'string') {
-        that.netsuiteVendorOptions = that.netsuiteVendors
-          .filter(netsuiteVendor => new RegExp(newValue.toLowerCase(), 'g').test(netsuiteVendor.value.toLowerCase()));
-      }
-    });
-  }
-
   setupnetsuiteEmployeesWatcher() {
     const that = this;
 
-    that.form.controls.netsuiteEmployee.valueChanges.pipe(debounceTime(300)).subscribe((newValue) => {
+    that.form.controls.xeroContact.valueChanges.pipe(debounceTime(300)).subscribe((newValue) => {
       if (typeof (newValue) === 'string') {
-        that.netsuiteEmployeeOptions = that.netsuiteEmployees
-          .filter(netsuiteEmployee => new RegExp(newValue.toLowerCase(), 'g').test(netsuiteEmployee.value.toLowerCase()));
-      }
-    });
-  }
-
-  setupCCCAutocompleteWatcher() {
-    const that = this;
-
-    that.form.controls.creditCardAccount.valueChanges.pipe(debounceTime(300)).subscribe((newValue) => {
-      if (typeof (newValue) === 'string') {
-        that.cccOptions = that.cccObjects
-          .filter(cccObject => new RegExp(newValue.toLowerCase(), 'g').test(cccObject.value.toLowerCase()));
+        that.xeroContactOptions = that.netsuiteEmployees
+          .filter(xeroContact => new RegExp(newValue.toLowerCase(), 'g').test(xeroContact.value.toLowerCase()));
       }
     });
   }
@@ -152,9 +117,7 @@ export class EmployeeMappingsDialogComponent implements OnInit {
   setupAutocompleteWatchers() {
     const that = this;
     that.setupFyleEmployeeAutocompleteWatcher();
-    that.setupnetsuiteVendorAutocompleteWatcher();
     that.setupnetsuiteEmployeesWatcher();
-    that.setupCCCAutocompleteWatcher();
   }
 
   reset() {
@@ -164,40 +127,21 @@ export class EmployeeMappingsDialogComponent implements OnInit {
       that.fyleEmployees = fyleEmployees;
     });
     // TODO: remove promises and do with rxjs observables
-    const getnetsuiteEmployees = that.mappingsService.getNetSuiteEmployees().toPromise().then((netsuiteEmployees) => {
+    const getnetsuiteEmployees = that.mappingsService.getXeroContacts().toPromise().then((netsuiteEmployees) => {
       that.netsuiteEmployees = netsuiteEmployees;
-    });
-    // TODO: remove promises and do with rxjs observables
-    const getCCCAccounts = that.mappingsService.getCreditCardAccounts().toPromise().then((cccObjects) => {
-      that.cccObjects = cccObjects;
-    });
-    // TODO: remove promises and do with rxjs observables
-    const getnetsuiteVendors = that.mappingsService.getNetSuiteVendors().toPromise().then((netsuiteVendors) => {
-      that.netsuiteVendors = netsuiteVendors;
-    });
-    // TODO: remove promises and do with rxjs observables
-    const getGeneralMappings = that.mappingsService.getGeneralMappings().toPromise().then((generalMappings) => {
-      that.generalMappings = generalMappings;
     });
 
     that.isLoading = true;
     forkJoin([
       from(getFyleEmployees),
-      from(getnetsuiteEmployees),
-      from(getCCCAccounts),
-      from(getnetsuiteVendors),
-      from(getGeneralMappings)
+      from(getnetsuiteEmployees)
     ]).subscribe((res) => {
       const fyleEmployee = that.editMapping ? that.fyleEmployees.filter(employee => employee.value === that.data.rowElement.fyle_value)[0] : '';
-      const netsuiteVendor = that.editMapping ? that.netsuiteVendors.filter(vendor => vendor.value === that.data.rowElement.netsuite_value)[0] : '';
-      const netsuiteEmployee = that.editMapping ? that.netsuiteEmployees.filter(employee => employee.value === that.data.rowElement.netsuite_value)[0] : '';
-      const defaultCCCObj = that.cccObjects.filter(cccObj => cccObj.value === that.generalMappings.default_ccc_account_name)[0];
+      const xeroContact = that.editMapping ? that.netsuiteEmployees.filter(employee => employee.value === that.data.rowElement.netsuite_value)[0] : '';
       that.isLoading = false;
       that.form = that.formBuilder.group({
         fyleEmployee: [that.editMapping ? fyleEmployee : Validators.compose([Validators.required, that.forbiddenSelectionValidator(that.fyleEmployees)])],
-        netsuiteVendor: [that.generalSettings.employee_field_mapping === 'VENDOR' && that.editMapping ? netsuiteVendor : that.forbiddenSelectionValidator(that.netsuiteVendors)],
-        netsuiteEmployee: [that.generalSettings.employee_field_mapping === 'EMPLOYEE' && that.editMapping ? netsuiteEmployee : that.forbiddenSelectionValidator(that.netsuiteEmployees)],
-        creditCardAccount: [defaultCCCObj || '', (that.generalSettings.corporate_credit_card_expenses_object && that.generalSettings.corporate_credit_card_expenses_object !== 'BILL') ? that.forbiddenSelectionValidator(that.cccObjects) : null]
+        xeroContact: [that.generalSettings.employee_field_mapping === 'EMPLOYEE' && that.editMapping ? xeroContact : that.forbiddenSelectionValidator(that.netsuiteEmployees)],
       });
 
       if(that.editMapping) {

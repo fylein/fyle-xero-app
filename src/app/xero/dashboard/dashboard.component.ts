@@ -179,13 +179,12 @@ export class DashboardComponent implements OnInit {
 
     onErrorResumeNext(
       this.mappingsService.postXeroAccounts(),
-      this.mappingsService.postNetSuiteExpenseCategories(),
+      this.mappingsService.postXeroContacts(),
       this.mappingsService.postNetSuiteLocations(),
       this.mappingsService.postNetSuiteVendors(),
       this.mappingsService.postNetSuiteCurrencies(),
       this.mappingsService.postNetSuiteClasses(),
       this.mappingsService.postNetSuiteDepartments(),
-      this.mappingsService.postNetSuiteEmployees(),
       that.mappingsService.postNetSuiteAccounts(),
       that.mappingsService.postXeroTrackingCategories()
     ).subscribe(() => {

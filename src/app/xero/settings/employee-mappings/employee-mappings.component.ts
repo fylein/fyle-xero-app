@@ -22,7 +22,7 @@ export class EmployeeMappingsComponent implements OnInit {
   generalSettings: any;
   filteredAccounts: any[];
   rowElement: any;
-  columnsToDisplay = ['employee_email', 'netsuite'];
+  columnsToDisplay = ['employee_email', 'xero'];
 
   constructor(public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -87,10 +87,6 @@ export class EmployeeMappingsComponent implements OnInit {
       that.createEmployeeMappingsRows();
       that.isLoading = false;
     });
-
-    if (that.generalSettings.corporate_credit_card_expenses_object !== 'BILL' && that.generalSettings.corporate_credit_card_expenses_object) {
-      that.columnsToDisplay.push('ccc');
-    }
   }
 
   ngOnInit() {

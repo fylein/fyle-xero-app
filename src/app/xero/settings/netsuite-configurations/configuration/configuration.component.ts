@@ -70,10 +70,15 @@ export class ConfigurationComponent implements OnInit {
   save() {
     const that = this;
     if (that.generalSettingsForm.valid) {
-      const mappingsSettingsPayload = [{
-        source_field: 'CATEGORY',
-        destination_field: 'ACCOUNT'
-      }
+      const mappingsSettingsPayload = [
+        {
+          source_field: 'CATEGORY',
+          destination_field: 'ACCOUNT'
+        },
+        {
+          source_field: 'EMPLOYEE',
+          destination_field: 'CONTACT'
+        }
       ];
 
       const reimbursableExpensesObject = that.generalSettingsForm.value.reimbursableExpense || that.generalSettings.reimbursable_expenses_object;

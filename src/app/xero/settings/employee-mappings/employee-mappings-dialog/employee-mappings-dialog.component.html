@@ -34,51 +34,19 @@
             Please enter a valid value
           </mat-error>
         </mat-form-field>
-        <div class="mat-body-strong" *ngIf="generalSettings.employee_field_mapping === 'VENDOR'">
+        <div class="mat-body-strong">
           <strong class="mappings-dialog--label">
-            Map to Corresponding NetSuite Vendor
+            Map to Corresponding Xero Employee
           </strong>
         </div>
-        <mat-form-field class="mappings-dialog--form-element" appearance="outline" *ngIf="generalSettings.employee_field_mapping === 'VENDOR'">
-          <input type="text" formControlName="netsuiteVendor" placeholder="Select NetSuite Vendor" matInput [matAutocomplete]="fyEmp">
-          <mat-autocomplete #fyEmp="matAutocomplete" [displayWith]="mappingDisplay">
-            <mat-option *ngFor="let option of netsuiteVendorOptions" [value]="option">
-              {{option.value}}
-            </mat-option>
-          </mat-autocomplete>
-          <mat-error class="mappings-dialog--error" *ngIf="form.controls.netsuiteVendor.hasError('forbiddenOption')">
-            Please enter a valid value
-          </mat-error>
-        </mat-form-field>
-        <div class="mat-body-strong" *ngIf="generalSettings.employee_field_mapping === 'EMPLOYEE'">
-          <strong class="mappings-dialog--label">
-            Map to Corresponding NetSuite Employee
-          </strong>
-        </div>
-        <mat-form-field class="mappings-dialog--form-element" appearance="outline" *ngIf="generalSettings.employee_field_mapping === 'EMPLOYEE'">
-          <input type="text" formControlName="netsuiteEmployee" placeholder="Select NetSuite Employee" matInput [matAutocomplete]="netsuiteEmp">
+        <mat-form-field class="mappings-dialog--form-element" appearance="outline">
+          <input type="text" formControlName="xeroContact" placeholder="Select Xero Employee" matInput [matAutocomplete]="netsuiteEmp">
           <mat-autocomplete #netsuiteEmp="matAutocomplete" [displayWith]="mappingDisplay">
-            <mat-option *ngFor="let option of netsuiteEmployeeOptions" [value]="option">
+            <mat-option *ngFor="let option of xeroContactOptions" [value]="option">
               {{option.value}}
             </mat-option>
           </mat-autocomplete>
-          <mat-error class="mappings-dialog--error" *ngIf="form.controls.netsuiteEmployee.hasError('forbiddenOption')">
-            Please enter a valid value
-          </mat-error>
-        </mat-form-field>
-        <div class="mat-body-strong" *ngIf="generalSettings.corporate_credit_card_expenses_object && generalSettings.corporate_credit_card_expenses_object !== 'BILL'">
-          <strong class="mappings-dialog--label">
-            Choose Credit Card Account
-          </strong>
-        </div>
-        <mat-form-field class="mappings-dialog--form-element" appearance="outline" *ngIf="generalSettings.corporate_credit_card_expenses_object && generalSettings.corporate_credit_card_expenses_object !== 'BILL'">
-          <input type="text" formControlName="creditCardAccount" placeholder="Corporate credit card account" matInput [matAutocomplete]="fyEmp">
-          <mat-autocomplete #fyEmp="matAutocomplete" [displayWith]="mappingDisplay">
-            <mat-option *ngFor="let option of cccOptions" [value]="option">
-              {{option.value}}
-            </mat-option>
-          </mat-autocomplete>
-          <mat-error class="mappings-dialog--error" *ngIf="form.controls.creditCardAccount.hasError('forbiddenOption')">
+          <mat-error class="mappings-dialog--error" *ngIf="form.controls.xeroContact.hasError('forbiddenOption')">
             Please enter a valid value
           </mat-error>
         </mat-form-field>

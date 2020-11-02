@@ -16,7 +16,7 @@ export class MappingsService {
   netsuiteAccounts: Observable<any[]>;
   fyleEmployees: Observable<any[]>;
   netsuiteVendors: Observable<any[]>;
-  netsuiteEmployees: Observable<any[]>;
+  xeroContacts: Observable<any[]>;
   fyleProjects: Observable<any[]>;
   fyleExpenseCustomFields: Observable<any[]>;
   xeroTrackingCategories: Observable<any[]>;
@@ -159,17 +159,17 @@ export class MappingsService {
     return this.netsuiteCategories;
   }
 
-  postNetSuiteEmployees() {
+  postXeroContacts() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
-    if (!this.netsuiteEmployees) {
-      this.netsuiteEmployees = this.apiService.post(`/workspaces/${workspaceId}/netsuite/employees/`, {}).pipe(
+    if (!this.xeroContacts) {
+      this.xeroContacts = this.apiService.post(`/workspaces/${workspaceId}/xero/contacts/`, {}).pipe(
         map(data => data),
         publishReplay(1),
         refCount()
       );
     }
-    return this.netsuiteEmployees;
+    return this.xeroContacts;
   }
 
   postNetSuiteAccounts() {
@@ -306,10 +306,10 @@ export class MappingsService {
     return this.apiService.get(`/workspaces/${workspaceId}/netsuite/custom_segments/`, {});
   }
 
-  getNetSuiteEmployees() {
+  getXeroContacts() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
-    return this.apiService.get(`/workspaces/${workspaceId}/netsuite/employees/`, {});
+    return this.apiService.get(`/workspaces/${workspaceId}/xero/contacts/`, {});
   }
 
   getNetSuiteLocations() {
@@ -346,7 +346,7 @@ export class MappingsService {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
     return this.apiService.get(
-      `/workspaces/${workspaceId}/netsuite/accounts/`, {}
+      `/workspaces/${workspaceId}/xero/accounts/`, {}
     );
   }
 
