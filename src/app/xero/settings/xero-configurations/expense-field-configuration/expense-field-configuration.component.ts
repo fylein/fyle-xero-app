@@ -46,7 +46,8 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
 
   showAddButton() {
     const that = this;
-    if (that.expenseFieldsForm.controls.expenseFields['controls'].length === Math.min(that.fyleExpenseFields.length, that.xeroFields.length)) {
+    const expenseFieldCount = that.expenseFieldsForm.controls.expenseFields['controls'].length;
+    if (expenseFieldCount === Math.min(that.fyleExpenseFields.length, that.xeroFields.length) || (expenseFieldCount > 1)) {
       return false;
     }
     return true;
