@@ -38,9 +38,8 @@ export class XeroComponent implements OnInit {
   getGeneralSettings() {
     const that = this;
     that.settingsService.getMappingSettings(that.workspace.id).subscribe((response) => {
-      that.mappingSettings = response.results.filter(
-        setting => (setting.source_field !== 'EMPLOYEE')
-      );
+      // TODO: employee, category, extra fields - arrange in this order
+      that.mappingSettings = response.results;
       that.isLoading = false;
     }, () => {
       that.isLoading = false;

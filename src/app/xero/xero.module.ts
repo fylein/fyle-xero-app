@@ -33,10 +33,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { GeneralMappingsComponent } from './settings/general-mappings/general-mappings.component';
-import { EmployeeMappingsComponent } from './settings/employee-mappings/employee-mappings.component';
 import { ScheduleComponent } from './settings/schedule/schedule.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { EmployeeMappingsDialogComponent } from './settings/employee-mappings/employee-mappings-dialog/employee-mappings-dialog.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -70,9 +68,7 @@ import { XeroCallbackComponent } from './settings/xero-callback/xero-callback.co
     ExportComponent,
     ConfigurationComponent,
     GeneralMappingsComponent,
-    EmployeeMappingsComponent,
     ScheduleComponent,
-    EmployeeMappingsDialogComponent,
     NetsuiteConfigurationsComponent,
     TenantComponent,
     ExpenseFieldConfigurationComponent,
@@ -82,7 +78,6 @@ import { XeroCallbackComponent } from './settings/xero-callback/xero-callback.co
     XeroCallbackComponent
   ],
   entryComponents: [
-    EmployeeMappingsDialogComponent,
     ExpenseGroupSettingsDialogComponent,
     GenericMappingsDialogComponent
   ],

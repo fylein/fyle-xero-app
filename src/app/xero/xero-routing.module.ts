@@ -14,7 +14,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SyncComponent } from './sync-export/sync/sync.component';
 import { ExportComponent } from './sync-export/export/export.component';
 import { GeneralMappingsComponent } from './settings/general-mappings/general-mappings.component';
-import { EmployeeMappingsComponent } from './settings/employee-mappings/employee-mappings.component';
 import { ScheduleComponent } from './settings/schedule/schedule.component';
 import { ConfigurationComponent } from './settings/netsuite-configurations/configuration/configuration.component';
 import { TenantComponent } from './settings/netsuite-configurations/tenant/tenant.component';
@@ -100,11 +99,6 @@ const routes: Routes = [{
         {
           path: 'general/mappings',
           component: GeneralMappingsComponent,
-          canActivate: [WorkspacesGuard]
-        },
-        {
-          path: 'employee/mappings',
-          component: EmployeeMappingsComponent,
           canActivate: [WorkspacesGuard]
         },
         {
