@@ -32,10 +32,10 @@ export class GenericMappingsDialogComponent implements OnInit {
   matcher = new MappingErrorStateMatcher();
 
   constructor(private formBuilder: FormBuilder,
-              public dialogRef: MatDialogRef<GenericMappingsDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private mappingsService: MappingsService,
-              private snackBar: MatSnackBar) { }
+    public dialogRef: MatDialogRef<GenericMappingsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private mappingsService: MappingsService,
+    private snackBar: MatSnackBar) { }
 
   mappingDisplay(mappingObject) {
     return mappingObject ? mappingObject.value : '';
@@ -69,7 +69,7 @@ export class GenericMappingsDialogComponent implements OnInit {
   }
 
   forbiddenSelectionValidator(options: any[]): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const forbidden = !options.some((option) => {
         return control.value.id && option.id === control.value.id;
       });
@@ -111,37 +111,16 @@ export class GenericMappingsDialogComponent implements OnInit {
 
   reset() {
     const that = this;
-    // TODO: remove promises and do with rxjs observables
+
     const getFyleAttributes = that.mappingsService.getFyleExpenseCustomFields(that.setting.source_field).toPromise().then(attributes => {
       that.fyleAttributes = attributes;
     });
 
-    let netsuitePromise;
-    if (that.setting.destination_field === 'CLASS') {
-      // TODO: remove promises and do with rxjs observables
-      netsuitePromise = that.mappingsService.getNetSuiteClasses().toPromise().then(objects => {
-        that.netsuiteElements = objects;
-      });
-    } else if (that.setting.destination_field === 'DEPARTMENT') {
-      netsuitePromise = that.mappingsService.getNetSuiteDepartments().toPromise().then(objects => {
-        that.netsuiteElements = objects;
-      });
-    } else if (that.setting.destination_field === 'ACCOUNT') {
-      netsuitePromise = that.mappingsService.getExpenseAccounts().toPromise().then(objects => {
-        that.netsuiteElements = objects;
-      });
-    } else if (that.setting.destination_field === 'LOCATION') {
-      netsuitePromise = that.mappingsService.getNetSuiteLocations().toPromise().then(objects => {
-        that.netsuiteElements = objects;
-      });
-    } else {
-      netsuitePromise = that.mappingsService.getNetsuiteExpenseCustomFields(that.setting.destination_field).toPromise().then(objects => {
-        that.netsuiteElements = objects;
-      });
-    }
+    const netsuitePromise = that.mappingsService.getXeroTrackingCategories(that.setting.destination_field).toPromise().then(objects => {
+      that.netsuiteElements = objects;
+    });
 
     that.isLoading = true;
-    // TODO: remove promises and do with rxjs observables
     forkJoin([
       getFyleAttributes,
       netsuitePromise
@@ -154,7 +133,7 @@ export class GenericMappingsDialogComponent implements OnInit {
         destinationField: [that.editMapping ? destinationField : that.forbiddenSelectionValidator(that.netsuiteElements)],
       });
 
-      if(that.editMapping) {
+      if (that.editMapping) {
         that.form.controls.sourceField.disable()
       }
 
@@ -169,9 +148,9 @@ export class GenericMappingsDialogComponent implements OnInit {
     if (that.data.rowElement) {
       that.editMapping = true;
     }
-    
+
     that.setting = that.data.setting;
-    
+
     that.isLoading = false;
     that.reset();
   }

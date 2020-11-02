@@ -292,10 +292,10 @@ export class MappingsService {
     });
   }
 
-  getNetsuiteExpenseCustomFields(attributeType: string) {
+  getXeroTrackingCategories(attributeType: string) {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
-    return this.apiService.get(`/workspaces/${workspaceId}/netsuite/custom_fields/`, {
+    return this.apiService.get(`/workspaces/${workspaceId}/xero/tracking_categories/`, {
       attribute_type: attributeType
     });
   }
