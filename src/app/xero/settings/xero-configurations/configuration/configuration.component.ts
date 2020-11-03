@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { XeroComponent } from 'src/app/xero/xero.component';
+import { WindowReferenceService } from 'src/app/core/services/window.service';
 
 @Component({
   selector: 'app-configuration',
@@ -25,8 +26,11 @@ export class ConfigurationComponent implements OnInit {
   employeeFieldMapping: any;
   projectFieldMapping: any;
   costCenterFieldMapping: any;
+  windowReference: Window;
 
-  constructor(private formBuilder: FormBuilder, private storageService: StorageService, private settingsService: SettingsService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private xero: XeroComponent) { }
+  constructor(private formBuilder: FormBuilder, private storageService: StorageService, private settingsService: SettingsService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private xero: XeroComponent, private windowReferenceService: WindowReferenceService) {
+    this.windowReference = this.windowReferenceService.nativeWindow;
+  }
 
   getAllSettings() {
     const that = this;
@@ -96,8 +100,14 @@ export class ConfigurationComponent implements OnInit {
         that.isLoading = true;
         that.storageService.set('generalSettings', responses[1])
         that.snackBar.open('Configuration saved successfully');
-        that.xero.getGeneralSettings();
-        that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
+        that.xero.getSettingsAndNavigate();
+        if (that.generalSettings && that.generalSettings.reimbursable_expenses_object) {
+          that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`).then(() => {
+            that.windowReference.location.reload();
+          });
+        } else {
+          that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
+        }
       });
     } else {
       that.snackBar.open('Form has invalid fields');

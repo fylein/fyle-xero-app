@@ -89,14 +89,14 @@
             </div>
           </ng-template>
           <div class="onboarding-stepper--step" fxLayout="row" fxLayoutAlign="space-between center">
-            <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="row" fxLayoutAlign="start center" *ngIf="showGeneralmappings">
               <mat-icon class="onboarding-stepper--check"
                 [ngClass]="{'onboarding-stepper--check__complete': currentState === allOnboardingStates.generalMappingsDone || currentState === allOnboardingStates.employeeMappingsDone}">
                 check_circle</mat-icon>
               <div class="onboarding-stepper--desc">Map Bank Accounts</div>
             </div>
             <div routerLink="../settings/general/mappings/" class="onboarding-stepper--navigation cursor-pointer"
-              *ngIf="currentState === allOnboardingStates.configurationsDone"
+              *ngIf="currentState === allOnboardingStates.configurationsDone && showGeneralmappings"
               [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.configurationsDone}">
               Go to General Mappings
             </div>

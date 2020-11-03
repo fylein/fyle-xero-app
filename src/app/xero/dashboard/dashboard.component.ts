@@ -37,6 +37,7 @@ enum onboardingStates {
 export class DashboardComponent implements OnInit {
   workspaceId: number;
   isLoading = false;
+  showGeneralmappings = true;
 
   currentState = onboardingStates.initialized;
 
@@ -102,17 +103,23 @@ export class DashboardComponent implements OnInit {
       ]
     ).toPromise().then((res) => {
       that.currentState = onboardingStates.configurationsDone;
+      if (!res[0].corporate_credit_card_expenses_object) {
+        that.showGeneralmappings = false;
+        that.currentState = onboardingStates.generalMappingsDone;
+      }
       return res;
     });
   }
 
   getGeneralMappings() {
     const that = this;
-    // TODO: remove promises and do with rxjs observables
-    return that.mappingsService.getGeneralMappings().toPromise().then(generalMappings => {
-      that.currentState = onboardingStates.generalMappingsDone;
-      return generalMappings;
-    });
+    if (that.showGeneralmappings) {
+      // TODO: remove promises and do with rxjs observables
+      return that.mappingsService.getGeneralMappings().toPromise().then(generalMappings => {
+        that.currentState = onboardingStates.generalMappingsDone;
+        return generalMappings;
+      });
+    }
   }
 
   getEmployeeMappings() {

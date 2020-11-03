@@ -19,6 +19,7 @@ export class XeroComponent implements OnInit {
   isLoading = true;
   fyleConnected = false;
   xeroConnected = false;
+  showGeneralmappings = true;
   generalSettings: any;
   mappingSettings: any;
   showSwitchOrg = false;
@@ -62,13 +63,13 @@ export class XeroComponent implements OnInit {
 
   getSettingsAndNavigate() {
     const that = this;
+    that.getGeneralSettings();
+    that.setupAccessiblePathWatchers();
     const pathName = that.windowReference.location.pathname;
     that.storageService.set('workspaceId', that.workspace.id);
     if (pathName === '/workspaces') {
       that.router.navigateByUrl(`/workspaces/${that.workspace.id}/dashboard`);
     }
-    that.getGeneralSettings();
-    that.setupAccessiblePathWatchers();
   }
 
   getTitle(name: string) {
@@ -97,7 +98,10 @@ export class XeroComponent implements OnInit {
     that.router.events.subscribe(() => {
       const onboarded = that.storageService.get('onboarded');
       if (onboarded !== true) {
-        that.getConfigurations().then(() => {
+        that.getConfigurations().then((results) => {
+          if (!results[0].corporate_credit_card_expenses_object) {
+            that.showGeneralmappings = false;
+          }
           that.navDisabled = false;
         }).catch(() => {
           // do nothing

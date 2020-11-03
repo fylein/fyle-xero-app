@@ -33,7 +33,7 @@
          routerLink="{{workspace.id}}/settings/configurations/tenant/" routerLinkActive="active">
           Configurations
         </a>
-        <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/general/mappings/"
+        <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="showGeneralmappings" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/general/mappings/"
           routerLinkActive="active">
           General Mappings
         </a>
