@@ -18,6 +18,7 @@ export class MappingsService {
   fyleProjects: Observable<any[]>;
   fyleExpenseCustomFields: Observable<any[]>;
   xeroTrackingCategories: Observable<any[]>;
+  xeroItems: Observable<any[]>;
   fyleCostCenters: Observable<any[]>;
   generalMappings: Observable<any[]>;
   accountPayables: Observable<any[]>;
@@ -94,10 +95,10 @@ export class MappingsService {
     return this.fyleExpenseCustomFields;
   }
 
-  postXeroTrackingCategories(sync: boolean = false) {
+  postXeroTrackingCategories() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
-    if (!this.xeroTrackingCategories || sync) {
+    if (!this.xeroTrackingCategories) {
       this.xeroTrackingCategories = this.apiService.post(`/workspaces/${workspaceId}/xero/tracking_categories/`, {}).pipe(
         map(data => data),
         publishReplay(1),
@@ -105,6 +106,19 @@ export class MappingsService {
       );
     }
     return this.xeroTrackingCategories;
+  }
+
+  postXeroItems() {
+    const workspaceId = this.workspaceService.getWorkspaceId();
+
+    if (!this.xeroItems) {
+      this.xeroItems = this.apiService.post(`/workspaces/${workspaceId}/xero/items/`, {}).pipe(
+        map(data => data),
+        publishReplay(1),
+        refCount()
+      );
+    }
+    return this.xeroItems;
   }
 
   postXeroContacts() {

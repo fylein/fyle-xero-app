@@ -13,6 +13,11 @@ const FYLE_URL = environment.fyle_url;
 const FYLE_CLIENT_ID = environment.fyle_client_id;
 const APP_URL = environment.app_url;
 
+const XERO_AUTHORIZE_URI = environment.xero_authorize_uri;
+const XERO_CLIENT_ID = environment.xero_client_id;
+const XERO_SCOPE = environment.xero_scope;
+const XERO_CALLBACK_URI = environment.xero_callback_uri;
+
 enum onboardingStates {
   initialized,
   fyleConnected,
@@ -180,6 +185,7 @@ export class DashboardComponent implements OnInit {
     onErrorResumeNext(
       this.mappingsService.postXeroAccounts(),
       this.mappingsService.postXeroContacts(),
+      that.mappingsService.postXeroItems(),
       that.mappingsService.postXeroTrackingCategories()
     ).subscribe(() => {
       this.snackBar.open('Data Successfully imported from Xero');
@@ -193,11 +199,7 @@ export class DashboardComponent implements OnInit {
   }
 
   connectXero() {
-    const XERO_AUTHORIZE_URI = 'https://login.xero.com/identity/connect/authorize/callback';
-    const XERO_CLIENT_ID = '08314ACBE0D04166A7ABC1BB044B5734';
-    const XERO_SCOPE = 'accounting.transactions offline_access accounting.settings accounting.contacts';
-    const APP_URL = 'http://localhost:4200/workspaces/xero/callback'
-    this.windowReference.location.href = XERO_AUTHORIZE_URI + '?client_id='+XERO_CLIENT_ID+'&scope='+XERO_SCOPE+'&response_type=code&redirect_uri='+APP_URL+'&state='+this.workspaceId;
+    this.windowReference.location.href = XERO_AUTHORIZE_URI + '?client_id=' + XERO_CLIENT_ID + '&scope=' + XERO_SCOPE + '&response_type=code&redirect_uri=' + XERO_CALLBACK_URI + '&state=' + this.workspaceId;
   }
 
   ngOnInit() {

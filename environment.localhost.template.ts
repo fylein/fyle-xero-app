@@ -5,5 +5,9 @@ export const environment = {
     fyle_client_id: 'FYLE CLIENT ID',
     callback_uri: 'CALLBACK URL',
     api_url: 'XERO API URL',
-    app_url: 'ANGULAR APP URL'
+    app_url: 'ANGULAR APP URL',
+    xero_authorize_uri: 'XERO AUTHORIZE URI',
+    xero_client_id: 'XERO CLIENT ID',
+    xero_scope: 'XERO SCOPE',
+    xero_callback_uri: 'XERO CALLBACK URI'
 }
