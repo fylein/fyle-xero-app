@@ -173,8 +173,5 @@ export class ExpenseGroupsComponent implements OnInit {
   ngOnInit() {
     this.reset();
     this.expenseGroups.filterPredicate = this.searchByText;
-    this.settingsService.getXeroCredentials(this.workspaceId).subscribe(settings => {
-      this.storageService.set('nsAccountId', (settings.ns_account_id).toLowerCase());
-    });
   }
 }

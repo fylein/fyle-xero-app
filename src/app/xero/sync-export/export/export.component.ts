@@ -9,6 +9,7 @@ import { switchMap, takeWhile } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SettingsService } from 'src/app/core/services/settings.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
+import { BankTransactionsService } from 'src/app/core/services/bank-transactions';
 
 @Component({
   selector: 'app-export',
@@ -31,6 +32,7 @@ export class ExportComponent implements OnInit {
     private taskService: TasksService,
     private expenseGroupService: ExpenseGroupsService,
     private billsService: BillsService,
+    private bankTransactionsService: BankTransactionsService,
     private snackBar: MatSnackBar,
     private settingsService: SettingsService,
     private windowReferenceService: WindowReferenceService) {
@@ -51,8 +53,8 @@ export class ExportComponent implements OnInit {
   exportCCCExpenses(corporateCreditCardExpensesObject) {
     const that = this;
     const handlerMap = {
-      'PURCHASE BILL BILLL': (filteredIds) => {
-        return that.billsService.createBills(filteredIds);
+      'BANK TRANSACTION': (filteredIds) => {
+        return that.bankTransactionsService.createBankTransactions(filteredIds);
       }
     };
 

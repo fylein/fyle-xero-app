@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MappingsService } from '../../../../core/services/mappings.service';
 import { SettingsService } from 'src/app/core/services/settings.service';
@@ -25,17 +25,11 @@ export class TenantComponent implements OnInit {
               private settingsService: SettingsService, 
               private mappingsService: MappingsService, 
               private route: ActivatedRoute, 
-              private router: Router, 
-              private matselect: MatSelectModule,
-              private snackBar: MatSnackBar) {
-                this.tenantForm = this.formBuilder.group({
-                  xeroTenant: new FormControl('')
-              });
-  }
+              private router: Router) { }
 
   submit() {
     const tenantId = this.tenantForm.value.xeroTenant;
-    const xeroTenant = this.xeroTenants.filter(filteredSubsidiary => filteredSubsidiary.destination_id === tenantId)[0];
+    const xeroTenant = this.xeroTenants.filter(filteredTenant => filteredTenant.destination_id === tenantId)[0];
 
     if (tenantId){
       this.isLoading = true;
@@ -52,7 +46,7 @@ export class TenantComponent implements OnInit {
       that.tenantMappings = tenantMappings;
 
       that.tenantForm = that.formBuilder.group({
-        xeroTenant: [that.tenantMappings.tenant_name]
+        xeroTenant: [that.tenantMappings.tenant_id]
       });
       that.tenantForm.controls.xeroTenant.disable();
       that.tenantMappingDone = true;
@@ -71,8 +65,8 @@ export class TenantComponent implements OnInit {
     that.isLoading = true;
     that.mappingsService.getXeroTenants().subscribe(tenants => {
       that.xeroTenants = tenants;
+      that.getTenantMappings();
     });
-    that.getTenantMappings();
   }
 
 }

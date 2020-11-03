@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { Cacheable } from 'ngx-cacheable';
 import { WorkspaceService } from './workspace.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class BillsService {
+export class BankTransactionsService {
   constructor(
     private apiService: ApiService,
     private workspaceService: WorkspaceService) {}
 
   // TODO: Map response to a model
-  createBills(expenseGroupIds: number[]) {
+  createBankTransactions(expenseGroupIds: number[]) {
     const workspaceId = this.workspaceService.getWorkspaceId();
     return this.apiService.post(
-      `/workspaces/${workspaceId}/xero/bills/trigger/`, {
+      `/workspaces/${workspaceId}/xero/bank_transactions/trigger/`, {
         expense_group_ids: expenseGroupIds
       }
     );
