@@ -52,6 +52,7 @@ import { ExpenseGroupSettingsDialogComponent } from './sync-export/sync/expense-
 import { GenericMappingsComponent } from './settings/generic-mappings/generic-mappings.component';
 import { GenericMappingsDialogComponent } from './settings/generic-mappings/generic-mappings-dialog/generic-mappings-dialog.component';
 import { XeroCallbackComponent } from './settings/xero-callback/xero-callback.component';
+import { GroupXeroErrorComponent } from './expense-groups/view-expense-group/group-xero-error/group-xero-error.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { XeroCallbackComponent } from './settings/xero-callback/xero-callback.co
     FyleCallbackComponent,
     InfoComponent,
     GroupMappingErrorComponent,
+    GroupXeroErrorComponent,
     SyncExportComponent,
     DashboardComponent,
     SyncComponent,

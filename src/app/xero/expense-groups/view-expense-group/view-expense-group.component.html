@@ -16,8 +16,11 @@
         <a mat-tab-link (click)="changeState('INFO')" [active]="state==='INFO'">
           Info
         </a>
-        <a mat-tab-link (click)="changeState('MAPPING_ERRORS')" [active]="state==='MAPPING_ERRORS'">
+        <a mat-tab-link *ngIf="showMappingErrors" (click)="changeState('MAPPING_ERRORS')" [active]="state==='MAPPING_ERRORS'">
           Mapping Errors
+        </a>
+        <a mat-tab-link *ngIf="showXeroErrors" (click)="changeState('XERO_ERRORS')" [active]="state==='XERO_ERRORS'">
+          Xero Errors
         </a>
       </nav>
     </div>

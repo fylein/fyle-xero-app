@@ -7,6 +7,7 @@ export class Task {
   task_id: string;
   expense_group: number;
   detail: any;
+  xero_errors: any;
   status: string;
   type: string;
   bill: number;

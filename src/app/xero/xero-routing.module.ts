@@ -21,6 +21,7 @@ import { XeroConfigurationsComponent } from './settings/xero-configurations/xero
 import { ExpenseFieldConfigurationComponent } from './settings/xero-configurations/expense-field-configuration/expense-field-configuration.component';
 import { GenericMappingsComponent } from './settings/generic-mappings/generic-mappings.component';
 import { XeroCallbackComponent } from './settings/xero-callback/xero-callback.component';
+import { GroupXeroErrorComponent } from './expense-groups/view-expense-group/group-xero-error/group-xero-error.component';
 
 const routes: Routes = [{
   path: '',
@@ -67,6 +68,10 @@ const routes: Routes = [{
         {
           path: 'mapping_errors',
           component: GroupMappingErrorComponent
+        },
+        {
+          path: 'xero_errors',
+          component: GroupXeroErrorComponent
         },
         {
           path: '**',
