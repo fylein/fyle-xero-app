@@ -126,9 +126,13 @@ export class ExpenseGroupsComponent implements OnInit {
     });
   }
 
-  openInXero(type, id) {
-    const nsAccountId = JSON.parse(localStorage.getItem('nsAccountId'));
-    this.windowReference.open(`https://${nsAccountId}.app.netsuite.com/app/accounting/transactions/${type}.nl?id=${id}`, '_blank');
+  openInXero(itemId, accountId, type) {
+    const baseUrl = 'https://go.xero.com';
+    if (type === 'CREATING_BILL') {
+      this.windowReference.open(`${baseUrl}/AccountsPayable/View.aspx?invoiceID=${itemId}`, '_blank');
+    } else if (type === 'CREATING_BANK_TRANSACTION') {
+      this.windowReference.open(`${baseUrl}/Bank/ViewTransaction.aspx?bankTransactionID=${itemId}&accountID=${accountId}`, '_blank');
+    }
   }
 
   openInXeroHandler(clickedExpenseGroup: ExpenseGroup) {
@@ -145,20 +149,16 @@ export class ExpenseGroupsComponent implements OnInit {
       if (completeTask) {
         const typeMap = {
           CREATING_BILL: {
-            type: 'vendbill',
-            getId: (task) => task.detail.internalId
+            itemId: (task) => task.detail.Invoices[0].InvoiceID,
+            accountId: (task) => task.status
           },
-          CREATING_EXPENSE_REPORT: {
-            type: 'exprept',
-            getId: (task) => task.detail.internalId
-          },
-          CREATING_JOURNAL_ENTRY: {
-            type: 'journal',
-            getId: (task) => task.detail.internalId
+          CREATING_BANK_TRANSACTION: {
+            itemId: (task) => task.detail.BankTransactions[0].BankTransactionID,
+            accountId: (task) => task.detail.BankTransactions[0].BankAccount.AccountID
           }
         };
 
-        that.openInXero(typeMap[completeTask.type].type, typeMap[completeTask.type].getId(completeTask));
+        that.openInXero(typeMap[completeTask.type].itemId(completeTask), typeMap[completeTask.type].accountId(completeTask), completeTask.type);
       }
     });
   }

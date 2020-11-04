@@ -6,7 +6,7 @@ export class Task {
   id: number;
   task_id: string;
   expense_group: number;
-  detail: MappingError[];
+  detail: any;
   status: string;
   type: string;
   bill: number;
