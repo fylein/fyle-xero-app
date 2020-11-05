@@ -1,0 +1,15 @@
+@import 'variables.scss';
+
+.zero-state {
+  font-size: 14px;
+  min-height: 400px;
+  &--image {
+    max-height: 300px;
+  }
+
+  &--description {
+    font-size: 14px;
+    color: $fy-title-text;
+    margin: 30px;
+  }
+}

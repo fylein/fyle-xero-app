@@ -1,0 +1,28 @@
+@import 'variables.scss';
+
+.export {
+  &-header {
+    margin: 16px 32px;
+  }
+
+  &-card {
+    margin: 0 48px;
+    min-width: 800px;
+    border: 1px solid $fy-card-border;
+    &--stats {
+      margin: 8px;
+      color: $fy-title-text;
+      font-size: 14px;
+    }
+
+    &--loader {
+      margin: 16px 0;
+    }
+
+    &--icon {
+      margin-left: 8px;
+      font-size: 14px;
+      height: auto;
+    }
+  }
+}

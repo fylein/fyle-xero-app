@@ -1,0 +1,30 @@
+<div class="internal-loader" fxLayoutAlign="center center" fxFlexFill *ngIf="isLoading">
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="!isLoading">
+    <div class="page-header">
+      <div class="page-header--name mat-h2" [ngClass]="{'page-header__border': status !== 'FAILED'}" fxLayoutAlign="start center">
+        <mat-icon class="page-header--go-back cursor-pointer" aria-hidden="false" aria-label="Go back to previous page" routerLink="/workspaces/{{workspaceId}}/expense_groups/">
+          keyboard_backspace
+        </mat-icon>
+  
+        <div>
+          Expenses by {{ expenseGroup.description.employee_email }}
+        </div>
+      </div>
+      <nav *ngIf="status === 'FAILED'" mat-tab-nav-bar>
+        <a mat-tab-link (click)="changeState('INFO')" [active]="state==='INFO'">
+          Info
+        </a>
+        <a mat-tab-link *ngIf="showMappingErrors" (click)="changeState('MAPPING_ERRORS')" [active]="state==='MAPPING_ERRORS'">
+          Mapping Errors
+        </a>
+        <a mat-tab-link *ngIf="showXeroErrors" (click)="changeState('XERO_ERRORS')" [active]="state==='XERO_ERRORS'">
+          Xero Errors
+        </a>
+      </nav>
+    </div>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>

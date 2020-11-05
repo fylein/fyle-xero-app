@@ -1,0 +1,33 @@
+<div class="internal-loader" fxLayoutAlign="center center" fxFlexFill *ngIf="isLoading">
+  <app-loader></app-loader>
+</div>
+
+<div *ngIf="!count && !isLoading">
+  <zero-state message="This expense group has no xero errors"></zero-state>
+</div>
+
+<div *ngIf="count">
+  <div [hidden]="isLoading">
+    <table class="page-table" mat-table [dataSource]="xeroErrors" matSort matSortActive="created_at"
+      matSortDisableClear matSortDirection="desc">
+
+      <ng-container matColumnDef="error">
+        <th mat-header-cell *matHeaderCellDef> Error </th>
+        <td mat-cell *matCellDef="let element">
+          Error while {{ getType(task.type) | titlecase }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="message">
+        <th mat-header-cell *matHeaderCellDef> Message </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.Message}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+    </table>
+
+  </div>
+</div>

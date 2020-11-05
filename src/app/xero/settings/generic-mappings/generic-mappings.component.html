@@ -1,0 +1,49 @@
+<div *ngIf="!isLoading">
+  <div>
+    <div class="page-header mappings--header">
+      <div class="page-header--name mat-h2">
+        {{ getTitle(source_field) | titlecase }} Mappings
+      </div>
+    </div>
+    <div class="page-info">
+      <div fxLayout="row" fxLayoutAlign="start center" class="page-info--description">
+        Map {{ getTitle(source_field).toLowerCase() }} items from Fyle to their counterparts on Xero.<a href="#" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+      </div>
+      <button class="page-info--primary-action" mat-flat-button color="primary" type="button" (click)="open()">
+        New {{ getTitle(source_field) | titlecase }} Mapping
+      </button>
+    </div>
+
+    <div *ngIf="!mappings.length">
+      <zero-state message="You have no {{ getTitle(source_field).toLowerCase() }} mappings yet"></zero-state>
+    </div>
+
+    <div *ngIf="mappings.length" [hidden]="isLoading">
+      <table mat-table [dataSource]="mappings" class="page-table" matSort matSortActive="created_at"
+        matSortDisableClear matSortDirection="desc">
+        <ng-container matColumnDef="sourceField">
+          <th mat-header-cell *matHeaderCellDef> {{ getTitle(source_field) | titlecase }} </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.source.value}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="destinationField">
+          <th mat-header-cell *matHeaderCellDef>
+            Xero {{ getTitle(setting.destination_field) | titlecase }}
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.destination.value}}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" (click)="open(row)"></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="internal-loader" fxLayoutAlign="center start" *ngIf="isLoading" fxFlexFill>
+  <app-loader></app-loader>
+</div>

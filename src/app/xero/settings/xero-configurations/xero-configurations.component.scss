@@ -1,0 +1,39 @@
+@import 'variables.scss';
+
+$text-error: #ff6e40;
+
+::ng-deep .configurations {
+  &--header {
+    border-bottom: 1px solid $fy-layout-background;
+  }
+
+  &--form {
+    font-size: 14px;
+    margin: 24px;
+    max-width: 450px;
+    color: $fy-nav-text;
+  }
+
+  &--label {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  &--input {
+    .mat-select-value-text {
+      color: $fy-nav-text;
+    }
+  }
+
+  &--save-btn {
+    max-width: 32px;
+  }
+
+  &--errors {
+    font-size: 14px;
+    margin: 0 0 16px;
+    color: $text-error;
+    position: relative;
+    top: -12px;
+  }
+}

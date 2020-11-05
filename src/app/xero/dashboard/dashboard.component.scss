@@ -1,0 +1,145 @@
+@import 'variables.scss';
+
+$fy-dashboard-text-dark: #2c304e;
+$fy-dashboard-text: #5e5e5e;
+$fy-dashboard-stat-icon: #a9acbc;
+$fy-stepper-check: #b3bac7;
+$fy-stepper-check-complete: #28c354;
+
+$fy-info-border: rgba(0, 98, 255, 0.04);
+$fy-info-content: rgba(0, 98, 255, 0.02);
+$stats-desc: #545454;
+
+
+.onboarding-stepper {
+  &--stepper {
+    min-width: 700px;
+  }
+
+  &--step {
+    font-size: 14px;
+  }
+
+  &--step-header {
+    font-size: 16px;
+    font-weight: 500;
+    color: $fy-dashboard-text-dark;
+    background-color: $fy-highlighted-background;
+    padding: 8px;
+    min-width: 600px;
+  }
+
+  &--check {
+    color: $fy-stepper-check;
+    margin-right: 8px;
+    position: relative;
+    top: -2px;
+    &__complete {
+      color: $fy-stepper-check-complete;
+    }
+  }
+
+  &--desc {
+    color: $fy-title-text;
+  }
+
+  &--navigation {
+    font-weight: 500;
+    &__active {
+      color: $fy-primary;
+    }
+  }
+
+  &--title {
+    margin: 52px 0 16px 0;
+  }
+
+  &--logos {
+    margin: 12px;
+  }
+
+  &--xero-logo {
+    padding-bottom: 10px;
+    width: 25%
+  }
+
+  &--subheader {
+    margin: 8px;
+  }
+}
+
+.dashboard {
+  color: $fy-dashboard-text;
+  &--header {
+    color: $fy-nav-text;
+    padding: 30px 23px;
+    margin: 0;
+  }
+
+  &--actions {
+    min-width: 700px;
+    &-card {
+      min-width: 640px;
+      margin-bottom: 12px;
+      border: 1px solid $fy-card-border;
+      color: $fy-dashboard-text;
+    }
+
+    &-header {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    &-action {
+      font-size: 14px;
+      font-weight: 500;
+      color: $fy-primary;
+    }
+
+    &-content {
+      min-height: 60px;
+    }
+  }
+
+  &--stats {
+    min-width: 420px;
+    &-card {
+      min-width: 360px;
+      max-height: 166px;
+      border: 1px solid $fy-card-border;
+      color: $fy-dashboard-text;
+      &-icon {
+        color: $fy-dashboard-stat-icon;
+      }
+
+      &-desc {
+        color: $stats-desc;
+        opacity: .6;
+        margin-top: 8px;
+      }
+    }
+  }
+
+  .schedule {
+    border: solid 1px $fy-info-border;
+    background-color: $fy-info-content;
+    padding: 16px;
+    min-width: 640px;
+    border-radius: 4px;
+
+    &--info-icon {
+      color: $fy-info;
+    }
+
+    &--info-desc {
+      margin-left: 8px;
+    }
+
+    &--redirect {
+      margin-left: 24px;
+      &-icon {
+        margin-left: 8px;
+      }
+    }
+  }
+}

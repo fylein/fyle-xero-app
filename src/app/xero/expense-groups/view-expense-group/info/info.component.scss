@@ -1,0 +1,23 @@
+@import 'variables.scss';
+
+$fy-info-dark: #2c304e;
+
+.page-info {
+  &--sub-header {
+    font-size: 16px;
+    font-weight: 400;
+    color: $fy-info-dark;
+  }
+
+  &--sub-header-container {
+    min-height: 8px;
+  }
+
+  &--sub-header-items {
+    margin-top: 6px;
+  }
+
+  &--created-by {
+    font-size: 14px;
+  }
+}

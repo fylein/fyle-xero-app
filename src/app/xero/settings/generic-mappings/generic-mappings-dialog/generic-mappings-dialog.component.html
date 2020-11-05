@@ -1,0 +1,63 @@
+<h2 mat-dialog-title>
+  <div class="mappings-dialog--header" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="mat-title" *ngIf="!editMapping">
+      Create New Mapping
+    </div>
+    <div class="mat-title" *ngIf="editMapping">
+      Edit {{ getTitle(setting.source_field) | titlecase }} Mapping
+    </div>
+    <div>
+      <mat-icon class="mappings-dialog--close cursor-pointer" aria-hidden="false" aria-label="close this dialog" mat-dialog-close>close</mat-icon>
+    </div>
+  </div>
+</h2>
+<mat-dialog-content>
+  <div class="internal-loader" fxLayoutAlign="center start" *ngIf="isLoading" fxFlexFill>
+    <app-loader></app-loader>
+  </div>
+  <form *ngIf="!isLoading" class="mappings-dialog--form" [formGroup]="form">
+    <div fxLayout="column" fxLayoutAlign="start stretch">
+      <div class="mat-body-strong">
+        <strong class="mappings-dialog--label">
+          Select a {{ getTitle(setting.source_field) | titlecase }} from Fyle
+        </strong>
+      </div>
+      <mat-form-field class="mappings-dialog--field" appearance="outline">
+        <input required type="text" formControlName="sourceField" placeholder="Select Fyle {{ getTitle(setting.source_field) | titlecase }}" matInput
+          [matAutocomplete]="fyProj" [errorStateMatcher]="matcher">
+        <mat-autocomplete #fyProj="matAutocomplete" [displayWith]="mappingDisplay">
+          <mat-option *ngFor="let option of fyleAttributeOptions" [value]="option">
+            {{option.value}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error class="mappings-dialog--error" *ngIf="form.controls.sourceField.hasError('forbiddenOption')">
+          Please enter a valid value
+        </mat-error>
+      </mat-form-field>
+
+      <div class="mat-body-strong">
+        <strong class="mappings-dialog--label">
+          Map to Corresponding Xero {{ getTitle(setting.destination_field) | titlecase}}
+        </strong>
+      </div>
+      <mat-form-field class="mappings-dialog--field" appearance="outline">
+        <input type="text" formControlName="destinationField" placeholder="Select Xero {{ getTitle(setting.destination_field) | titlecase}}" matInput [matAutocomplete]="xeroEl"
+          [errorStateMatcher]="matcher">
+        <mat-autocomplete #xeroEl="matAutocomplete" [displayWith]="mappingDisplay">
+          <mat-option *ngFor="let option of xeroOptions" [value]="option">
+            {{option.value}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error class="mappings-dialog--error" *ngIf="form.controls.destinationField.hasError('forbiddenOption')">
+          Please enter a valid value
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button type="button" mat-flat-button mat-dialog-close>Cancel</button>
+  <button class="mappings-dialog--save-btn" mat-flat-button color="primary" type="submit" (click)="submit()">
+    Save
+  </button>
+</mat-dialog-actions>

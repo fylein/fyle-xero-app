@@ -1,0 +1,48 @@
+@import 'variables.scss';
+
+$fy-error-border: rgba(218, 30, 40, 0.039);
+$fy-error-background: rgba(220, 30, 39, 0.02);
+$fy-error: #da1e28;
+
+.sync {
+  &-header {
+    margin: 16px 32px;
+  }
+
+  &-card {
+    margin: 0 48px;
+    min-width: 800px;
+    border: 1px solid $fy-card-border;
+    &--header {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    &--text {
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    &--info {
+      font-size: 14px;
+      margin-top: 20px;
+      color: $fy-title-text;
+    }
+
+    &--secondary-button {
+      background-color: $fy-secondary;
+    }
+
+    &--error {
+      margin: 12px 0;
+      padding: 12px;
+      border: solid 1px $fy-error-border;
+      background-color: $fy-error-background;
+      color: $fy-title-text;
+      &-icon {
+        color: $fy-error;
+        margin-right: 8px;
+      }
+    }
+  }
+}

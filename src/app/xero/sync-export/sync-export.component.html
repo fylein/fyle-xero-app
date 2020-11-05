@@ -1,0 +1,17 @@
+<div class="page-header">
+    <div class="page-header--name mat-h2">
+      Import & Export
+    </div>
+    <nav mat-tab-nav-bar>
+      <a mat-tab-link (click)="changeState('SYNC')" [active]="state==='SYNC'">
+        Import
+      </a>
+      <a mat-tab-link (click)="changeState('EXPORT')" [active]="state==='EXPORT'">
+        Export
+      </a>
+    </nav>
+  </div>
+  
+  <div>
+    <router-outlet></router-outlet>
+  </div>
