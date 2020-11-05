@@ -1,6 +1,6 @@
 <mat-sidenav-container class="xero" autosize fxFlexFill *ngIf="!isLoading">
     <mat-sidenav class="xero-sidenav" mode="side" opened>
-      <mat-nav-list class="mat-drawer-inner">
+      <mat-nav-list>
         <header matSubheader class="xero-sidenav--header">
           <img alt="Fyle" src="../../assets/images/pngs/fyle-logo.png" class="xero-sidenav--logo" />
           <mat-icon>add</mat-icon>
@@ -36,6 +36,14 @@
         <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="showGeneralmappings" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/general/mappings/"
           routerLinkActive="active">
           General Mappings
+        </a>
+        <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+        routerLink="{{workspace.id}}/settings/employee/mappings/" routerLinkActive="active">
+          Employee Mappings
+        </a>
+        <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+        routerLink="{{workspace.id}}/settings/category/mappings/" routerLinkActive="active">
+          Category Mappings
         </a>
         <div *ngFor="let setting of mappingSettings">
           <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/{{setting.source_field.toLowerCase()}}/mappings/"

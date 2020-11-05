@@ -11,6 +11,7 @@ $fy-page-info-desc: #414562;
     background-color: $fy-layout-background;
     border-right: 0;
     min-width: 320px;
+    max-width: 340px;
     overflow-x: hidden;
     overflow: hidden;
     &--header {
@@ -86,10 +87,6 @@ $fy-page-info-desc: #414562;
 
   .mat-drawer-content {
     background-color: $fy-white;
-  }
-
-  .mat-drawer-inner {
-    overflow: hidden;
   }
 
   &--menu {

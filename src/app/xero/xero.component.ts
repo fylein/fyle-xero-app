@@ -39,18 +39,9 @@ export class XeroComponent implements OnInit {
   getGeneralSettings() {
     const that = this;
     that.settingsService.getMappingSettings(that.workspace.id).subscribe((response) => {
-      that.mappingSettings = []
-      let arrIndex = 0;
-      response.results.forEach(element => {
-        if (element.source_field === 'EMPLOYEE') {
-          that.mappingSettings[0] = element;
-        } else if (element.source_field === 'CATEGORY') {
-          that.mappingSettings[1] = element;
-        } else {
-          that.mappingSettings[arrIndex] = element;
-        }
-        arrIndex++;
-      });
+      that.mappingSettings = response.results.filter(
+        setting => (setting.source_field !== 'EMPLOYEE' && setting.source_field !== 'CATEGORY')
+      );
       that.isLoading = false;
     }, () => {
       that.isLoading = false;
