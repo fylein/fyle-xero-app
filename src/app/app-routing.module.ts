@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+<<<<<<< HEAD
 const baseModuleRoutes: Routes = [
   {
     path: '',
@@ -21,6 +22,9 @@ const baseModuleRoutes: Routes = [
     pathMatch: 'full'
   }
 ];
+=======
+const baseModuleRoutes: Routes = [];
+>>>>>>> main
 
 @NgModule({
   imports: [
