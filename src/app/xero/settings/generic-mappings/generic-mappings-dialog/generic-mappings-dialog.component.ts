@@ -129,8 +129,8 @@ export class GenericMappingsDialogComponent implements OnInit {
       const sourceField = that.editMapping ? that.fyleAttributes.filter(sourceField => sourceField.value === that.data.rowElement.source.value)[0] : '';
       const destinationField = that.editMapping ? that.xeroElements.filter(destinationField => destinationField.value === that.data.rowElement.destination.value)[0] : '';
       that.form = that.formBuilder.group({
-        sourceField: [that.editMapping ? sourceField : Validators.compose([Validators.required, that.forbiddenSelectionValidator(that.fyleAttributes)])],
-        destinationField: [that.editMapping ? destinationField : that.forbiddenSelectionValidator(that.xeroElements)],
+        sourceField: [sourceField, Validators.compose([Validators.required, that.forbiddenSelectionValidator(that.fyleAttributes)])],
+        destinationField: [destinationField, that.forbiddenSelectionValidator(that.xeroElements)],
       });
 
       if (that.editMapping) {
