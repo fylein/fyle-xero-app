@@ -195,7 +195,7 @@ export class DashboardComponent implements OnInit {
       that.mappingsService.postXeroItems(),
       that.mappingsService.postXeroTrackingCategories()
     ).subscribe(() => {
-      this.snackBar.open('Data Successfully imported from Xero');
+      // this.snackBar.open('Data Successfully imported from Xero');
     });
   }
 
@@ -215,9 +215,17 @@ export class DashboardComponent implements OnInit {
     const onboarded = that.storageService.get('onboarded');
 
     if (onboarded === true) {
-      that.currentState = onboardingStates.isOnboarded;
       that.updateDimensionTables();
       that.loadDashboardData();
+      that.getXeroStatus().then(() => {
+        that.currentState = onboardingStates.isOnboarded;
+      }).catch(() => {
+        that.storageService.set('onboarded', false);
+        that.snackBar.open('Xero token expired, please connect Xero account again');
+        setTimeout(() => {
+          that.windowReference.location.reload();
+        }, 3000);
+      })
     } else {
       that.isLoading = true;
       that.checkFyleLoginStatus()

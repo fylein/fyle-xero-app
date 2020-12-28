@@ -38,13 +38,14 @@ export class WorkspacesGuard implements CanActivate {
       catchError(error => {
         const that = this;
         const onboarded = that.storageService.get('onboarded');
+        const snackBarText = 'You cannot access this page yet. Please follow the onboarding steps in the dashboard or refresh your page'
         if (!onboarded) {
-          that.snackBar.open('You cannot access this page yet. Please follow the onboarding steps in the dashboard');
+          that.snackBar.open(snackBarText);
           return;
         }
 
         return that.router.navigateByUrl(`workspaces/${workspaceId}/dashboard`).then((res) => {
-          that.snackBar.open('You cannot access this page yet. Please follow the onboarding steps in the dashboard');
+          that.snackBar.open(snackBarText);
           return res;
         });
       })
