@@ -240,6 +240,7 @@ export class DashboardComponent implements OnInit {
           return that.loadDashboardData();
         }).catch(() => {
           // do nothing as this just means some steps are left
+          that.storageService.set('onboarded', false);
         }).finally(() => {
           that.isLoading = false;
         });

@@ -54,11 +54,6 @@ export class GenericMappingsComponent implements OnInit {
     that.mappingsService.getMappings(that.setting.source_field).subscribe(mappings => {
       that.mappings = mappings.results;
       that.isLoading = false;
-      const onboarded = that.storageService.get('onboarded');
-
-        if (onboarded === false) {
-          that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
-        }
     });
   }
 
