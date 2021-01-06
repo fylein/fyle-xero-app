@@ -21,7 +21,7 @@ export class ExpenseGroupsComponent implements OnInit {
   state: string;
   settings: any;
   pageNumber = 0;
-  pageSize = 5;
+  pageSize: number;
   columnsToDisplay = ['employee', 'expensetype'];
   windowReference: Window;
 
@@ -91,7 +91,8 @@ export class ExpenseGroupsComponent implements OnInit {
     const that = this;
     that.workspaceId = +that.route.snapshot.params.workspace_id;
     that.pageNumber = +that.route.snapshot.queryParams.page_number || 0;
-    that.pageSize = +that.route.snapshot.queryParams.page_size || 5;
+    let cachedPageSize = that.storageService.get('pageSize') || 10;
+    that.pageSize = +that.route.snapshot.queryParams.page_size || cachedPageSize;
     that.state = that.route.snapshot.queryParams.state || 'FAILED';
     that.settingsService.getCombinedSettings(that.workspaceId).subscribe((settings) => {
       if (that.state === 'COMPLETE') {
@@ -107,7 +108,12 @@ export class ExpenseGroupsComponent implements OnInit {
     that.router.events.subscribe(event => {
       if (event instanceof ActivationEnd) {
         const pageNumber = +event.snapshot.queryParams.page_number || 0;
-        const pageSize = +event.snapshot.queryParams.page_size || 5;
+        if (+event.snapshot.queryParams.page_size) {
+          that.storageService.set('pageSize', +event.snapshot.queryParams.page_size);
+          cachedPageSize = +event.snapshot.queryParams.page_size;
+        }
+
+        const pageSize = +event.snapshot.queryParams.page_size || cachedPageSize;
         const state = event.snapshot.queryParams.state || 'FAILED';
 
         if (that.pageNumber !== pageNumber || that.pageSize !== pageSize || that.state !== state) {
