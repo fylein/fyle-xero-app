@@ -24,8 +24,8 @@
 							Export Date: {{ getDescription().exportDateType}}
 						</div>
 					</div>
-          <div class="sync-card--info" *ngIf="lastTask">
-            Last imported on {{lastTask.updated_at | date}}
+          <div class="sync-card--info" *ngIf="workspace.last_synced_at">
+            Last imported on {{workspace.last_synced_at | date}}
           </div>
 				</div>
 				<div>
