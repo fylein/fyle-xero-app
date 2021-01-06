@@ -11,8 +11,8 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY package.json /app/package.json
-RUN npm install
-RUN npm install -g @angular/cli
+RUN npm install --production
+RUN npm install @angular-builders/custom-webpack@8.4.1
 
 # add app
 COPY . /app
@@ -34,8 +34,6 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY --from=build /app/nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=build /app/run.sh ./
-
-COPY --from=build /app/* /fyle-xero-app/
 
 # expose port 80
 EXPOSE 80
