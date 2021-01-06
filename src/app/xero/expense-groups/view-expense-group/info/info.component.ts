@@ -21,8 +21,6 @@ export class InfoComponent implements OnInit {
   isLoading = false;
   expenses: MatTableDataSource<Expense> = new MatTableDataSource([]);
   count: number;
-  pageNumber = 0;
-  pageSize = 5;
   columnsToDisplay = ['expense_number', 'claimno', 'view'];
   expenseGroupFields = [];
   windowReference: Window;
