@@ -32,10 +32,10 @@ export class GenericMappingsDialogComponent implements OnInit {
   matcher = new MappingErrorStateMatcher();
 
   constructor(private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<GenericMappingsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private mappingsService: MappingsService,
-    private snackBar: MatSnackBar) { }
+              public dialogRef: MatDialogRef<GenericMappingsDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private mappingsService: MappingsService,
+              private snackBar: MatSnackBar) { }
 
   mappingDisplay(mappingObject) {
     return mappingObject ? mappingObject.value : '';
@@ -126,15 +126,15 @@ export class GenericMappingsDialogComponent implements OnInit {
       xeroPromise
     ]).subscribe(() => {
       that.isLoading = false;
-      const sourceField = that.editMapping ? that.fyleAttributes.filter(sourceField => sourceField.value === that.data.rowElement.source.value)[0] : '';
-      const destinationField = that.editMapping ? that.xeroElements.filter(destinationField => destinationField.value === that.data.rowElement.destination.value)[0] : '';
+      const sourceField = that.editMapping ? that.fyleAttributes.filter(field => field.value === that.data.rowElement.source.value)[0] : '';
+      const destinationField = that.editMapping ? that.xeroElements.filter(field => field.value === that.data.rowElement.destination.value)[0] : '';
       that.form = that.formBuilder.group({
         sourceField: [sourceField, Validators.compose([Validators.required, that.forbiddenSelectionValidator(that.fyleAttributes)])],
         destinationField: [destinationField, that.forbiddenSelectionValidator(that.xeroElements)],
       });
 
       if (that.editMapping) {
-        that.form.controls.sourceField.disable()
+        that.form.controls.sourceField.disable();
       }
 
       that.setupAutcompleteWathcers();

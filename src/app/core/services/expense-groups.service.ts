@@ -52,7 +52,7 @@ export class ExpenseGroupsService {
     });
   }
 
-  
+
   // TODO: remove promises and do with rxjs observables
   private getAllExpenseGroupsInternal(limit: number, offset: number, state: string, allExpenseGroupsResponse: ExpenseGroupResponse): Promise<ExpenseGroupResponse> {
     const that = this;

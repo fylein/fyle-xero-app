@@ -13,7 +13,7 @@ export const environment = {
   xero_client_id: '{{XERO_CLIENT_ID}}',
   xero_scope: '{{XERO_SCOPE}}',
   xero_callback_uri: '{{XERO_CALLBACK_URI}}'
-}
+};
 
 /*
  * For easier debugging in development mode, you can import the following file

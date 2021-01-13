@@ -12,7 +12,7 @@ export class ExpenseGroupSettingsDialogComponent implements OnInit {
   importExpensesForm: FormGroup;
   expenseGroupSettings: any;
   isLoading: boolean;
-  
+
   constructor(private formBuilder: FormBuilder, private expenseGroupsService: ExpenseGroupsService, private dialogRef: MatDialogRef<ExpenseGroupSettingsDialogComponent>) { }
 
 save() {
