@@ -118,14 +118,14 @@ export class XeroComponent implements OnInit {
   }
 
   getXeroCredentials() {
-    const that = this
+    const that = this;
     const workspaceId = this.storageService.get('workspaceId');
-    if(workspaceId) {
+    if (workspaceId) {
       that.settingsService.getXeroCredentials(workspaceId).subscribe(credentials => {
         if (credentials) {
           that.xeroConnected = true;
         }
-      })
+      });
     }
   }
 
@@ -135,6 +135,6 @@ export class XeroComponent implements OnInit {
     that.navDisabled = onboarded !== true;
     that.orgsCount = that.authService.getOrgCount();
     that.setupWorkspace();
-    that.getXeroCredentials()
+    that.getXeroCredentials();
   }
 }

@@ -14,7 +14,7 @@ import { XeroComponent } from 'src/app/xero/xero.component';
   styleUrls: ['./expense-field-configuration.component.scss', '../../../xero.component.scss']
 })
 export class ExpenseFieldConfigurationComponent implements OnInit {
-  expenseFieldsForm: FormGroup
+  expenseFieldsForm: FormGroup;
   expenseFields: FormArray;
   workspaceId: number;
   isLoading: boolean;
@@ -29,13 +29,13 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private settingsService: SettingsService, private mappingsService: MappingsService, private xero: XeroComponent, private windowReferenceService: WindowReferenceService) {
     this.windowReference = this.windowReferenceService.nativeWindow;
    }
-  
+
   createExpenseField(sourceField: string = '', destinationField: string = '') {
     const that = this;
 
     const group = that.formBuilder.group({
-      source_field: [sourceField? sourceField: '', [Validators.required, RxwebValidators.unique()]],
-      destination_field: [destinationField? destinationField: '', [Validators.required, RxwebValidators.unique()]],
+      source_field: [sourceField ? sourceField : '', [Validators.required, RxwebValidators.unique()]],
+      destination_field: [destinationField ? destinationField : '', [Validators.required, RxwebValidators.unique()]],
     });
 
     if (sourceField && destinationField) {
@@ -46,7 +46,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
 
   showAddButton() {
     const that = this;
-    const expenseFieldCount = that.expenseFieldsForm.controls.expenseFields['controls'].length;
+    const expenseFieldCount = that.expenseFieldsForm.controls.expenseFields.value.length;
     if (expenseFieldCount === Math.min(that.fyleExpenseFields.length, that.xeroFields.length) || (expenseFieldCount > 2)) {
       return false;
     }
@@ -63,11 +63,11 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
   saveExpenseFields() {
     const that = this;
 
-    that.isLoading = true;    
+    that.isLoading = true;
     const expenseFields = that.expenseFieldsForm.value.expenseFields;
 
     that.settingsService.postMappingSettings(that.workspaceId, expenseFields).subscribe(response => {
-      that.xero.getGeneralSettings()
+      that.xero.getGeneralSettings();
       that.router.navigateByUrl(`/workspaces/${that.workspaceId}/dashboard`);
       that.isLoading = false;
     });
@@ -93,7 +93,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
         setting => setting.source_field !== 'EMPLOYEE' && setting.source_field !== 'CATEGORY'
       );
 
-      var expenseFieldFormArray;
+      let expenseFieldFormArray;
 
       that.fyleExpenseFields = response[1];
       that.xeroFields = response[2];
@@ -104,9 +104,9 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
       if (that.mappingSettings.length) {
         expenseFieldFormArray = that.mappingSettings.map(
           setting => that.createExpenseField(setting.source_field, setting.destination_field)
-        )
+        );
       } else {
-        expenseFieldFormArray = [that.createExpenseField()]
+        expenseFieldFormArray = [that.createExpenseField()];
       }
 
       that.expenseFieldsForm = that.formBuilder.group({

@@ -3,9 +3,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MappingsService } from '../../../../core/services/mappings.service';
 import { SettingsService } from 'src/app/core/services/settings.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import {MatSelectModule} from '@angular/material/select';
-import {} from '../../../xero.component'
 
 @Component({
   selector: 'app-tenant',
@@ -16,22 +13,22 @@ export class TenantComponent implements OnInit {
 
   tenantForm: FormGroup;
   workspaceId: number;
-  xeroTenants: any[]
+  xeroTenants: any[];
   isLoading = true;
   tenantMappings: any;
   tenantMappingDone: boolean;
 
-  constructor(private formBuilder: FormBuilder, 
-              private settingsService: SettingsService, 
-              private mappingsService: MappingsService, 
-              private route: ActivatedRoute, 
+  constructor(private formBuilder: FormBuilder,
+              private settingsService: SettingsService,
+              private mappingsService: MappingsService,
+              private route: ActivatedRoute,
               private router: Router) { }
 
   submit() {
     const tenantId = this.tenantForm.value.xeroTenant;
     const xeroTenant = this.xeroTenants.filter(filteredTenant => filteredTenant.destination_id === tenantId)[0];
 
-    if (tenantId){
+    if (tenantId) {
       this.isLoading = true;
       this.settingsService.postTenantMappings(this.workspaceId, xeroTenant.value, xeroTenant.destination_id).subscribe(response => {
         this.isLoading = false;

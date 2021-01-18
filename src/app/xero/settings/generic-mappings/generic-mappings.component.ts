@@ -13,7 +13,7 @@ import { SettingsService } from 'src/app/core/services/settings.service';
 })
 export class GenericMappingsComponent implements OnInit {
   workspaceId: number;
-  source_field: string;
+  sourceField: string;
   isLoading: boolean;
   mappings: any[];
   generalSettings: any;
@@ -23,7 +23,7 @@ export class GenericMappingsComponent implements OnInit {
 
   constructor(private mappingsService: MappingsService, private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private storageService: StorageService, private settingsService: SettingsService) { }
 
-  open(selectedItem: any=null) {
+  open(selectedItem: any = null) {
     const that = this;
     const dialogRef = that.dialog.open(GenericMappingsDialogComponent, {
       width: '450px',
@@ -66,9 +66,9 @@ export class GenericMappingsComponent implements OnInit {
     that.route.params.subscribe(val => {
       that.isLoading = true;
       that.workspaceId = +that.route.parent.snapshot.params.workspace_id;
-      that.source_field = that.route.snapshot.params.source_field;
+      that.sourceField = that.route.snapshot.params.source_field;
       that.settingsService.getMappingSettings(that.workspaceId).subscribe(response => {
-        that.setting = response.results.filter(setting => setting.source_field === that.source_field.toUpperCase())[0];
+        that.setting = response.results.filter(setting => setting.source_field === that.sourceField.toUpperCase())[0];
         that.getMappings();
       });
     });

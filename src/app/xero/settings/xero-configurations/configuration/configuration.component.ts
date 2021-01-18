@@ -98,7 +98,7 @@ export class ConfigurationComponent implements OnInit {
         ]
       ).subscribe(responses => {
         that.isLoading = true;
-        that.storageService.set('generalSettings', responses[1])
+        that.storageService.set('generalSettings', responses[1]);
         that.snackBar.open('Configuration saved successfully');
         that.xero.getSettingsAndNavigate();
         if (that.generalSettings && that.generalSettings.reimbursable_expenses_object) {

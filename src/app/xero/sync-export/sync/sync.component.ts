@@ -44,9 +44,9 @@ export class SyncComponent implements OnInit {
   getDescription() {
     const that = this;
 
-    const allowedFields = ['vendor', 'claim_number', 'settlement_id', 'category']    
+    const allowedFields = ['vendor', 'claim_number', 'settlement_id', 'category'];
 
-    var expensesGroupedByList = []
+    const expensesGroupedByList = [];
     that.expenseGroupSettings.reimbursable_expense_group_fields.forEach(element => {
       if (allowedFields.indexOf(element) >= 0) {
         if (element === 'vendor') {
@@ -54,30 +54,30 @@ export class SyncComponent implements OnInit {
         } else if (element === 'claim_number') {
           element = 'Expense Report';
         } else if (element === 'settlement_id') {
-          element = 'Payment'
+          element = 'Payment';
         } else if (element === 'category') {
-          element = 'Category'
+          element = 'Category';
         }
         expensesGroupedByList.push(element);
       }
     });
 
-    const expensesGroupedBy = expensesGroupedByList.join(', ');
-    const expenseState: string = that.expenseGroupSettings.expense_state
-    var exportDateType = null;
+    const expensesGroup = expensesGroupedByList.join(', ');
+    const expenseState: string = that.expenseGroupSettings.expense_state;
+    let exportDateConfiguration = null;
 
     if (that.expenseGroupSettings.export_date_type === 'spent_at') {
-      exportDateType = 'Spend Date';
+      exportDateConfiguration = 'Spend Date';
     } else if (that.expenseGroupSettings.export_date_type === 'approved_at') {
-      exportDateType = 'Approval Date';
+      exportDateConfiguration = 'Approval Date';
     } else if (that.expenseGroupSettings.export_date_type === 'verified_at') {
-      exportDateType = 'Verification Date';
+      exportDateConfiguration = 'Verification Date';
     }
 
     return {
-      expensesGroupedBy: expensesGroupedBy,
+      expensesGroupedBy: expensesGroup,
       expenseState: expenseState.replace(/_/g, ' '),
-      exportDateType: exportDateType
+      exportDateType: exportDateConfiguration
     };
   }
 

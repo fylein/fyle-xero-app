@@ -182,20 +182,20 @@ export class DashboardComponent implements OnInit {
   // to be callled in background whenever dashboard is opened for sncing fyle data for org
   updateDimensionTables() {
     const that = this;
-  
-    this.mappingsService.postExpenseCustomFields().subscribe(() => {});
-    this.mappingsService.postFyleEmployees().subscribe(() => {});
-    this.mappingsService.postFyleCategories().subscribe(() => {});
-    this.mappingsService.postFyleCostCenters().subscribe(() => {});
-    this.mappingsService.postFyleProjects().subscribe(() => {});
+
+    that.mappingsService.postExpenseCustomFields().subscribe(() => {});
+    that.mappingsService.postFyleEmployees().subscribe(() => {});
+    that.mappingsService.postFyleCategories().subscribe(() => {});
+    that.mappingsService.postFyleCostCenters().subscribe(() => {});
+    that.mappingsService.postFyleProjects().subscribe(() => {});
 
     onErrorResumeNext(
-      this.mappingsService.postXeroAccounts(),
-      this.mappingsService.postXeroContacts(),
+      that.mappingsService.postXeroAccounts(),
+      that.mappingsService.postXeroContacts(),
       that.mappingsService.postXeroItems(),
       that.mappingsService.postXeroTrackingCategories()
     ).subscribe(() => {
-      this.snackBar.open('Data Successfully imported from Xero');
+      // that.snackBar.open('Data Successfully imported from Xero');
     });
   }
 
