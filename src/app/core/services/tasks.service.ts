@@ -25,7 +25,7 @@ export class TasksService {
   }
 
   getAllTasks(status: string): Observable<TaskResponse> {
-    const limit = 10;
+    const limit = 500;
     const offset = 0;
     const allTasks: TaskResponse = {
       count: 0,
@@ -47,7 +47,7 @@ export class TasksService {
       }
 
       if (allTasks.results.length < allTasks.count) {
-        return that.getAllTasksInternal(limit, offset + 10, status, allTasks);
+        return that.getAllTasksInternal(limit, offset + 500, status, allTasks);
       } else {
         return allTasks;
       }
