@@ -6,6 +6,7 @@ import { SettingsService } from '../services/settings.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StorageService } from '../services/storage.service';
 import { WorkspaceService } from '../services/workspace.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ import { WorkspaceService } from '../services/workspace.service';
 export class WorkspacesGuard implements CanActivate {
 
   constructor(
+    private authService: AuthService,
     private settingsService: SettingsService,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -32,11 +34,19 @@ export class WorkspacesGuard implements CanActivate {
         this.settingsService.getFyleCredentials(workspaceId),
         this.settingsService.getXeroCredentials(workspaceId),
         this.settingsService.getGeneralSettings(workspaceId),
+        this.settingsService.getOrganisations(workspaceId)
       ]
     ).pipe(
       map(response => !!response),
       catchError(error => {
         const that = this;
+
+        if (error.status === 400 && error.error.message === 'Xero connection expired') {
+          that.settingsService.deleteXeroCredentials(workspaceId).subscribe(() => {
+            that.authService.logout();
+            that.authService.redirectToLogin();
+          });
+        }
         const onboarded = that.storageService.get('onboarded');
         if (!onboarded) {
           that.snackBar.open('You cannot access this page yet. Please follow the onboarding steps in the dashboard');
