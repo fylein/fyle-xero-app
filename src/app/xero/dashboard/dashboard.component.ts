@@ -194,9 +194,7 @@ export class DashboardComponent implements OnInit {
       that.mappingsService.postXeroContacts(),
       that.mappingsService.postXeroItems(),
       that.mappingsService.postXeroTrackingCategories()
-    ).subscribe(() => {
-      // this.snackBar.open('Data Successfully imported from Xero');
-    });
+    ).subscribe(() => {});
   }
 
   openSchedule(event) {
