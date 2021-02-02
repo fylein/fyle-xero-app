@@ -42,6 +42,14 @@ export class SettingsService {
 
   // TODO: Add model
   @CacheBuster({
+    cacheBusterNotifier: xeroCredentialsCache
+  })
+  deleteXeroCredentials(workspaceId: number) {
+    return this.apiService.post('/workspaces/' + workspaceId + '/credentials/xero/delete/', {});
+  }
+
+  // TODO: Add model
+  @CacheBuster({
     cacheBusterNotifier: fyleCredentialsCache
   })
   connectFyle(workspaceId: number, authorizationCode: string) {
@@ -58,6 +66,11 @@ export class SettingsService {
     globalCacheBusterNotifier.next();
     return this.apiService.post('/workspaces/' + workspaceId + '/connect_xero/authorization_code/', code
     );
+  }
+
+  @Cacheable()
+  getOrganisations(workspaceId: number) {
+    return this.apiService.get(`/workspaces/${workspaceId}/xero/organisations/`, {});
   }
 
   postSettings(workspaceId: number, nextRun: string, scheduleHours: number, scheduleEnabled: boolean) {
