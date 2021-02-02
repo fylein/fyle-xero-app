@@ -24,6 +24,11 @@ export class WorkspaceService {
     });
   }
 
+  getWorkspaceById(): Observable<any> {
+    const workspaceId = this.getWorkspaceId();
+    return this.apiService.get(`/workspaces/${workspaceId}/`, {});
+  }
+
   getWorkspaceId(): number {
     const id = this.storageService.get('workspaceId');
     return id ? +id : null;

@@ -2,27 +2,27 @@
   <div>
     <div class="page-header mappings--header">
       <div class="page-header--name mat-h2">
-        {{ getTitle(source_field) | titlecase }} Mappings
+        {{ getTitle(sourceField) | titlecase }} Mappings
       </div>
     </div>
     <div class="page-info">
       <div fxLayout="row" fxLayoutAlign="start center" class="page-info--description">
-        Map {{ getTitle(source_field).toLowerCase() }} items from Fyle to their counterparts on Xero.<a href="https://www.fylehq.com/help/en/articles/4601898-onboarding-process-to-set-up-fyle-xero-integration" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+        Map {{ getTitle(sourceField).toLowerCase() }} items from Fyle to their counterparts on Xero.<a href="https://www.fylehq.com/help/en/articles/4601898-onboarding-process-to-set-up-fyle-xero-integration" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
       </div>
       <button class="page-info--primary-action" mat-flat-button color="primary" type="button" (click)="open()">
-        New {{ getTitle(source_field) | titlecase }} Mapping
+        New {{ getTitle(sourceField) | titlecase }} Mapping
       </button>
     </div>
 
     <div *ngIf="!mappings.length">
-      <zero-state message="You have no {{ getTitle(source_field).toLowerCase() }} mappings yet"></zero-state>
+      <zero-state message="You have no {{ getTitle(sourceField).toLowerCase() }} mappings yet"></zero-state>
     </div>
 
     <div *ngIf="mappings.length" [hidden]="isLoading">
       <table mat-table [dataSource]="mappings" class="page-table" matSort matSortActive="created_at"
         matSortDisableClear matSortDirection="desc">
         <ng-container matColumnDef="sourceField">
-          <th mat-header-cell *matHeaderCellDef> {{ getTitle(source_field) | titlecase }} </th>
+          <th mat-header-cell *matHeaderCellDef> {{ getTitle(sourceField) | titlecase }} </th>
           <td mat-cell *matCellDef="let element">
             {{element.source.value}}
           </td>

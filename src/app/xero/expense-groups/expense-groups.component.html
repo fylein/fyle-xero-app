@@ -80,6 +80,6 @@
         (click)="goToExpenseGroup(row.id)"></tr>
     </table>
   
-    <mat-paginator [length]="count" [pageSizeOptions]="[5, 10, 20]" [pageSize]="pageSize" [pageIndex]="pageNumber"
+    <mat-paginator [length]="count" [pageSizeOptions]="[10, 50, 100, 200]" [pageSize]="pageSize" [pageIndex]="pageNumber"
       (page)="onPageChange($event)" showFirstLastButtons></mat-paginator>
   </div>

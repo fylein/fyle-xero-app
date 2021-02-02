@@ -29,7 +29,7 @@ export class ExpenseGroupsService {
   getAllExpenseGroups(state: string): Observable<ExpenseGroupResponse> {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
-    const limit = 10;
+    const limit = 500;
     const offset = 0;
     // this would require to create a default object - not much benefit in doing so imho @Dhar
     // tslint:disable-next-line: prefer-const
@@ -52,7 +52,7 @@ export class ExpenseGroupsService {
     });
   }
 
-  
+
   // TODO: remove promises and do with rxjs observables
   private getAllExpenseGroupsInternal(limit: number, offset: number, state: string, allExpenseGroupsResponse: ExpenseGroupResponse): Promise<ExpenseGroupResponse> {
     const that = this;
@@ -64,7 +64,7 @@ export class ExpenseGroupsService {
       }
 
       if (allExpenseGroupsResponse.results.length < allExpenseGroupsResponse.count) {
-        return that.getAllExpenseGroupsInternal(limit, offset + 10, state, allExpenseGroupsResponse);
+        return that.getAllExpenseGroupsInternal(limit, offset + 500, state, allExpenseGroupsResponse);
       } else {
         return allExpenseGroupsResponse;
       }

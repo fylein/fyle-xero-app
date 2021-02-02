@@ -44,17 +44,17 @@ export class XeroConfigurationsComponent implements OnInit {
     }
 
     return false;
-  } 
+  }
 
   ngOnInit() {
     const that = this;
-    
+
     that.isParentLoading = true;
     that.workspaceId = +that.route.parent.snapshot.params.workspace_id;
     that.state = that.route.snapshot.firstChild.routeConfig.path.toUpperCase() || 'TENANT';
-    
-    that.settingsService.getXeroCredentials(that.workspaceId).subscribe(response => {
-      if (response) {
+
+    that.settingsService.getXeroCredentials(that.workspaceId).subscribe(credentials => {
+      if (credentials) {
         that.xeroConnectionDone = true;
       }
       forkJoin(
@@ -69,7 +69,7 @@ export class XeroConfigurationsComponent implements OnInit {
       }, () => {
         that.isParentLoading = false;
       });
-      
+
     });
   }
 }
