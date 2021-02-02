@@ -223,7 +223,7 @@ export class DashboardComponent implements OnInit {
         setTimeout(() => {
           that.windowReference.location.reload();
         }, 3000);
-      })
+      });
     } else {
       that.isLoading = true;
       that.checkFyleLoginStatus()
