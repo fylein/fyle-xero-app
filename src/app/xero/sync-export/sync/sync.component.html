@@ -46,6 +46,9 @@
           </button>
         </div>
       </div>
+      <div class="sync-card--loader" *ngIf="isExpensesSyncing">
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+      </div>
       <div *ngIf="errorOccurred" class="sync-card--error" fxLayout="row" fxLayoutAlign="start center">
         <mat-icon class="sync-card--error-icon">error</mat-icon>
         <div>
