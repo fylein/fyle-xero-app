@@ -7,11 +7,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { StorageService } from '../services/storage.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { AuthService } from '../services/auth.service';
+import { WindowReferenceService } from '../../core/services/window.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkspacesGuard implements CanActivate {
+
+  windowReference: Window;
 
   constructor(
     private authService: AuthService,
@@ -19,8 +22,11 @@ export class WorkspacesGuard implements CanActivate {
     private router: Router,
     private snackBar: MatSnackBar,
     private storageService: StorageService,
-    private workspaceService: WorkspaceService
-    ) { }
+    private workspaceService: WorkspaceService,
+    private windowReferenceService: WindowReferenceService
+    ) {
+      this.windowReference = this.windowReferenceService.nativeWindow;
+    }
 
   canActivate(next: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const workspaceId = +this.workspaceService.getWorkspaceId();
@@ -43,8 +49,13 @@ export class WorkspacesGuard implements CanActivate {
 
         if (error.status === 400 && error.error.message === 'Xero connection expired') {
           that.settingsService.deleteXeroCredentials(workspaceId).subscribe(() => {
-            that.authService.logout();
-            that.authService.redirectToLogin();
+            that.storageService.set('onboarded', false);
+            that.snackBar.open('Xero token expired, please connect Xero account again');
+            setTimeout(() => {
+              that.router.navigateByUrl(`workspaces/${workspaceId}/dashboard`).then(() => {
+                that.windowReference.location.reload();
+              });
+            }, 3000);
           });
         }
         const onboarded = that.storageService.get('onboarded');
