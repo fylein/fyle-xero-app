@@ -33,6 +33,10 @@ $fy-error: #da1e28;
       background-color: $fy-secondary;
     }
 
+    &--loader {
+      margin: 16px 0;
+    }
+
     &--error {
       margin: 12px 0;
       padding: 12px;
