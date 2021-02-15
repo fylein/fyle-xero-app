@@ -27,8 +27,20 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+
+        <div class="mat-body-strong" *ngIf="generalSettings.sync_fyle_to_xero_payments">
+          Payment Account
+        </div>
+        <mat-form-field floatLabel="always" appearance="outline" required
+          *ngIf="generalSettings.sync_fyle_to_xero_payments">
+          <mat-select class="general-mappings--input" placeholder="Select Payment Account"
+            formControlName="bankAccounts">
+            <mat-option *ngFor="let bankAccount of bankAccounts; let i = index" [value]="bankAccounts[i].destination_id">
+              {{bankAccounts[i].value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-  
       <button class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
         Save
       </button>

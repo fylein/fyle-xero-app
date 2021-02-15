@@ -44,19 +44,23 @@ export class ConfigurationComponent implements OnInit {
       that.generalSettings = responses[0];
       that.mappingSettings = responses[1].results;
 
+      let paymentsSyncOption = '';
+      if (that.generalSettings.sync_fyle_to_xero_payments) {
+        paymentsSyncOption = 'sync_fyle_to_xero_payments';
+      } else if (that.generalSettings.sync_xero_to_fyle_payments) {
+        paymentsSyncOption = 'sync_xero_to_fyle_payments';
+      }
+
       that.generalSettingsForm = that.formBuilder.group({
         reimbursableExpense: [that.generalSettings ? that.generalSettings.reimbursable_expenses_object : ''],
         cccExpense: [that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : ''],
+        paymentsSync: [paymentsSyncOption]
       });
 
       that.generalSettingsForm.controls.reimbursableExpense.disable();
 
       if (that.generalSettings.corporate_credit_card_expenses_object) {
         that.generalSettingsForm.controls.cccExpense.disable();
-      }
-
-      if (that.generalSettings.corporate_credit_card_expenses_object) {
-        that.isSaveDisabled = true;
       }
 
       that.isLoading = false;
@@ -66,7 +70,8 @@ export class ConfigurationComponent implements OnInit {
       that.isLoading = false;
       that.generalSettingsForm = that.formBuilder.group({
         reimbursableExpense: ['', Validators.required],
-        cccExpense: [null]
+        cccExpense: [null],
+        paymentsSync: [null]
       }, {
       });
     });
@@ -89,12 +94,20 @@ export class ConfigurationComponent implements OnInit {
       const reimbursableExpensesObject = that.generalSettingsForm.value.reimbursableExpense || that.generalSettings.reimbursable_expenses_object;
       const cccExpensesObject = that.generalSettingsForm.value.cccExpense || that.generalSettings.corporate_credit_card_expenses_object;
 
+      let fyleToXero = false;
+      let xeroToFyle = false;
+
+      if (that.generalSettingsForm.controls.paymentsSync.value) {
+        fyleToXero = that.generalSettingsForm.value.paymentsSync === 'sync_fyle_to_xero_payments' ? true : false;
+        xeroToFyle = that.generalSettingsForm.value.paymentsSync === 'sync_xero_to_fyle_payments' ? true : false;
+      }
+
       that.isLoading = true;
 
       forkJoin(
         [
           that.settingsService.postMappingSettings(that.workspaceId, mappingsSettingsPayload),
-          that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject)
+          that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle)
         ]
       ).subscribe(responses => {
         that.isLoading = true;
