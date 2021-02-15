@@ -97,10 +97,12 @@ export class SettingsService {
   @CacheBuster({
     cacheBusterNotifier: generalSettingsCache
   })
-  postGeneralSettings(workspaceId: number, reimbursableExpensesObject: string, corporateCreditCardExpensesObject: string) {
+  postGeneralSettings(workspaceId: number, reimbursableExpensesObject: string, corporateCreditCardExpensesObject: string, fyleToXero: boolean, xeroToFyle: boolean) {
     return this.apiService.post(`/workspaces/${workspaceId}/settings/general/`, {
       reimbursable_expenses_object: reimbursableExpensesObject,
       corporate_credit_card_expenses_object: corporateCreditCardExpensesObject,
+      sync_fyle_to_xero_payments: fyleToXero,
+      sync_xero_to_fyle_payments: xeroToFyle
     });
   }
 

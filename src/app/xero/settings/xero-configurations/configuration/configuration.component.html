@@ -38,6 +38,26 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <div class="configurations--label">
+        Auto Sync Payments
+        <mat-icon [inline]="true" class="info-icon" matTooltip="Sync payments between Fyle and Xero" matTooltipPosition="after">info</mat-icon>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-form-field floatLabel="always" appearance="outline" fxFlex="100">
+          <mat-select placeholder="Choose Auto Sync Payments"
+            formControlName="paymentsSync">
+            <mat-option>
+              None
+            </mat-option>
+            <mat-option [value]="'sync_fyle_to_xero_payments'">
+              Export Fyle ACH Payments to Xero
+            </mat-option>
+            <mat-option [value]="'sync_xero_to_fyle_payments'">
+              Import Xero Payments into Fyle
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <button [disabled]="isSaveDisabled || !generalSettingsForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="save()" type="submit">
         Save
       </button>

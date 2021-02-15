@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit {
       ]
     ).toPromise().then((res) => {
       that.currentState = onboardingStates.configurationsDone;
-      if (!res[0].corporate_credit_card_expenses_object) {
+      if (!res[0].corporate_credit_card_expenses_object && !res[0].sync_fyle_to_xero_payments) {
         that.showGeneralmappings = false;
         that.currentState = onboardingStates.generalMappingsDone;
       }
