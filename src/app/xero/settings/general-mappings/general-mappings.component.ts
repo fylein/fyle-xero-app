@@ -35,9 +35,14 @@ export class GeneralMappingsComponent implements OnInit {
     const bankAccountId = that.form.value.bankAccounts || '';
     const bankAccount = that.bankAccounts.filter(filteredBankAccount => filteredBankAccount.destination_id === bankAccountId)[0] || '';
 
+    const paymentAccountId = that.generalSettings.sync_fyle_to_xero_payments ? that.form.value.bankAccounts : '';
+    const paymentAccount = that.generalSettings.sync_fyle_to_xero_payments ? that.bankAccounts.filter(filteredAccountsPayableAccount => filteredAccountsPayableAccount.destination_id === paymentAccountId)[0] : '';
+
     const generalMappings = {
       bank_account_name: bankAccount.value,
-      bank_account_id: bankAccount.destination_id
+      bank_account_id: bankAccount.destination_id,
+      payment_account_name: paymentAccount.value,
+      payment_account_id: paymentAccount.destination_id
     };
 
     if (bankAccountId) {
@@ -64,13 +69,15 @@ export class GeneralMappingsComponent implements OnInit {
       that.isLoading = false;
 
       that.form = that.formBuilder.group({
-        bankAccounts: [that.generalMappings ? that.generalMappings.bank_account_id : '']
+        bankAccounts: [that.generalMappings ? that.generalMappings.bank_account_id : ''],
+        paymentAccounts: [that.generalMappings ? that.generalMappings.payment_account_id : '']
       });
     }, error => {
       that.generalMappings = {};
       that.isLoading = false;
       that.form = that.formBuilder.group({
-        bankAccounts: [that.generalMappings ? that.generalMappings.bank_account_id : '']
+        bankAccounts: [that.generalMappings ? that.generalMappings.bank_account_id : ''],
+        paymentAccounts: [that.generalMappings ? that.generalMappings.payment_account_id : '']
       });
     });
   }
