@@ -51,8 +51,8 @@ export class GenericMappingsComponent implements OnInit {
 
   getMappings() {
     const that = this;
-    that.mappingsService.getMappings(that.setting.source_field).subscribe(mappings => {
-      that.mappings = mappings.results;
+    that.mappingsService.getAllMappings(that.setting.source_field).subscribe(mappings => {
+      that.mappings = mappings;
       that.isLoading = false;
     });
   }
