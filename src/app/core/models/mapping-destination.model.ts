@@ -8,5 +8,6 @@ export class MappingDestination {
   destination_id: number;
   created_at: Date;
   updated_at: Date;
-  workspace: number
+  workspace: number;
+  detail: any;
 }

@@ -48,3 +48,14 @@ $text-error: #ff6e40;
   font-size: 20px;
   vertical-align: middle;
 }
+
+.schedule {
+  margin-bottom: 32px;
+  &--header {
+    border-bottom: 1px solid $fy-layout-background;
+  }
+  
+  &--toggle-text {
+    font-size: 14px;
+  }
+}

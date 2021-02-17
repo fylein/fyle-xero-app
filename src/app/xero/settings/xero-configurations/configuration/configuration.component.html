@@ -58,6 +58,9 @@
           </mat-select>
         </mat-form-field>
       </div>
+      <mat-slide-toggle color="primary" class="schedule" formControlName="importCategories">
+        <div class="schedule--toggle-text">Import Xero Expense Accounts into Fyle</div>
+      </mat-slide-toggle>
       <button [disabled]="isSaveDisabled || !generalSettingsForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="save()" type="submit">
         Save
       </button>
