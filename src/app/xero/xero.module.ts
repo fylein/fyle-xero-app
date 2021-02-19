@@ -53,6 +53,7 @@ import { GenericMappingsComponent } from './settings/generic-mappings/generic-ma
 import { GenericMappingsDialogComponent } from './settings/generic-mappings/generic-mappings-dialog/generic-mappings-dialog.component';
 import { XeroCallbackComponent } from './settings/xero-callback/xero-callback.component';
 import { GroupXeroErrorComponent } from './expense-groups/view-expense-group/group-xero-error/group-xero-error.component';
+import { MatTooltipModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -112,7 +113,8 @@ import { GroupXeroErrorComponent } from './expense-groups/view-expense-group/gro
     MatDatepickerModule,
     MatNativeDateModule,
     MatStepperModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTooltipModule
   ],
   providers: [
     {

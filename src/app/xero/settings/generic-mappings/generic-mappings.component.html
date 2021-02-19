@@ -25,6 +25,7 @@
           <th mat-header-cell *matHeaderCellDef> {{ getTitle(sourceField) | titlecase }} </th>
           <td mat-cell *matCellDef="let element">
             {{element.source.value}}
+            <mat-icon class="auto-map" [inline]="true" matTooltip="Auto mapped row from Fyle and Xero" matTooltipPosition="after" *ngIf="element.source.auto_mapped">bolt</mat-icon>
           </td>
         </ng-container>
 
