@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { GenericMappingsDialogComponent } from './generic-mappings-dialog/generic-mappings-dialog.component';
 import { SettingsService } from 'src/app/core/services/settings.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-generic-mappings',
@@ -21,7 +22,7 @@ export class GenericMappingsComponent implements OnInit {
   rowElement: any;
   columnsToDisplay = ['sourceField', 'destinationField'];
 
-  constructor(private mappingsService: MappingsService, private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private storageService: StorageService, private settingsService: SettingsService) { }
+  constructor(private mappingsService: MappingsService, private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private snackBar: MatSnackBar, private storageService: StorageService, private settingsService: SettingsService) { }
 
   open(selectedItem: any = null) {
     const that = this;
@@ -59,6 +60,18 @@ export class GenericMappingsComponent implements OnInit {
 
   goToConfigurations() {
     this.router.navigate([`/workspaces/${this.workspaceId}/settings/configurations/general/`]);
+  }
+
+  triggerAutoMapEmployees() {
+    const that = this;
+    that.isLoading = true;
+    that.mappingsService.triggerAutoMapEmployees().subscribe(() => {
+      that.isLoading = false;
+      that.snackBar.open('Auto mapping of employees may take up to 10 minutes');
+    }, error => {
+      that.isLoading = false;
+      that.snackBar.open(error.error.message);
+    });
   }
 
   ngOnInit() {

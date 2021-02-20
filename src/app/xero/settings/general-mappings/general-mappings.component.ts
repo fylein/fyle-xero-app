@@ -16,6 +16,7 @@ export class GeneralMappingsComponent implements OnInit {
   form: FormGroup;
   workspaceId: number;
   bankAccounts: any[];
+  paymentAccounts: any[];
   generalMappings: any;
   generalSettings: any;
   isLoading = true;
@@ -35,8 +36,8 @@ export class GeneralMappingsComponent implements OnInit {
     const bankAccountId = that.form.value.bankAccounts || '';
     const bankAccount = that.bankAccounts.filter(filteredBankAccount => filteredBankAccount.destination_id === bankAccountId)[0] || '';
 
-    const paymentAccountId = that.generalSettings.sync_fyle_to_xero_payments ? that.form.value.bankAccounts : '';
-    const paymentAccount = that.generalSettings.sync_fyle_to_xero_payments ? that.bankAccounts.filter(filteredAccountsPayableAccount => filteredAccountsPayableAccount.destination_id === paymentAccountId)[0] : '';
+    const paymentAccountId = that.generalSettings.sync_fyle_to_xero_payments ? that.form.value.paymentAccounts : '';
+    const paymentAccount = that.generalSettings.sync_fyle_to_xero_payments ? that.paymentAccounts.filter(filteredAccountsPayableAccount => filteredAccountsPayableAccount.destination_id === paymentAccountId)[0] : '';
 
     const generalMappings = {
       bank_account_name: bankAccount.value,
@@ -45,7 +46,7 @@ export class GeneralMappingsComponent implements OnInit {
       payment_account_id: paymentAccount.destination_id
     };
 
-    if (bankAccountId) {
+    if (bankAccountId || paymentAccountId) {
       that.isLoading = true;
       this.mappingsService.postGeneralMappings(generalMappings).subscribe(response => {
         const onboarded = that.storageService.get('onboarded');
@@ -92,6 +93,7 @@ export class GeneralMappingsComponent implements OnInit {
     ).subscribe(responses => {
       that.isLoading = false;
       that.bankAccounts = responses[0];
+      that.paymentAccounts = responses[0];
       that.getGeneralMappings();
     });
   }
