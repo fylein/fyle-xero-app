@@ -6,6 +6,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { GenericMappingsDialogComponent } from './generic-mappings-dialog/generic-mappings-dialog.component';
 import { SettingsService } from 'src/app/core/services/settings.service';
 import { MatSnackBar } from '@angular/material';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-generic-mappings',
@@ -80,8 +81,14 @@ export class GenericMappingsComponent implements OnInit {
       that.isLoading = true;
       that.workspaceId = +that.route.parent.snapshot.params.workspace_id;
       that.sourceField = that.route.snapshot.params.source_field;
-      that.settingsService.getMappingSettings(that.workspaceId).subscribe(response => {
-        that.setting = response.results.filter(setting => setting.source_field === that.sourceField.toUpperCase())[0];
+      forkJoin(
+        [
+          that.settingsService.getMappingSettings(that.workspaceId),
+          that.settingsService.getGeneralSettings(that.workspaceId)
+        ]
+      ).subscribe(responses => {
+        that.setting = responses[0].results.filter(setting => setting.source_field === that.sourceField.toUpperCase())[0];
+        that.generalSettings = responses[1];
         that.getMappings();
       });
     });

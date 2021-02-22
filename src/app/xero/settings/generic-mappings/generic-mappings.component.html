@@ -12,7 +12,7 @@
       <button class="page-info--primary-action" mat-flat-button color="primary" type="button" (click)="open()">
         New {{ getTitle(sourceField) | titlecase }} Mapping
       </button>
-      <button class="secondary-button" mat-flat-button color="secondary" type="button" (click)="triggerAutoMapEmployees()" *ngIf="sourceField === 'employee'">
+      <button class="secondary-button" mat-flat-button color="secondary" type="button" (click)="triggerAutoMapEmployees()" *ngIf="generalSettings.auto_map_employees && sourceField === 'employee'">
         Refresh Employee Mappings
       </button>
     </div>

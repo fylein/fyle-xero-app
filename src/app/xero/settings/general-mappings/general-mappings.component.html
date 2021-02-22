@@ -20,7 +20,7 @@
         <div class="mat-body-strong" *ngIf="generalSettings.corporate_credit_card_expenses_object">
           Bank Account
         </div>
-        <mat-form-field floatLabel="always" appearance="outline" required *ngIf="generalSettings.corporate_credit_card_expenses_object">
+        <mat-form-field floatLabel="always" appearance="outline" *ngIf="generalSettings.corporate_credit_card_expenses_object" required>
           <mat-select class="general-mappings--input" placeholder="Select bank account" formControlName="bankAccounts">
             <mat-option *ngFor="let bankAccount of bankAccounts; let i = index" [value]="bankAccounts[i].destination_id">
               {{bankAccounts[i].value}}
