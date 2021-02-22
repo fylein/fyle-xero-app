@@ -125,7 +125,7 @@ export class ConfigurationComponent implements OnInit {
             that.snackBar.open('Auto mapping of employees may take up to 10 minutes');
           }, 1500);
         }
-        
+
         that.xero.getSettingsAndNavigate();
         if (that.generalSettings && that.generalSettings.reimbursable_expenses_object) {
           that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`).then(() => {
