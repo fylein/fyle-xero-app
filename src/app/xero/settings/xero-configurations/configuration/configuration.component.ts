@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { SettingsService } from 'src/app/core/services/settings.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -54,7 +54,8 @@ export class ConfigurationComponent implements OnInit {
       that.generalSettingsForm = that.formBuilder.group({
         reimbursableExpense: [that.generalSettings ? that.generalSettings.reimbursable_expenses_object : ''],
         cccExpense: [that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : ''],
-        paymentsSync: [paymentsSyncOption]
+        paymentsSync: [paymentsSyncOption],
+        importCategories: [that.generalSettings.import_categories]
       });
 
       that.generalSettingsForm.controls.reimbursableExpense.disable();
@@ -71,7 +72,8 @@ export class ConfigurationComponent implements OnInit {
       that.generalSettingsForm = that.formBuilder.group({
         reimbursableExpense: ['', Validators.required],
         cccExpense: [null],
-        paymentsSync: [null]
+        paymentsSync: [null],
+        importCategories: [false]
       }, {
       });
     });
@@ -93,6 +95,7 @@ export class ConfigurationComponent implements OnInit {
 
       const reimbursableExpensesObject = that.generalSettingsForm.value.reimbursableExpense || that.generalSettings.reimbursable_expenses_object;
       const cccExpensesObject = that.generalSettingsForm.value.cccExpense || that.generalSettings.corporate_credit_card_expenses_object;
+      const importCategories = that.generalSettingsForm.value.importCategories;
 
       let fyleToXero = false;
       let xeroToFyle = false;
@@ -107,7 +110,7 @@ export class ConfigurationComponent implements OnInit {
       forkJoin(
         [
           that.settingsService.postMappingSettings(that.workspaceId, mappingsSettingsPayload),
-          that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle)
+          that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories)
         ]
       ).subscribe(responses => {
         that.isLoading = true;

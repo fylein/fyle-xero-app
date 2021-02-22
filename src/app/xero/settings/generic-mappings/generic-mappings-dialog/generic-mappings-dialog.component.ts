@@ -53,7 +53,8 @@ export class GenericMappingsDialogComponent implements OnInit {
         source_type: that.setting.source_field,
         destination_type: that.setting.destination_field,
         source_value: that.form.controls.sourceField.value.value,
-        destination_value: that.form.controls.destinationField.value.value
+        destination_value: that.form.controls.destinationField.value.value,
+        destination_id: that.form.controls.destinationField.value.destination_id
       }).subscribe(response => {
         that.snackBar.open('Mapping saved successfully');
         that.isLoading = false;
