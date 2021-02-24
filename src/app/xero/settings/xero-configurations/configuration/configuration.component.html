@@ -38,6 +38,30 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <div class="configurations--label">
+        Auto Map Employees from Fyle
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-form-field floatLabel="always" appearance="outline" fxFlex="100">
+          <mat-select placeholder="Choose how to auto map employees between Fyle and Xero"
+            formControlName="autoMapEmployees">
+            <mat-option>
+              None
+            </mat-option>
+            <mat-option [value]="'EMAIL'">
+              Match emails on Fyle and Xero
+            </mat-option>
+            <mat-option [value]="'NAME'">
+              Match names on Fyle and Xero
+            </mat-option>
+            <mat-option [value]="'EMPLOYEE_CODE'">
+              Match Fyle Employee Code to Xero Name
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <div class="configurations--label">
         Auto Sync Payments
         <mat-icon [inline]="true" class="info-icon" matTooltip="Sync payments between Fyle and Xero" matTooltipPosition="after">info</mat-icon>

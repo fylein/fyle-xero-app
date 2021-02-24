@@ -55,7 +55,8 @@ export class ConfigurationComponent implements OnInit {
         reimbursableExpense: [that.generalSettings ? that.generalSettings.reimbursable_expenses_object : ''],
         cccExpense: [that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : ''],
         paymentsSync: [paymentsSyncOption],
-        importCategories: [that.generalSettings.import_categories]
+        importCategories: [that.generalSettings.import_categories],
+        autoMapEmployees: [that.generalSettings.auto_map_employees]
       });
 
       that.generalSettingsForm.controls.reimbursableExpense.disable();
@@ -73,7 +74,8 @@ export class ConfigurationComponent implements OnInit {
         reimbursableExpense: ['', Validators.required],
         cccExpense: [null],
         paymentsSync: [null],
-        importCategories: [false]
+        importCategories: [false],
+        autoMapEmployees: [null]
       }, {
       });
     });
@@ -96,6 +98,7 @@ export class ConfigurationComponent implements OnInit {
       const reimbursableExpensesObject = that.generalSettingsForm.value.reimbursableExpense || that.generalSettings.reimbursable_expenses_object;
       const cccExpensesObject = that.generalSettingsForm.value.cccExpense || that.generalSettings.corporate_credit_card_expenses_object;
       const importCategories = that.generalSettingsForm.value.importCategories;
+      const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
 
       let fyleToXero = false;
       let xeroToFyle = false;
@@ -110,12 +113,19 @@ export class ConfigurationComponent implements OnInit {
       forkJoin(
         [
           that.settingsService.postMappingSettings(that.workspaceId, mappingsSettingsPayload),
-          that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories)
+          that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories, autoMapEmployees)
         ]
       ).subscribe(responses => {
         that.isLoading = true;
         that.storageService.set('generalSettings', responses[1]);
         that.snackBar.open('Configuration saved successfully');
+
+        if (autoMapEmployees) {
+          setTimeout(() => {
+            that.snackBar.open('Auto mapping of employees may take up to 10 minutes');
+          }, 1500);
+        }
+
         that.xero.getSettingsAndNavigate();
         if (that.generalSettings && that.generalSettings.reimbursable_expenses_object) {
           that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`).then(() => {

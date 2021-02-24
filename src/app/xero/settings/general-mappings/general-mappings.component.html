@@ -34,9 +34,9 @@
         <mat-form-field floatLabel="always" appearance="outline" required
           *ngIf="generalSettings.sync_fyle_to_xero_payments">
           <mat-select class="general-mappings--input" placeholder="Select Payment Account"
-            formControlName="bankAccounts">
-            <mat-option *ngFor="let bankAccount of bankAccounts; let i = index" [value]="bankAccounts[i].destination_id">
-              {{bankAccounts[i].value}}
+            formControlName="paymentAccounts">
+            <mat-option *ngFor="let bankAccount of paymentAccounts; let i = index" [value]="paymentAccounts[i].destination_id">
+              {{paymentAccounts[i].value}}
             </mat-option>
           </mat-select>
         </mat-form-field>

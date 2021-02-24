@@ -312,4 +312,9 @@ export class MappingsService {
       `/workspaces/${workspaceId}/mappings/cost_centers/`, {}
     );
   }
+
+  triggerAutoMapEmployees() {
+    const workspaceId = this.workspaceService.getWorkspaceId();
+    return this.apiService.post(`/workspaces/${workspaceId}/mappings/auto_map_employees/trigger/`, {});
+  }
 }
