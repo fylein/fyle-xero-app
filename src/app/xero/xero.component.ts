@@ -92,7 +92,7 @@ export class XeroComponent implements OnInit {
           that.showGeneralmappings = false;
         }
         that.navDisabled = false;
-      })
+      });
     });
   }
 
