@@ -87,17 +87,12 @@ export class XeroComponent implements OnInit {
     });
 
     that.router.events.subscribe(() => {
-      const onboarded = that.storageService.get('onboarded');
-      if (onboarded !== true) {
-        that.getConfigurations().then((results) => {
-          if (!results[0].corporate_credit_card_expenses_object && !results[0].sync_fyle_to_xero_payments) {
-            that.showGeneralmappings = false;
-          }
-          that.navDisabled = false;
-        }).catch(() => {
-          // do nothing
-        });
-      }
+      that.getConfigurations().then((results) => {
+        if (!results[0].corporate_credit_card_expenses_object && !results[0].sync_fyle_to_xero_payments) {
+          that.showGeneralmappings = false;
+        }
+        that.navDisabled = false;
+      })
     });
   }
 
