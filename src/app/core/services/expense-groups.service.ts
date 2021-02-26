@@ -5,6 +5,7 @@ import { ExpenseGroupResponse } from 'src/app/core/models/expense-group-response
 import { ExpenseGroup } from 'src/app/core/models/expense-group.model';
 import { Expense } from '../models/expense.model';
 import { WorkspaceService } from './workspace.service';
+import { ExpenseGroupSetting } from '../models/expense-group-setting.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +28,6 @@ export class ExpenseGroupsService {
   }
 
   getAllExpenseGroups(state: string): Observable<ExpenseGroupResponse> {
-    const workspaceId = this.workspaceService.getWorkspaceId();
-
     const limit = 500;
     const offset = 0;
     // this would require to create a default object - not much benefit in doing so imho @Dhar
@@ -38,7 +37,7 @@ export class ExpenseGroupsService {
     return from(this.getAllExpenseGroupsInternal(limit, offset, state, allExpenseGroupsResponse));
   }
 
-  getExpenseGroupSettings(): Observable<ExpenseGroupResponse> {
+  getExpenseGroupSettings(): Observable<ExpenseGroupSetting> {
     const workspaceId = this.workspaceService.getWorkspaceId();
     return this.apiService.get(`/workspaces/${workspaceId}/fyle/expense_group_settings/`, {});
   }
@@ -81,7 +80,6 @@ export class ExpenseGroupsService {
     return this.apiService.get(`/workspaces/${workspaceId}/fyle/expense_groups/${expenseGroupId}/`, {});
   }
 
-  // TODO: Map response to a model
   syncExpenseGroups() {
     const workspaceId = this.workspaceService.getWorkspaceId();
     return this.apiService.post(`/workspaces/${workspaceId}/fyle/expense_groups/trigger/`, {});

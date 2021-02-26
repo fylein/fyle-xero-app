@@ -92,7 +92,7 @@ export class ExportComponent implements OnInit {
   createXeroItems() {
     const that = this;
     that.isExporting = true;
-    that.settingsService.getCombinedSettings(that.workspaceId).subscribe((settings) => {
+    that.settingsService.getGeneralSettings(that.workspaceId).subscribe((settings) => {
       that.generalSettings = settings;
       const promises = [];
       let allFilteredIds = [];

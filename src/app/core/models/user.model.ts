@@ -1,3 +1,4 @@
-export interface User {
+/* tslint:disable */
+export type User = {
   email: string;
 }

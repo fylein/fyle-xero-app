@@ -94,7 +94,7 @@ export class ExpenseGroupsComponent implements OnInit {
     let cachedPageSize = that.storageService.get('pageSize') || 10;
     that.pageSize = +that.route.snapshot.queryParams.page_size || cachedPageSize;
     that.state = that.route.snapshot.queryParams.state || 'FAILED';
-    that.settingsService.getCombinedSettings(that.workspaceId).subscribe((settings) => {
+    that.settingsService.getGeneralSettings(that.workspaceId).subscribe((settings) => {
       if (that.state === 'COMPLETE') {
         that.columnsToDisplay = ['export-date', 'employee', 'export', 'expensetype', 'openXero'];
       } else {

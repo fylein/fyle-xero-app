@@ -10,7 +10,6 @@ export class BankTransactionsService {
     private apiService: ApiService,
     private workspaceService: WorkspaceService) {}
 
-  // TODO: Map response to a model
   createBankTransactions(expenseGroupIds: number[]) {
     const workspaceId = this.workspaceService.getWorkspaceId();
     return this.apiService.post(

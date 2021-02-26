@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { pairwise } from 'rxjs/internal/operators/pairwise';
-import { Settings } from 'src/app/core/models/settings.model';
+import { ScheduleSettings } from 'src/app/core/models/schedule-settings.model';
 
 @Component({
   selector: 'app-schedule',
@@ -19,7 +19,7 @@ export class ScheduleComponent implements OnInit {
   minDate: Date = new Date();
   defaultDate: string;
   hours = [...Array(24).keys()].map(day => day + 1);
-  settings: Settings;
+  settings: ScheduleSettings;
   constructor(
     private formBuilder: FormBuilder,
     private settingsService: SettingsService,
@@ -29,7 +29,7 @@ export class ScheduleComponent implements OnInit {
   getSettings() {
     const that = this;
     that.isLoading = true;
-    that.settingsService.getSettings(that.workspaceId).subscribe((settings: Settings) => {
+    that.settingsService.getSettings(that.workspaceId).subscribe((settings: ScheduleSettings) => {
       // TODO: Api should return schedule always - check and cleanup
       that.settings = settings;
       if (settings) {

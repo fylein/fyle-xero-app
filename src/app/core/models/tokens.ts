@@ -1,7 +1,8 @@
+/* tslint:disable */
 import { User } from './user.model';
 
-export interface Token {
+export type Token = {
   access_token: string;
   refresh_token: string;
   user: User;
-}
+};
