@@ -250,11 +250,11 @@ export class MappingsService {
 
   getAllMappings(sourceType: string): Observable<Mapping[]> {
     const that = this;
-    return this.getMappings(sourceType).pipe(expand((res: any) => {
+    return this.getMappings(sourceType).pipe(expand((res: MappingsResponse) => {
       // tslint:disable-next-line
       return res.next ? that.getMappings(sourceType, 500, res.next) : empty();
-    }), concatMap((res: any) => res.results),
-      reduce((arr, val) => {
+    }), concatMap((res: MappingsResponse) => res.results),
+      reduce((arr: Mapping[], val: Mapping) => {
         arr.push(val);
         return arr;
       }, []));

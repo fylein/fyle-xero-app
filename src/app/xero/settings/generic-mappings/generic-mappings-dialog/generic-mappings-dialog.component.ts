@@ -6,6 +6,10 @@ import { forkJoin } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { MappingSource } from 'src/app/core/models/mapping-source.model';
+import { MappingDestination } from 'src/app/core/models/mapping-destination.model';
+import { MappingSetting } from 'src/app/core/models/mapping-setting.model';
+import { MappingModal } from 'src/app/core/models/mapping-modal.model';
 
 export class MappingErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -23,17 +27,17 @@ export class GenericMappingsDialogComponent implements OnInit {
 
   isLoading = false;
   form: FormGroup;
-  fyleAttributes: any[];
-  xeroElements: any[];
-  fyleAttributeOptions: any[];
-  xeroOptions: any[];
-  setting: any;
+  fyleAttributes: MappingSource[];
+  xeroElements: MappingDestination[];
+  xeroOptions: MappingDestination[];
+  fyleAttributeOptions: MappingSource[];
+  setting: MappingSetting;
   editMapping: boolean;
   matcher = new MappingErrorStateMatcher();
 
   constructor(private formBuilder: FormBuilder,
               public dialogRef: MatDialogRef<GenericMappingsDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
+              @Inject(MAT_DIALOG_DATA) public data: MappingModal,
               private mappingsService: MappingsService,
               private snackBar: MatSnackBar) { }
 
@@ -69,8 +73,8 @@ export class GenericMappingsDialogComponent implements OnInit {
     }
   }
 
-  forbiddenSelectionValidator(options: any[]): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+  forbiddenSelectionValidator(options: (MappingSource|MappingDestination)[]): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: object } | null => {
       const forbidden = !options.some((option) => {
         return control.value.id && option.id === control.value.id;
       });

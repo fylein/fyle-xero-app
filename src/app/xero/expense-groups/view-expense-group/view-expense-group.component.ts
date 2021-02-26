@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ExpenseGroup } from 'src/app/core/models/expense-group.model';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
+import { Task } from 'src/app/core/models/task.model';
 
 @Component({
   selector: 'app-view-expense-group',
@@ -19,7 +20,7 @@ export class ViewExpenseGroupComponent implements OnInit {
   expenses: ExpenseGroup[];
   isLoading = true;
   expenseGroup: ExpenseGroup;
-  task: any;
+  task: Task;
   state: string;
   pageSize: number;
   pageNumber: number;

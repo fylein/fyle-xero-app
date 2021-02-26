@@ -97,7 +97,7 @@ export class SettingsService {
   @CacheBuster({
     cacheBusterNotifier: mappingsSettingsCache
   })
-  postMappingSettings(workspaceId: number, mappingSettings: any): Observable<MappingSetting[]> {
+  postMappingSettings(workspaceId: number, mappingSettings: MappingSetting[]): Observable<MappingSetting[]> {
     return this.apiService.post(`/workspaces/${workspaceId}/mappings/settings/`, mappingSettings);
   }
 

@@ -6,6 +6,9 @@ import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { SettingsService } from 'src/app/core/services/settings.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { MappingDestination } from 'src/app/core/models/mapping-destination.model';
+import { GeneralSetting } from 'src/app/core/models/general-setting.model';
+import { GeneralMapping } from 'src/app/core/models/general-mapping.model';
 
 @Component({
   selector: 'app-general-mappings',
@@ -15,10 +18,10 @@ import { StorageService } from 'src/app/core/services/storage.service';
 export class GeneralMappingsComponent implements OnInit {
   form: FormGroup;
   workspaceId: number;
-  bankAccounts: any[];
-  paymentAccounts: any[];
-  generalMappings: any;
-  generalSettings: any;
+  bankAccounts: MappingDestination[];
+  paymentAccounts: MappingDestination[];
+  generalMappings: GeneralMapping;
+  generalSettings: GeneralSetting;
   isLoading = true;
 
   constructor(
@@ -34,10 +37,10 @@ export class GeneralMappingsComponent implements OnInit {
   submit() {
     const that = this;
     const bankAccountId = that.form.value.bankAccounts || '';
-    const bankAccount = that.bankAccounts.filter(filteredBankAccount => filteredBankAccount.destination_id === bankAccountId)[0] || '';
+    const bankAccount: MappingDestination = that.bankAccounts.filter(filteredBankAccount => filteredBankAccount.destination_id === bankAccountId)[0] || null;
 
     const paymentAccountId = that.generalSettings.sync_fyle_to_xero_payments ? that.form.value.paymentAccounts : '';
-    const paymentAccount = that.generalSettings.sync_fyle_to_xero_payments ? that.paymentAccounts.filter(filteredAccountsPayableAccount => filteredAccountsPayableAccount.destination_id === paymentAccountId)[0] : '';
+    const paymentAccount: MappingDestination = that.generalSettings.sync_fyle_to_xero_payments ? that.paymentAccounts.filter(filteredAccountsPayableAccount => filteredAccountsPayableAccount.destination_id === paymentAccountId)[0] : null;
 
     const generalMappings = {
       bank_account_name: bankAccount.value,
@@ -74,11 +77,10 @@ export class GeneralMappingsComponent implements OnInit {
         paymentAccounts: [that.generalMappings ? that.generalMappings.payment_account_id : '']
       });
     }, error => {
-      that.generalMappings = {};
       that.isLoading = false;
       that.form = that.formBuilder.group({
-        bankAccounts: [that.generalMappings ? that.generalMappings.bank_account_id : ''],
-        paymentAccounts: [that.generalMappings ? that.generalMappings.payment_account_id : '']
+        bankAccounts: [null],
+        paymentAccounts: [null]
       });
     });
   }

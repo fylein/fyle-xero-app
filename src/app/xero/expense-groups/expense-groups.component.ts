@@ -7,6 +7,7 @@ import { SettingsService } from 'src/app/core/services/settings.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { TasksService } from 'src/app/core/services/tasks.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
+import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 
 @Component({
   selector: 'app-expense-groups',
@@ -19,7 +20,7 @@ export class ExpenseGroupsComponent implements OnInit {
   isLoading = true;
   count: number;
   state: string;
-  settings: any;
+  settings: GeneralSetting;
   pageNumber = 0;
   pageSize: number;
   columnsToDisplay = ['employee', 'expensetype'];

@@ -7,6 +7,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { XeroComponent } from 'src/app/xero/xero.component';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
+import { GeneralSetting } from 'src/app/core/models/general-setting.model';
+import { MappingSetting } from 'src/app/core/models/mapping-setting.model';
 
 @Component({
   selector: 'app-configuration',
@@ -21,11 +23,8 @@ export class ConfigurationComponent implements OnInit {
   expenseOptions: { label: string, value: string }[];
   cccExpenseOptions: { label: string, value: string }[];
   workspaceId: number;
-  generalSettings: any;
-  mappingSettings: any;
-  employeeFieldMapping: any;
-  projectFieldMapping: any;
-  costCenterFieldMapping: any;
+  generalSettings: GeneralSetting;
+  mappingSettings: MappingSetting[];
   windowReference: Window;
 
   constructor(private formBuilder: FormBuilder, private storageService: StorageService, private settingsService: SettingsService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private xero: XeroComponent, private windowReferenceService: WindowReferenceService) {
@@ -67,8 +66,6 @@ export class ConfigurationComponent implements OnInit {
 
       that.isLoading = false;
     }, error => {
-      that.generalSettings = {};
-      that.mappingSettings = {};
       that.isLoading = false;
       that.generalSettingsForm = that.formBuilder.group({
         reimbursableExpense: ['', Validators.required],
@@ -84,7 +81,7 @@ export class ConfigurationComponent implements OnInit {
   save() {
     const that = this;
     if (that.generalSettingsForm.valid) {
-      const mappingsSettingsPayload = [
+      const mappingsSettingsPayload: MappingSetting[] = [
         {
           source_field: 'CATEGORY',
           destination_field: 'ACCOUNT'

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ExpenseGroupsService } from 'src/app/core/services/expense-groups.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ExpenseGroupSetting } from 'src/app/core/models/expense-group-setting.model';
 
 @Component({
   selector: 'app-expense-group-settings-dialog',
@@ -10,7 +11,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ExpenseGroupSettingsDialogComponent implements OnInit {
   importExpensesForm: FormGroup;
-  expenseGroupSettings: any;
+  expenseGroupSettings: ExpenseGroupSetting;
   isLoading: boolean;
 
   constructor(private formBuilder: FormBuilder, private expenseGroupsService: ExpenseGroupsService, private dialogRef: MatDialogRef<ExpenseGroupSettingsDialogComponent>) { }
