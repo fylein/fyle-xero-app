@@ -116,23 +116,20 @@ export class GenericMappingsDialogComponent implements OnInit {
 
   reset() {
     const that = this;
-
-    const getFyleAttributes = that.mappingsService.getFyleExpenseCustomFields(that.setting.source_field).toPromise().then(attributes => {
-      that.fyleAttributes = attributes;
-    });
-
-    const xeroPromise = that.mappingsService.getXeroTrackingCategories(that.setting.destination_field).toPromise().then(objects => {
-      that.xeroElements = objects;
-    });
-
     that.isLoading = true;
+
     forkJoin([
-      getFyleAttributes,
-      xeroPromise
-    ]).subscribe(() => {
+      that.mappingsService.getFyleExpenseCustomFields(that.setting.source_field),
+      that.mappingsService.getXeroTrackingCategories(that.setting.destination_field)
+    ]).subscribe(response => {
       that.isLoading = false;
+
+      that.fyleAttributes = response[0];
+      that.xeroElements = response[1];
+
       const sourceField = that.editMapping ? that.fyleAttributes.filter(field => field.value === that.data.rowElement.source.value)[0] : '';
       const destinationField = that.editMapping ? that.xeroElements.filter(field => field.value === that.data.rowElement.destination.value)[0] : '';
+
       that.form = that.formBuilder.group({
         sourceField: [sourceField, Validators.compose([Validators.required, that.forbiddenSelectionValidator(that.fyleAttributes)])],
         destinationField: [destinationField, that.forbiddenSelectionValidator(that.xeroElements)],
