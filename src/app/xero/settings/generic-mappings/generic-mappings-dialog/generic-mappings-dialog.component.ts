@@ -6,6 +6,10 @@ import { forkJoin } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { MappingSource } from 'src/app/core/models/mapping-source.model';
+import { MappingDestination } from 'src/app/core/models/mapping-destination.model';
+import { MappingSetting } from 'src/app/core/models/mapping-setting.model';
+import { MappingModal } from 'src/app/core/models/mapping-modal.model';
 
 export class MappingErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -23,17 +27,17 @@ export class GenericMappingsDialogComponent implements OnInit {
 
   isLoading = false;
   form: FormGroup;
-  fyleAttributes: any[];
-  xeroElements: any[];
-  fyleAttributeOptions: any[];
-  xeroOptions: any[];
-  setting: any;
+  fyleAttributes: MappingSource[];
+  xeroElements: MappingDestination[];
+  xeroOptions: MappingDestination[];
+  fyleAttributeOptions: MappingSource[];
+  setting: MappingSetting;
   editMapping: boolean;
   matcher = new MappingErrorStateMatcher();
 
   constructor(private formBuilder: FormBuilder,
               public dialogRef: MatDialogRef<GenericMappingsDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
+              @Inject(MAT_DIALOG_DATA) public data: MappingModal,
               private mappingsService: MappingsService,
               private snackBar: MatSnackBar) { }
 
@@ -69,8 +73,8 @@ export class GenericMappingsDialogComponent implements OnInit {
     }
   }
 
-  forbiddenSelectionValidator(options: any[]): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+  forbiddenSelectionValidator(options: (MappingSource|MappingDestination)[]): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: object } | null => {
       const forbidden = !options.some((option) => {
         return control.value.id && option.id === control.value.id;
       });
@@ -112,23 +116,20 @@ export class GenericMappingsDialogComponent implements OnInit {
 
   reset() {
     const that = this;
-
-    const getFyleAttributes = that.mappingsService.getFyleExpenseCustomFields(that.setting.source_field).toPromise().then(attributes => {
-      that.fyleAttributes = attributes;
-    });
-
-    const xeroPromise = that.mappingsService.getXeroTrackingCategories(that.setting.destination_field).toPromise().then(objects => {
-      that.xeroElements = objects;
-    });
-
     that.isLoading = true;
+
     forkJoin([
-      getFyleAttributes,
-      xeroPromise
-    ]).subscribe(() => {
+      that.mappingsService.getFyleExpenseCustomFields(that.setting.source_field),
+      that.mappingsService.getXeroTrackingCategories(that.setting.destination_field)
+    ]).subscribe(response => {
       that.isLoading = false;
+
+      that.fyleAttributes = response[0];
+      that.xeroElements = response[1];
+
       const sourceField = that.editMapping ? that.fyleAttributes.filter(field => field.value === that.data.rowElement.source.value)[0] : '';
       const destinationField = that.editMapping ? that.xeroElements.filter(field => field.value === that.data.rowElement.destination.value)[0] : '';
+
       that.form = that.formBuilder.group({
         sourceField: [sourceField, Validators.compose([Validators.required, that.forbiddenSelectionValidator(that.fyleAttributes)])],
         destinationField: [destinationField, that.forbiddenSelectionValidator(that.xeroElements)],

@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, merge, forkJoin, from } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { Cacheable, CacheBuster, globalCacheBusterNotifier } from 'ngx-cacheable';
 import { FyleCredentials } from '../models/fyle-credentials.model';
 import { XeroCredentials } from '../models/xero-credentials.model';
-import { Settings } from '../models/settings.model';
+import { ScheduleSettings } from '../models/schedule-settings.model';
+import { MappingSettingResponse } from '../models/mapping-setting-response.model';
+import { GeneralSetting } from '../models/general-setting.model';
+import { MappingSetting } from '../models/mapping-setting.model';
+import { TenantMapping } from '../models/tenant-mapping.model';
 
 const fyleCredentialsCache = new Subject<void>();
 const xeroCredentialsCache = new Subject<void>();
@@ -25,14 +29,6 @@ export class SettingsService {
     return this.apiService.get('/workspaces/' + workspaceId + '/credentials/fyle/', {});
   }
 
-  // TODO: Add model
-  @CacheBuster({
-    cacheBusterNotifier: fyleCredentialsCache
-  })
-  deleteFyleCredentials(workspaceId: number) {
-    return this.apiService.post('/workspaces/' + workspaceId + '/credentials/fyle/delete/', {});
-  }
-
   @Cacheable({
     cacheBusterObserver: xeroCredentialsCache
   })
@@ -40,7 +36,6 @@ export class SettingsService {
     return this.apiService.get('/workspaces/' + workspaceId + '/credentials/xero/', {});
   }
 
-  // TODO: Add model
   @CacheBuster({
     cacheBusterNotifier: xeroCredentialsCache
   })
@@ -48,32 +43,25 @@ export class SettingsService {
     return this.apiService.post('/workspaces/' + workspaceId + '/credentials/xero/delete/', {});
   }
 
-  // TODO: Add model
   @CacheBuster({
     cacheBusterNotifier: fyleCredentialsCache
   })
-  connectFyle(workspaceId: number, authorizationCode: string) {
+  connectFyle(workspaceId: number, authorizationCode: string): Observable<FyleCredentials> {
     return this.apiService.post('/workspaces/' + workspaceId + '/connect_fyle/authorization_code/', {
       code: authorizationCode
     });
   }
 
-  // TODO: Add model
   @CacheBuster({
     cacheBusterNotifier: xeroCredentialsCache
   })
-  connectXero(workspaceId: number, code) {
+  connectXero(workspaceId: number, code): Observable<XeroCredentials> {
     globalCacheBusterNotifier.next();
     return this.apiService.post('/workspaces/' + workspaceId + '/connect_xero/authorization_code/', code
     );
   }
 
-  @Cacheable()
-  getOrganisations(workspaceId: number) {
-    return this.apiService.get(`/workspaces/${workspaceId}/xero/organisations/`, {});
-  }
-
-  postSettings(workspaceId: number, nextRun: string, scheduleHours: number, scheduleEnabled: boolean) {
+  postSettings(workspaceId: number, nextRun: string, scheduleHours: number, scheduleEnabled: boolean): Observable<ScheduleSettings> {
     return this.apiService.post(`/workspaces/${workspaceId}/schedule/`, {
       next_run: nextRun,
       hours: scheduleHours,
@@ -81,23 +69,21 @@ export class SettingsService {
     });
   }
 
-  getSettings(workspaceId: number): Observable<Settings> {
+  getSettings(workspaceId: number): Observable<ScheduleSettings> {
     return this.apiService.get(`/workspaces/${workspaceId}/schedule/`, {});
   }
 
-  // TODO: Add model
   @Cacheable({
     cacheBusterObserver: mappingsSettingsCache
   })
-  getMappingSettings(workspaceId: number) {
+  getMappingSettings(workspaceId: number): Observable<MappingSettingResponse> {
     return this.apiService.get(`/workspaces/${workspaceId}/mappings/settings/`, {});
   }
 
-  // TODO: Add model
   @CacheBuster({
     cacheBusterNotifier: generalSettingsCache
   })
-  postGeneralSettings(workspaceId: number, reimbursableExpensesObject: string, corporateCreditCardExpensesObject: string, fyleToXero: boolean, xeroToFyle: boolean, importCategories: boolean, autoMapEmployees: string = null) {
+  postGeneralSettings(workspaceId: number, reimbursableExpensesObject: string, corporateCreditCardExpensesObject: string, fyleToXero: boolean, xeroToFyle: boolean, importCategories: boolean, autoMapEmployees: string = null): Observable<GeneralSetting> {
     return this.apiService.post(`/workspaces/${workspaceId}/settings/general/`, {
       reimbursable_expenses_object: reimbursableExpensesObject,
       corporate_credit_card_expenses_object: corporateCreditCardExpensesObject,
@@ -108,65 +94,27 @@ export class SettingsService {
     });
   }
 
-  // TODO: Add model
   @CacheBuster({
     cacheBusterNotifier: mappingsSettingsCache
   })
-  postMappingSettings(workspaceId: number, mappingSettings: any) {
+  postMappingSettings(workspaceId: number, mappingSettings: MappingSetting[]): Observable<MappingSetting[]> {
     return this.apiService.post(`/workspaces/${workspaceId}/mappings/settings/`, mappingSettings);
   }
 
-  // TODO: Add model
   @Cacheable({
     cacheBusterObserver: generalSettingsCache
   })
-  getGeneralSettings(workspaceId: number) {
+  getGeneralSettings(workspaceId: number): Observable<GeneralSetting> {
     return this.apiService.get(`/workspaces/${workspaceId}/settings/general/`, {});
   }
 
-  // TODO: Add model
   @CacheBuster({
     cacheBusterNotifier: tenantMappingCache
   })
-  postTenantMappings(workspaceId: number, tenantName: string, tenantId: string) {
+  postTenantMappings(workspaceId: number, tenantName: string, tenantId: string): Observable<TenantMapping> {
     return this.apiService.post(`/workspaces/${workspaceId}/mappings/tenant/`, {
       tenant_name: tenantName,
       tenant_id: tenantId
     });
-  }
-
-  // TODO: Add model
-  @Cacheable({
-    cacheBusterObserver: merge(generalSettingsCache, generalSettingsCache)
-  })
-  getCombinedSettings(workspaceId: number) {
-    // TODO: remove promises and do with rxjs observables
-    return from(forkJoin(
-      [
-        this.getGeneralSettings(workspaceId),
-        this.getMappingSettings(workspaceId)
-      ]
-    ).toPromise().then(responses => {
-      const generalSettings = responses[0];
-      const mappingSettings = responses[1].results;
-
-      const projectFieldMapping = mappingSettings.filter(
-        settings => settings.source_field === 'PROJECT'
-      )[0];
-
-      const costCenterFieldMapping = mappingSettings.filter(
-        settings => settings.source_field === 'COST_CENTER'
-      )[0];
-
-      if (projectFieldMapping) {
-        generalSettings.project_field_mapping = projectFieldMapping.destination_field;
-      }
-
-      if (costCenterFieldMapping) {
-        generalSettings.cost_center_field_mapping = costCenterFieldMapping.destination_field;
-      }
-
-      return generalSettings;
-    }));
   }
 }

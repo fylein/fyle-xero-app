@@ -2,7 +2,7 @@
 // TODO: Use something for serialization / deserialization
 import { ExpenseGroupDescription } from './expense-group-description.model';
 
-export interface ExpenseGroup {
+export type ExpenseGroup = {
   id: number;
   fyle_group_id: string;
   fund_source: string;
@@ -11,4 +11,4 @@ export interface ExpenseGroup {
   updated_at: Date;
   workspace: number;
   expenses: number[];
-}
+};

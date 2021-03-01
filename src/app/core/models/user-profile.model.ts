@@ -1,6 +1,6 @@
 /* tslint:disable */
 // TODO: Use something for serialization / deserialization
-export class UserProfile {
+export type UserProfile = {
   id: string;
   user_id: string;
   created_at: Date;
@@ -30,16 +30,16 @@ export class UserProfile {
   perdiem_names: string;
   mileage_rate_labels: string;
   annual_mileage_of_user_before_joining_fyle: {
-      two_wheeler: number;
-      four_wheeler: number;
-      four_wheeler1: number;
-      four_wheeler3: number;
-      four_wheeler4: number;
-      bicycle: number;
-      electric_car: number
+    two_wheeler: number;
+    four_wheeler: number;
+    four_wheeler1: number;
+    four_wheeler3: number;
+    four_wheeler4: number;
+    bicycle: number;
+    electric_car: number
   };
   custom_fields: [];
   disabled: boolean;
   org_id: string;
   org_name: string;
-}
+};

@@ -7,6 +7,8 @@ import { MappingsService } from 'src/app/core/services/mappings.service';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
 import { XeroComponent } from 'src/app/xero/xero.component';
+import { MappingSetting } from 'src/app/core/models/mapping-setting.model';
+import { ExpenseField } from 'src/app/core/models/expense-field.model';
 
 @Component({
   selector: 'app-expense-field-configuration',
@@ -18,12 +20,11 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
   expenseFields: FormArray;
   workspaceId: number;
   isLoading: boolean;
-  mappingSettings: any;
-  fyleExpenseFields: any;
-  xeroFields: any;
-  fyleFormFieldList: any;
-  selectedFyleFields: string[] = [];
-  xeroFormFieldList: any;
+  mappingSettings: MappingSetting[];
+  fyleExpenseFields: ExpenseField[];
+  xeroFields: ExpenseField[];
+  fyleFormFieldList: ExpenseField[];
+  xeroFormFieldList: ExpenseField[];
   windowReference: Window;
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private settingsService: SettingsService, private mappingsService: MappingsService, private xero: XeroComponent, private windowReferenceService: WindowReferenceService) {
@@ -64,7 +65,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
     const that = this;
 
     that.isLoading = true;
-    const expenseFields = that.expenseFieldsForm.value.expenseFields;
+    const expenseFields: MappingSetting[] = that.expenseFieldsForm.value.expenseFields;
 
     that.settingsService.postMappingSettings(that.workspaceId, expenseFields).subscribe(response => {
       that.xero.getGeneralSettings();

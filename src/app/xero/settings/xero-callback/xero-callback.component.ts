@@ -20,8 +20,7 @@ export class XeroCallbackComponent implements OnInit {
     const that = this;
     const workspaceId: number = that.route.snapshot.queryParams.state;
     const xeroCode: string = that.route.snapshot.queryParams.code;
-    // TODO: replace with rxjs implementation
-    that.settingsService.connectXero(workspaceId, {code: xeroCode}).toPromise().then(() => {
+    that.settingsService.connectXero(workspaceId, {code: xeroCode}).subscribe(() => {
       this.mappingsService.postXeroTenants().subscribe(response => {
         that.router.navigateByUrl(`workspaces/${workspaceId}/dashboard`);
       });

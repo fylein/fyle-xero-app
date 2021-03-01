@@ -10,6 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { forkJoin, from, interval } from 'rxjs';
 import { WorkspaceService } from 'src/app/core/services/workspace.service';
 import { switchMap, takeWhile } from 'rxjs/operators';
+import { Workspace } from 'src/app/core/models/workspace.model';
+import { ExpenseGroupSetting } from 'src/app/core/models/expense-group-setting.model';
 
 @Component({
   selector: 'app-sync',
@@ -19,12 +21,12 @@ import { switchMap, takeWhile } from 'rxjs/operators';
 export class SyncComponent implements OnInit {
 
   workspaceId: number;
-  workspace: any;
+  workspace: Workspace;
   isLoading: boolean;
   isExpensesSyncing: boolean;
   isEmployeesSyncing: boolean;
   errorOccurred = false;
-  expenseGroupSettings: any;
+  expenseGroupSettings: ExpenseGroupSetting;
 
   constructor(private expenseGroupService: ExpenseGroupsService, private route: ActivatedRoute, private taskService: TasksService, private snackBar: MatSnackBar, private workspaceService: WorkspaceService, public dialog: MatDialog) { }
 

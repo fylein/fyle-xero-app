@@ -1,6 +1,6 @@
 /* tslint:disable */
 // TODO: Use something for serialization / deserialization
-export class Organization {
+export type Organization = {
   id: string;
   created_at: Date;
   updated_at: Date
@@ -19,4 +19,4 @@ export class Organization {
   verified: boolean;
   lite: boolean;
   dwolla_customers_metadata_id: string
-}
+};

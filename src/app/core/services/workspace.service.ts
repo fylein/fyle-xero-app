@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 import { StorageService } from './storage.service';
+import { Workspace } from '../models/workspace.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +13,17 @@ export class WorkspaceService {
     private apiService: ApiService,
     private storageService: StorageService) { }
 
-  // TODO: Replace any with proper model
-  createWorkspace(): Observable<any> {
+  createWorkspace(): Observable<Workspace> {
     return this.apiService.post('/workspaces/', {});
   }
 
-  // TODO: Replace any with proper model
-  getWorkspaces(orgId): Observable<any> {
+  getWorkspaces(orgId): Observable<Workspace[]> {
     return this.apiService.get(`/workspaces/`, {
       org_id: orgId
     });
   }
 
-  getWorkspaceById(): Observable<any> {
+  getWorkspaceById(): Observable<Workspace> {
     const workspaceId = this.getWorkspaceId();
     return this.apiService.get(`/workspaces/${workspaceId}/`, {});
   }

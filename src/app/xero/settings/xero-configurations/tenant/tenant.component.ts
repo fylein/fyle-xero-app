@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MappingsService } from '../../../../core/services/mappings.service';
 import { SettingsService } from 'src/app/core/services/settings.service';
+import { MappingDestination } from 'src/app/core/models/mapping-destination.model';
+import { TenantMapping } from 'src/app/core/models/tenant-mapping.model';
 
 @Component({
   selector: 'app-tenant',
@@ -13,9 +15,9 @@ export class TenantComponent implements OnInit {
 
   tenantForm: FormGroup;
   workspaceId: number;
-  xeroTenants: any[];
+  xeroTenants: MappingDestination[];
   isLoading = true;
-  tenantMappings: any;
+  tenantMappings: TenantMapping;
   tenantMappingDone: boolean;
 
   constructor(private formBuilder: FormBuilder,

@@ -1,6 +1,6 @@
 /* tslint:disable */
 // TODO: Use something for serialization / deserialization
-export interface Expense {
+export type Expense = {
   amount: number;
   approved_at: Date;
   category: string;
@@ -28,4 +28,9 @@ export interface Expense {
   sub_category: string;
   updated_at: Date;
   vendor: string;
-}
+  billable: boolean;
+  verified_at: Date;
+  paid_on_netsuite: boolean;
+  // Having any here is ok, since different expense have different properties
+  custom_properties: any[];
+};

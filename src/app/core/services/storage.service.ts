@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class StorageService {
   constructor() {}
 
+  // having any here is okay, since we store different types of data in localstorage
   set(key: string, data: any): void {
     try {
       localStorage.setItem(key, JSON.stringify(data));
