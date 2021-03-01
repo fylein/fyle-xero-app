@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MappingsService } from '../../../core/services/mappings.service';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
@@ -36,28 +36,31 @@ export class GeneralMappingsComponent implements OnInit {
 
   submit() {
     const that = this;
-    const bankAccountId = that.form.value.bankAccounts || '';
-    const bankAccount: MappingDestination = that.bankAccounts.filter(filteredBankAccount => filteredBankAccount.destination_id === bankAccountId)[0] || null;
 
-    const paymentAccountId = that.generalSettings.sync_fyle_to_xero_payments ? that.form.value.paymentAccounts : '';
-    const paymentAccount: MappingDestination = that.generalSettings.sync_fyle_to_xero_payments ? that.paymentAccounts.filter(filteredAccountsPayableAccount => filteredAccountsPayableAccount.destination_id === paymentAccountId)[0] : null;
+    if (that.form.valid) {
+      const bankAccountId = that.form.value.bankAccounts || '';
+      const bankAccount: MappingDestination = that.bankAccounts.filter(filteredBankAccount => filteredBankAccount.destination_id === bankAccountId)[0] || null;
 
-    const generalMappings = {
-      bank_account_name: bankAccount.value,
-      bank_account_id: bankAccount.destination_id,
-      payment_account_name: paymentAccount.value,
-      payment_account_id: paymentAccount.destination_id
-    };
+      const paymentAccountId = that.generalSettings.sync_fyle_to_xero_payments ? that.form.value.paymentAccounts : '';
+      const paymentAccount: MappingDestination = that.generalSettings.sync_fyle_to_xero_payments ? that.paymentAccounts.filter(filteredAccountsPayableAccount => filteredAccountsPayableAccount.destination_id === paymentAccountId)[0] : null;
 
-    if (bankAccountId || paymentAccountId) {
+      const generalMappings = {
+        bank_account_name: bankAccount ? bankAccount.value : null,
+        bank_account_id: bankAccount ? bankAccount.destination_id : null,
+        payment_account_name: paymentAccount ? paymentAccount.value : null,
+        payment_account_id: paymentAccount ? paymentAccount.destination_id : null
+      };
       that.isLoading = true;
-      this.mappingsService.postGeneralMappings(generalMappings).subscribe(response => {
+      this.mappingsService.postGeneralMappings(generalMappings).subscribe(() => {
         const onboarded = that.storageService.get('onboarded');
         if (onboarded === true) {
           that.getGeneralMappings();
         } else {
           that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
         }
+      }, error => {
+        that.snackBar.open('Please fill up the form with valid values');
+        that.form.markAllAsTouched();
       });
     } else {
       that.snackBar.open('Please fill up the form with valid values');
@@ -73,14 +76,14 @@ export class GeneralMappingsComponent implements OnInit {
       that.isLoading = false;
 
       that.form = that.formBuilder.group({
-        bankAccounts: [that.generalMappings ? that.generalMappings.bank_account_id : ''],
-        paymentAccounts: [that.generalMappings ? that.generalMappings.payment_account_id : '']
+        bankAccounts: [that.generalMappings ? that.generalMappings.bank_account_id : '', that.generalSettings.corporate_credit_card_expenses_object ? Validators.required : ''],
+        paymentAccounts: [that.generalMappings ? that.generalMappings.payment_account_id : '', that.generalSettings.sync_fyle_to_xero_payments ? Validators.required : '']
       });
     }, error => {
       that.isLoading = false;
       that.form = that.formBuilder.group({
-        bankAccounts: [null],
-        paymentAccounts: [null]
+        bankAccounts: [null, that.generalSettings.corporate_credit_card_expenses_object ? Validators.required : null],
+        paymentAccounts: [null, that.generalSettings.sync_fyle_to_xero_payments ? Validators.required : null]
       });
     });
   }

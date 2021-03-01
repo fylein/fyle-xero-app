@@ -92,8 +92,8 @@ export class ConfigurationComponent implements OnInit {
         }
       ];
 
-      const reimbursableExpensesObject = that.generalSettingsForm.value.reimbursableExpense || that.generalSettings.reimbursable_expenses_object;
-      const cccExpensesObject = that.generalSettingsForm.value.cccExpense || that.generalSettings.corporate_credit_card_expenses_object;
+      const reimbursableExpensesObject = that.generalSettingsForm.value.reimbursableExpense || (that.generalSettings ? that.generalSettings.reimbursable_expenses_object : null);
+      const cccExpensesObject = that.generalSettingsForm.value.cccExpense || (that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : null);
       const importCategories = that.generalSettingsForm.value.importCategories;
       const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
 

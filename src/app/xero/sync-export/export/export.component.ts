@@ -100,8 +100,7 @@ export class ExportComponent implements OnInit {
       if (that.generalSettings.reimbursable_expenses_object) {
         const filteredIds = that.exportableExpenseGroups.filter(expenseGroup => expenseGroup.fund_source === 'PERSONAL').map(expenseGroup => expenseGroup.id);
         if (filteredIds.length > 0) {
-          // TODO: remove promises and do with rxjs observables
-          promises.push(that.exportReimbursableExpenses(that.generalSettings.reimbursable_expenses_object)(filteredIds).toPromise());
+          promises.push(that.exportReimbursableExpenses(that.generalSettings.reimbursable_expenses_object)(filteredIds));
           allFilteredIds = allFilteredIds.concat(filteredIds);
         }
       }
@@ -109,13 +108,12 @@ export class ExportComponent implements OnInit {
       if (that.generalSettings.corporate_credit_card_expenses_object) {
         const filteredIds = that.exportableExpenseGroups.filter(expenseGroup => expenseGroup.fund_source === 'CCC').map(expenseGroup => expenseGroup.id);
         if (filteredIds.length > 0) {
-          // TODO: remove promises and do with rxjs observables
-          promises.push(that.exportCCCExpenses(that.generalSettings.corporate_credit_card_expenses_object)(filteredIds).toPromise());
+          promises.push(that.exportCCCExpenses(that.generalSettings.corporate_credit_card_expenses_object)(filteredIds));
 
           allFilteredIds = allFilteredIds.concat(filteredIds);
         }
       }
-      // TODO: remove promises and do with rxjs observables
+
       if (promises.length > 0) {
         forkJoin(
           promises

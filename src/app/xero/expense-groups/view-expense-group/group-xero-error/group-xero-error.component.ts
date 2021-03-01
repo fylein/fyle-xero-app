@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TasksService } from 'src/app/core/services/tasks.service';
 import { ActivatedRoute } from '@angular/router';
 import { Task } from 'src/app/core/models/task.model';
+import { XeroValidationError } from 'src/app/core/models/xero-validation-error.model';
 
 @Component({
   selector: 'app-group-xero-error',
@@ -17,7 +18,7 @@ export class GroupXeroErrorComponent implements OnInit {
   task: Task;
   count: number;
 
-  xeroErrors: MatTableDataSource<any> = new MatTableDataSource([]);
+  xeroErrors: MatTableDataSource<XeroValidationError> = new MatTableDataSource([]);
   columnsToDisplay = ['error', 'message'];
 
   constructor(private taskService: TasksService, private route: ActivatedRoute) { }

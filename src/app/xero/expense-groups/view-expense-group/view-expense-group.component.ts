@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ExpenseGroupsService } from '../../../core/services/expense-groups.service';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { TasksService } from '../../../core/services/tasks.service';
-import { environment } from 'src/environments/environment';
 import { ExpenseGroup } from 'src/app/core/models/expense-group.model';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
@@ -52,40 +51,28 @@ export class ViewExpenseGroupComponent implements OnInit {
     this.windowReference.open(`${clusterDomain}/app/main/#/enterprise/view_expense/${expenseId}`, '_blank');
   }
 
-  initExpenseGroupDetails() {
+  ngOnInit() {
     const that = this;
-    // TODO: remove promises and do with rxjs observables
-    return that.expenseGroupsService.getExpensesGroupById(that.expenseGroupId).toPromise().then((expenseGroup) => {
-      that.expenseGroup = expenseGroup;
-      return expenseGroup;
-    });
-  }
 
-  initTasks() {
-    const that = this;
-    // TODO: remove promises and do with rxjs observables
-    return that.tasksService.getTasksByExpenseGroupId(that.expenseGroupId).toPromise().then((tasks) => {
-      if (tasks.length > 0) {
-        that.task = tasks[0];
+    that.workspaceId = +that.route.snapshot.params.workspace_id;
+    that.expenseGroupId = +that.route.snapshot.params.expense_group_id;
+    that.state = that.route.snapshot.firstChild.routeConfig.path.toUpperCase() || 'INFO';
+
+    forkJoin(
+      [
+        that.expenseGroupsService.getExpensesGroupById(that.expenseGroupId),
+        that.tasksService.getTasksByExpenseGroupId(that.expenseGroupId)
+      ]
+    ).subscribe(response => {
+      that.isLoading = false;
+
+      that.expenseGroup = response[0];
+      if (response[1].length > 0) {
+        that.task = response[1][0];
         that.showMappingErrors = that.task.detail ? true : false;
         that.showXeroErrors = that.task.xero_errors ? true : false;
         that.status = that.task.status;
       }
-    });
-  }
-
-  ngOnInit() {
-    this.workspaceId = +this.route.snapshot.params.workspace_id;
-    this.expenseGroupId = +this.route.snapshot.params.expense_group_id;
-    this.state = this.route.snapshot.firstChild.routeConfig.path.toUpperCase() || 'INFO';
-
-    forkJoin(
-      [
-        this.initExpenseGroupDetails(),
-        this.initTasks()
-      ]
-    ).subscribe(response => {
-      this.isLoading = false;
     });
   }
 

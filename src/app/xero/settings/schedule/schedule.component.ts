@@ -30,15 +30,12 @@ export class ScheduleComponent implements OnInit {
     const that = this;
     that.isLoading = true;
     that.settingsService.getSettings(that.workspaceId).subscribe((settings: ScheduleSettings) => {
-      // TODO: Api should return schedule always - check and cleanup
       that.settings = settings;
-      if (settings) {
-        that.form.setValue({
-          datetime: new Date(settings.start_datetime),
-          hours: settings.interval_hours,
-          scheduleEnabled: settings.enabled
-        });
-      }
+      that.form.setValue({
+        datetime: new Date(settings.start_datetime),
+        hours: settings.interval_hours,
+        scheduleEnabled: settings.enabled
+      });
       that.isLoading = false;
     }, (error) => {
       that.isLoading = false;
