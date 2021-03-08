@@ -30,7 +30,6 @@ export class ScheduleComponent implements OnInit {
     that.settingsService.getSettings(that.workspaceId).subscribe((settings: ScheduleSettings) => {
       that.settings = settings;
       that.form.setValue({
-        datetime: new Date(settings.start_datetime),
         hours: settings.interval_hours,
         scheduleEnabled: settings.enabled
       });
