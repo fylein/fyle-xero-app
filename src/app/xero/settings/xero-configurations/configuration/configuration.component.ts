@@ -51,8 +51,6 @@ export class ConfigurationComponent implements OnInit {
         paymentsSyncOption = 'sync_xero_to_fyle_payments';
       }
 
-      that.showAutoCreateOption(that.generalSettings.auto_map_employees);
-
       that.generalSettingsForm = that.formBuilder.group({
         reimbursableExpense: [that.generalSettings ? that.generalSettings.reimbursable_expenses_object : ''],
         cccExpense: [that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : ''],
@@ -61,6 +59,8 @@ export class ConfigurationComponent implements OnInit {
         autoMapEmployees: [that.generalSettings.auto_map_employees],
         autoCreateDestinationEntity: [that.generalSettings.auto_create_destination_entity]
       });
+
+      that.showAutoCreateOption(that.generalSettings.auto_map_employees);
 
       that.generalSettingsForm.controls.reimbursableExpense.disable();
 
@@ -157,6 +157,7 @@ export class ConfigurationComponent implements OnInit {
       that.showAutoCreate = true;
     } else {
       that.showAutoCreate = false;
+      that.generalSettingsForm.controls.autoCreateDestinationEntity.setValue(false);
     }
   }
 
