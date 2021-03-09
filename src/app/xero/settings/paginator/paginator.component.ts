@@ -8,7 +8,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 })
 export class PaginatorComponent implements OnInit {
   pageSize: number;
-  @Input() page: number;
+  @Input() pageIndexNumber: number;
   @Input() isLoading: boolean;
   @Input() count: number;
   @Input() coloumnArray: string[];
@@ -17,11 +17,10 @@ export class PaginatorComponent implements OnInit {
   constructor(private storageService: StorageService) {}
 
   getParentMappings() {
-    console.log(this.page)
     const that = this;
     const data = {
       pageSize: that.pageSize,
-      pageNumber: that.page
+      pageNumber: that.pageIndexNumber
     };
     that.getMappings.emit(data);
   }
@@ -33,14 +32,14 @@ export class PaginatorComponent implements OnInit {
     }
     
     that.pageSize = event.pageSize;
-    that.page = event.pageIndex;
+    that.pageIndexNumber = event.pageIndex;
     that.getParentMappings();
   }
 
   ngOnInit() {
     const that = this;
     that.pageSize = that.storageService.get('mappings.pageSize') || 1;
-    that.page = 0;
+    that.pageIndexNumber = 0;
   }
 
 }

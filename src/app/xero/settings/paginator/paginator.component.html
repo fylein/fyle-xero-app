@@ -1,4 +1,4 @@
 <div *ngIf="count && !isLoading">
-    <mat-paginator [length]="count" [pageSizeOptions]="[2, 5 , 10, 500]" [pageSize]="pageSize" [pageIndex]="page" 
+    <mat-paginator [length]="count" [pageSizeOptions]="[2, 5 , 10, 500]" [pageSize]="pageSize" [pageIndex]="pageIndexNumber" 
     (page)="onPageChange($event)" showFirstLastButtons></mat-paginator>
 </div>
