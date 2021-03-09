@@ -12,7 +12,7 @@ export class PaginatorComponent implements OnInit {
   @Input() isLoading: boolean;
   @Input() count: number;
   @Input() coloumnArray: string[];
-  @Output() getMappings = new EventEmitter<any>();
+  @Output() getMappings = new EventEmitter<object>();
 
   constructor(private storageService: StorageService) {}
 
