@@ -48,7 +48,7 @@ export class GenericMappingsComponent implements OnInit {
       const onboarded = that.storageService.get('onboarded');
 
       const data = {
-        pageSize: that.storageService.get('mappings.pageSize') || 10,
+        pageSize: that.storageService.get('mappings.pageSize') || 50,
         pageNumber: 0
       };
 
@@ -120,7 +120,7 @@ export class GenericMappingsComponent implements OnInit {
         that.generalSettings = responses[1];
 
         const data = {
-          pageSize: that.storageService.get('mappings.pageSize') || 10,
+          pageSize: that.storageService.get('mappings.pageSize') || 50,
           pageNumber: 0
         };
 

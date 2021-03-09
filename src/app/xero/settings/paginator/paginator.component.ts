@@ -38,7 +38,7 @@ export class PaginatorComponent implements OnInit {
 
   ngOnInit() {
     const that = this;
-    that.pageSize = that.storageService.get('mappings.pageSize') || 1;
+    that.pageSize = that.storageService.get('mappings.pageSize') || 50;
     that.pageIndexNumber = 0;
   }
 
