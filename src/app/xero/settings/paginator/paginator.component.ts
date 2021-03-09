@@ -24,13 +24,13 @@ export class PaginatorComponent implements OnInit {
     };
     that.getMappings.emit(data);
   }
- 
+
   onPageChange(event) {
     const that = this;
     if (that.pageSize !== event.pageSize) {
         that.storageService.set('mappings.pageSize', event.pageSize);
     }
-    
+
     that.pageSize = event.pageSize;
     that.pageIndexNumber = event.pageIndex;
     that.getParentMappings();

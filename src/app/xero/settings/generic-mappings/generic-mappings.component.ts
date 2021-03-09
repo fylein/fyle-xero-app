@@ -123,7 +123,7 @@ export class GenericMappingsComponent implements OnInit {
           pageSize: that.storageService.get('mappings.pageSize') || 10,
           pageNumber: 0
         };
-  
+
         that.getMappings(data);
       });
     });
