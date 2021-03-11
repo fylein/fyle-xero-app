@@ -26,7 +26,7 @@ export class GenericMappingsComponent implements OnInit {
   generalSettings: GeneralSetting;
   setting: MappingSetting;
   count: number;
-  pageIndexNumber: number;
+  pageNumber: number;
   rowElement: Mapping;
   columnsToDisplay = ['sourceField', 'destinationField'];
 
@@ -76,7 +76,7 @@ export class GenericMappingsComponent implements OnInit {
     that.mappingsService.getMappings(that.setting.source_field, data.pageSize, null, data.pageSize * data.pageNumber).subscribe(mappings => {
       that.mappings = new MatTableDataSource(mappings.results);
       that.count = mappings.count;
-      that.pageIndexNumber = data.pageNumber;
+      that.pageNumber = data.pageNumber;
       that.mappings.filterPredicate = that.searchByText;
       that.isLoading = false;
     });

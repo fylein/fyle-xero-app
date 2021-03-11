@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
@@ -8,19 +9,19 @@ import { StorageService } from 'src/app/core/services/storage.service';
 })
 export class PaginatorComponent implements OnInit {
   pageSize: number;
-  @Input() pageIndexNumber: number;
+  pageNumber: number;
   @Input() isLoading: boolean;
   @Input() count: number;
   @Input() coloumnArray: string[];
   @Output() getMappings = new EventEmitter<object>();
 
-  constructor(private storageService: StorageService) {}
+  constructor(private storageService: StorageService, private route: ActivatedRoute) {}
 
   getParentMappings() {
     const that = this;
     const data = {
       pageSize: that.pageSize,
-      pageNumber: that.pageIndexNumber
+      pageNumber: that.pageNumber
     };
     that.getMappings.emit(data);
   }
@@ -32,14 +33,16 @@ export class PaginatorComponent implements OnInit {
     }
 
     that.pageSize = event.pageSize;
-    that.pageIndexNumber = event.pageIndex;
+    that.pageNumber = event.pageIndex;
     that.getParentMappings();
   }
 
   ngOnInit() {
     const that = this;
-    that.pageSize = that.storageService.get('mappings.pageSize') || 50;
-    that.pageIndexNumber = 0;
+    that.route.params.subscribe(val => {
+      that.pageSize = that.storageService.get('mappings.pageSize') || 50;
+      that.pageNumber = 0;
+  });
   }
 
 }
