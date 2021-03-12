@@ -62,7 +62,6 @@ export class SettingsService {
     );
   }
 
-  
   @Cacheable()
   getOrganisations(workspaceId: number): Observable<XeroOrganisation[]> {
     return this.apiService.get(`/workspaces/${workspaceId}/xero/organisations/`, {});
