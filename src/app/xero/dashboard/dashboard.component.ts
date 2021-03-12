@@ -8,6 +8,7 @@ import { ExpenseGroupsService } from 'src/app/core/services/expense-groups.servi
 import { StorageService } from 'src/app/core/services/storage.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 
 const FYLE_URL = environment.fyle_url;
 const FYLE_CLIENT_ID = environment.fyle_client_id;
@@ -36,8 +37,9 @@ enum onboardingStates {
 })
 export class DashboardComponent implements OnInit {
   workspaceId: number;
-  isLoading = false;
+  isLoading: boolean;
   showGeneralmappings = true;
+  generalSettings: GeneralSetting;
 
   currentState = onboardingStates.initialized;
 
@@ -101,7 +103,8 @@ export class DashboardComponent implements OnInit {
         that.settingsService.getGeneralSettings(that.workspaceId),
         that.settingsService.getMappingSettings(that.workspaceId)
       ]
-    ).toPromise().then((res) => {
+    ).toPromise().then(res => {
+      that.generalSettings = res[0];
       that.currentState = onboardingStates.configurationsDone;
       if (!res[0].corporate_credit_card_expenses_object && !res[0].sync_fyle_to_xero_payments) {
         that.showGeneralmappings = false;
@@ -125,14 +128,19 @@ export class DashboardComponent implements OnInit {
   getEmployeeMappings() {
     const that = this;
     // TODO: remove promises and do with rxjs observables
-    return that.mappingsService.getMappings('EMPLOYEE', 1).toPromise().then((res) => {
-      if (res.results.length > 0) {
-        that.currentState = onboardingStates.employeeMappingsDone;
-      } else {
-        throw new Error('employee mappings have no entries');
-      }
-      return res;
-    });
+    if (that.generalSettings && that.generalSettings.auto_create_destination_entity) {
+      that.currentState = onboardingStates.employeeMappingsDone;
+      return;
+    } else {
+      return that.mappingsService.getMappings('EMPLOYEE', 1).toPromise().then((res) => {
+        if (res.results.length > 0) {
+          that.currentState = onboardingStates.employeeMappingsDone;
+        } else {
+          throw new Error('employee mappings have no entries');
+        }
+        return res;
+      });
+    }
   }
 
   getCategoryMappings() {

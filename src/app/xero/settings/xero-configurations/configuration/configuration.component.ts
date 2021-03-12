@@ -19,6 +19,7 @@ export class ConfigurationComponent implements OnInit {
 
   isLoading: boolean;
   isSaveDisabled: boolean;
+  showAutoCreate: boolean;
   generalSettingsForm: FormGroup;
   expenseOptions: { label: string, value: string }[];
   cccExpenseOptions: { label: string, value: string }[];
@@ -55,14 +56,21 @@ export class ConfigurationComponent implements OnInit {
         cccExpense: [that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : ''],
         paymentsSync: [paymentsSyncOption],
         importCategories: [that.generalSettings.import_categories],
-        autoMapEmployees: [that.generalSettings.auto_map_employees]
+        autoMapEmployees: [that.generalSettings.auto_map_employees],
+        autoCreateDestinationEntity: [that.generalSettings.auto_create_destination_entity]
       });
+
+      that.showAutoCreateOption(that.generalSettings.auto_map_employees);
 
       that.generalSettingsForm.controls.reimbursableExpense.disable();
 
       if (that.generalSettings.corporate_credit_card_expenses_object) {
         that.generalSettingsForm.controls.cccExpense.disable();
       }
+
+      that.generalSettingsForm.controls.autoMapEmployees.valueChanges.subscribe((employeeMappingPreference) => {
+        that.showAutoCreateOption(employeeMappingPreference);
+      });
 
       that.isLoading = false;
     }, error => {
@@ -72,8 +80,12 @@ export class ConfigurationComponent implements OnInit {
         cccExpense: [null],
         paymentsSync: [null],
         importCategories: [false],
-        autoMapEmployees: [null]
-      }, {
+        autoMapEmployees: [null],
+        autoCreateDestinationEntity: [false]
+      });
+
+      that.generalSettingsForm.controls.autoMapEmployees.valueChanges.subscribe((employeeMappingPreference) => {
+        that.showAutoCreateOption(employeeMappingPreference);
       });
     });
   }
@@ -96,6 +108,7 @@ export class ConfigurationComponent implements OnInit {
       const cccExpensesObject = that.generalSettingsForm.value.cccExpense || (that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : null);
       const importCategories = that.generalSettingsForm.value.importCategories;
       const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
+      const autoCreateDestinationEntity = that.generalSettingsForm.value.autoCreateDestinationEntity;
 
       let fyleToXero = false;
       let xeroToFyle = false;
@@ -110,7 +123,7 @@ export class ConfigurationComponent implements OnInit {
       forkJoin(
         [
           that.settingsService.postMappingSettings(that.workspaceId, mappingsSettingsPayload),
-          that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories, autoMapEmployees)
+          that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories, autoCreateDestinationEntity, autoMapEmployees)
         ]
       ).subscribe(responses => {
         that.isLoading = true;
@@ -135,6 +148,16 @@ export class ConfigurationComponent implements OnInit {
     } else {
       that.snackBar.open('Form has invalid fields');
       that.generalSettingsForm.markAllAsTouched();
+    }
+  }
+
+  showAutoCreateOption(autoMapEmployees) {
+    const that = this;
+    if (autoMapEmployees && autoMapEmployees !== 'EMPLOYEE_CODE') {
+      that.showAutoCreate = true;
+    } else {
+      that.showAutoCreate = false;
+      that.generalSettingsForm.controls.autoCreateDestinationEntity.setValue(false);
     }
   }
 

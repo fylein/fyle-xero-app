@@ -82,9 +82,15 @@
           </mat-select>
         </mat-form-field>
       </div>
+
+      <mat-slide-toggle color="primary" class="schedule" *ngIf="showAutoCreate" formControlName="autoCreateDestinationEntity">
+        <div class="schedule--toggle-text">Auto Create Contact on Xero</div>
+      </mat-slide-toggle>
+
       <mat-slide-toggle color="primary" class="schedule" formControlName="importCategories">
         <div class="schedule--toggle-text">Import Xero Expense Accounts into Fyle</div>
       </mat-slide-toggle>
+
       <button [disabled]="isSaveDisabled || !generalSettingsForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="save()" type="submit">
         Save
       </button>

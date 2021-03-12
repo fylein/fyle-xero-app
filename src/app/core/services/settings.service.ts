@@ -9,6 +9,7 @@ import { MappingSettingResponse } from '../models/mapping-setting-response.model
 import { GeneralSetting } from '../models/general-setting.model';
 import { MappingSetting } from '../models/mapping-setting.model';
 import { TenantMapping } from '../models/tenant-mapping.model';
+import { XeroOrganisation } from '../models/xero-organisation.model';
 
 const fyleCredentialsCache = new Subject<void>();
 const xeroCredentialsCache = new Subject<void>();
@@ -61,6 +62,12 @@ export class SettingsService {
     );
   }
 
+  
+  @Cacheable()
+  getOrganisations(workspaceId: number): Observable<XeroOrganisation[]> {
+    return this.apiService.get(`/workspaces/${workspaceId}/xero/organisations/`, {});
+  }
+
   postSettings(workspaceId: number, scheduleHours: number, scheduleEnabled: boolean): Observable<ScheduleSettings> {
     return this.apiService.post(`/workspaces/${workspaceId}/schedule/`, {
       hours: scheduleHours,
@@ -82,14 +89,15 @@ export class SettingsService {
   @CacheBuster({
     cacheBusterNotifier: generalSettingsCache
   })
-  postGeneralSettings(workspaceId: number, reimbursableExpensesObject: string, corporateCreditCardExpensesObject: string, fyleToXero: boolean, xeroToFyle: boolean, importCategories: boolean, autoMapEmployees: string = null): Observable<GeneralSetting> {
+  postGeneralSettings(workspaceId: number, reimbursableExpensesObject: string, corporateCreditCardExpensesObject: string, fyleToXero: boolean, xeroToFyle: boolean, importCategories: boolean, autoCreateDestinationEntity: boolean, autoMapEmployees: string = null): Observable<GeneralSetting> {
     return this.apiService.post(`/workspaces/${workspaceId}/settings/general/`, {
       reimbursable_expenses_object: reimbursableExpensesObject,
       corporate_credit_card_expenses_object: corporateCreditCardExpensesObject,
       sync_fyle_to_xero_payments: fyleToXero,
       sync_xero_to_fyle_payments: xeroToFyle,
       import_categories: importCategories,
-      auto_map_employees: autoMapEmployees
+      auto_map_employees: autoMapEmployees,
+      auto_create_destination_entity: autoCreateDestinationEntity
     });
   }
 
