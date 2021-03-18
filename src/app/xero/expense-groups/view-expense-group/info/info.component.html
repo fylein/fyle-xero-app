@@ -19,7 +19,10 @@
             <div *ngIf="key === 'verified_at'">
               <strong>Verified on</strong> - {{ expenseGroup.description[key] | date }}
             </div>
-            <div *ngIf="key !== 'report_id' && key !=='employee_email' && key !== 'fund_source' && key !== 'current_date' && key !== 'verified_at' && key !== 'approved_at' && key !== 'spent_at'  && expenseGroup.description[key]">
+            <div *ngIf="key === 'last_spent_at'">
+              <strong>Last Spent on</strong> - {{ expenseGroup.description[key] | date }}
+            </div>
+            <div *ngIf="key !== 'report_id' && key !=='employee_email' && key !== 'fund_source' && key !== 'current_date' && key !== 'verified_at' && key !== 'approved_at' && key !== 'spent_at' && key !== 'last_spent_at' && expenseGroup.description[key]">
               <strong>{{ getTitle(key) | titlecase }}</strong> - {{ expenseGroup.description[key] }}
             </div>
           </div>

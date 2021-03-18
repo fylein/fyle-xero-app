@@ -87,6 +87,8 @@ export class SyncComponent implements OnInit {
       exportDateConfiguration = 'Approval Date';
     } else if (that.expenseGroupSettings.export_date_type === 'verified_at') {
       exportDateConfiguration = 'Verification Date';
+    } else if (that.expenseGroupSettings.export_date_type === 'last_spent_at') {
+      exportDateConfiguration = 'Last Spend Date';
     }
 
     return {
