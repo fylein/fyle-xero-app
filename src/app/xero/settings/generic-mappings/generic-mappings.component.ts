@@ -77,7 +77,6 @@ export class GenericMappingsComponent implements OnInit {
       that.mappings = new MatTableDataSource(mappings.results);
       that.count = mappings.count;
       that.pageNumber = data.pageNumber;
-      console.log(that.pageNumber)
       that.mappings.filterPredicate = that.searchByText;
       that.isLoading = false;
     });
