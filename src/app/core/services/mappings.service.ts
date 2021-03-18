@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { empty, Observable } from 'rxjs';
+import { empty, Observable, from, Subject } from 'rxjs';
+import { Cacheable, CacheBuster } from 'ngx-cacheable';
 import { concatMap, expand, map, publishReplay, reduce, refCount } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/services/api.service';
 import { ExpenseField } from '../models/expense-field.model';
@@ -10,6 +11,8 @@ import { MappingsResponse } from '../models/mappings-response.model';
 import { Mapping } from '../models/mappings.model';
 import { TenantMapping } from '../models/tenant-mapping.model';
 import { WorkspaceService } from './workspace.service';
+
+const generalMappingsCache = new Subject<void>();
 
 @Injectable({
   providedIn: 'root',
@@ -223,11 +226,17 @@ export class MappingsService {
     return this.apiService.get(`/workspaces/${workspaceId}/xero/tenants/`, {});
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: generalMappingsCache
+  })
   postGeneralMappings(generalMappings: GeneralMapping) {
     const workspaceId = this.workspaceService.getWorkspaceId();
     return this.apiService.post(`/workspaces/${workspaceId}/mappings/general/`, generalMappings);
   }
 
+  @Cacheable({
+    cacheBusterObserver: generalMappingsCache
+  })
   getGeneralMappings(): Observable<GeneralMapping> {
     const workspaceId = this.workspaceService.getWorkspaceId();
     return this.apiService.get(
@@ -242,9 +251,9 @@ export class MappingsService {
     );
   }
 
-  getMappings(sourceType: string, limit: number = 500, uri: string = null, pageOffset: number = 0): Observable<MappingsResponse> {
+  getMappings(sourceType: string, limit: number = 500, uri: string = null, pageOffset: number = 0, tableDimension: number = 2): Observable<MappingsResponse> {
     const workspaceId = this.workspaceService.getWorkspaceId();
-    const url = uri ? uri.split('/api')[1] : `/workspaces/${workspaceId}/mappings/?limit=${limit}&offset=${pageOffset}&source_type=${sourceType}`;
+    const url = uri ? uri.split('/api')[1] : `/workspaces/${workspaceId}/mappings/?limit=${limit}&offset=${pageOffset}&source_type=${sourceType}&table_dimension=${tableDimension}`;
     return this.apiService.get(url, {});
   }
 
