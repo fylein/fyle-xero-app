@@ -16,7 +16,7 @@
         Refresh Employee Mappings
       </button>
 
-      <mat-form-field class="simple-search" appearance="outline">
+      <mat-form-field class="simple-search" appearance="outline" *ngIf="count">
         <mat-label>Search</mat-label>
         <input matInput (keyup)="applyFilter($event)">
         <span matPrefix>
@@ -31,7 +31,7 @@
     </div>
 
     <div *ngIf="count && !mappings.filteredData.length">
-      <zero-state message="Looks like your search term doesn't match any of {{ getTitle(sourceField).toLowerCase() }} mappings yet"></zero-state>
+      <zero-state message="Looks like your search term doesn't match any of {{ getTitle(sourceField).charAt(0).toUpperCase() + getTitle(sourceField).slice(1) }} mappings"></zero-state>
     </div>
 
     <div *ngIf="count && mappings.filteredData.length" [hidden]="isLoading">
