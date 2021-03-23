@@ -30,7 +30,7 @@
     <zero-state message="You have no expense groups yet"></zero-state>
   </div>
 
-  <div *ngIf="count && !expenseGroups.filteredData.length">
+  <div *ngIf="count && !expenseGroups.filteredData.length &&  !isLoading">
     <zero-state message="Looks like your search term doesn't match any of the expense groups"></zero-state>
   </div>
   
