@@ -31,7 +31,7 @@
   </div>
 
   <div *ngIf="count && !expenseGroups.filteredData.length &&  !isLoading">
-    <zero-state message="Looks like your search term doesn't match any of the expense groups"></zero-state>
+    <zero-state message="Looks like your search term doesn't match any of the Expense groups"></zero-state>
   </div>
   
   <div *ngIf="count && expenseGroups.filteredData.length" [hidden]="isLoading">

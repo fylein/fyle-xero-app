@@ -30,7 +30,7 @@
       <zero-state message="You have no {{ getTitle(sourceField).toLowerCase() }} mappings yet"></zero-state>
     </div>
 
-    <div *ngIf="count && !mappings.filteredData.length">
+    <div *ngIf="count && !mappings.filteredData.length && !isLoading">
       <zero-state message="Looks like your search term doesn't match any of {{ getTitle(sourceField).charAt(0).toUpperCase() + getTitle(sourceField).slice(1) }} mappings"></zero-state>
     </div>
 
