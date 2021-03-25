@@ -67,9 +67,8 @@ export class SettingsService {
     return this.apiService.get(`/workspaces/${workspaceId}/xero/organisations/`, {});
   }
 
-  postSettings(workspaceId: number, nextRun: string, scheduleHours: number, scheduleEnabled: boolean): Observable<ScheduleSettings> {
+  postSettings(workspaceId: number, scheduleHours: number, scheduleEnabled: boolean): Observable<ScheduleSettings> {
     return this.apiService.post(`/workspaces/${workspaceId}/schedule/`, {
-      next_run: nextRun,
       hours: scheduleHours,
       schedule_enabled: scheduleEnabled
     });

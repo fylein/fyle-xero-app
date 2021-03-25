@@ -33,19 +33,6 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-
-          <div class="mat-body-strong">
-            <strong>
-              Start Date
-            </strong>
-          </div>
-
-          <mat-form-field floatLabel="always" appearance="outline" required>
-            <input [min]="minDate" placeholder="MMM DD, YYYY" formControlName="datetime" matInput
-              [matDatepicker]="myDatepicker">
-            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
-            <mat-datepicker #myDatepicker></mat-datepicker>
-          </mat-form-field>
         </div>
       </mat-card>
       <button *ngIf="form.controls.scheduleEnabled.value" class="schedule--save-btn" mat-flat-button color="primary"

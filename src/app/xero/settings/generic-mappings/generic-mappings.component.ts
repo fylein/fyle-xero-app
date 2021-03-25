@@ -11,6 +11,7 @@ import { Mapping } from 'src/app/core/models/mappings.model';
 import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 import { MappingSetting } from 'src/app/core/models/mapping-setting.model';
 import { MappingRow } from 'src/app/core/models/mapping-row.model';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-generic-mappings',
@@ -21,11 +22,14 @@ export class GenericMappingsComponent implements OnInit {
   workspaceId: number;
   sourceField: string;
   isLoading: boolean;
-  mappings: Mapping[];
+  mappings: MatTableDataSource<Mapping> = new MatTableDataSource([]);
   generalSettings: GeneralSetting;
   setting: MappingSetting;
+  count: number;
+  pageNumber: number;
   rowElement: Mapping;
   columnsToDisplay = ['sourceField', 'destinationField'];
+
 
   constructor(private mappingsService: MappingsService, private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private snackBar: MatSnackBar, private storageService: StorageService, private settingsService: SettingsService) { }
 
@@ -43,28 +47,49 @@ export class GenericMappingsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       const onboarded = that.storageService.get('onboarded');
 
-      if (onboarded === true) {
-        that.getMappings();
+      const data = {
+        pageSize: that.storageService.get('mappings.pageSize') || 50,
+        pageNumber: 0
+      };
+
+      if (onboarded) {
+        that.getMappings(data);
       } else {
         that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
       }
     });
   }
 
+  applyFilter(event: Event) {
+    const that = this;
+    const filterValue = (event.target as HTMLInputElement).value;
+    that.mappings.filter = filterValue.trim().toLowerCase();
+  }
+
   getTitle(name: string) {
     return name.replace(/_/g, ' ');
   }
 
-  getMappings() {
+  getMappings(data) {
     const that = this;
-    that.mappingsService.getAllMappings(that.setting.source_field).subscribe(mappings => {
-      that.mappings = mappings;
+    that.isLoading = true;
+    that.mappingsService.getMappings(that.setting.source_field, data.pageSize, null, data.pageSize * data.pageNumber).subscribe(mappings => {
+      that.mappings = new MatTableDataSource(mappings.results);
+      that.count = mappings.count;
+      that.pageNumber = data.pageNumber;
+      that.mappings.filterPredicate = that.searchByText;
       that.isLoading = false;
     });
   }
 
   goToConfigurations() {
     this.router.navigate([`/workspaces/${this.workspaceId}/settings/configurations/general/`]);
+  }
+
+
+  searchByText(data: Mapping, filterText: string) {
+    return data.source.value.toLowerCase().includes(filterText) ||
+    data.destination.value.toLowerCase().includes(filterText);
   }
 
   triggerAutoMapEmployees() {
@@ -76,6 +101,16 @@ export class GenericMappingsComponent implements OnInit {
     }, error => {
       that.isLoading = false;
       that.snackBar.open(error.error.message);
+    });
+  }
+
+  mappingsCheck() {
+    const that = this;
+    that.mappingsService.getGeneralMappings().subscribe(res => {
+      // Do nothing
+    }, () => {
+      that.snackBar.open('You cannot access this page yet. Please follow the onboarding steps in the dashboard or refresh your page');
+      that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
     });
   }
 
@@ -93,7 +128,16 @@ export class GenericMappingsComponent implements OnInit {
       ).subscribe(responses => {
         that.setting = responses[0].results.filter(setting => setting.source_field === that.sourceField.toUpperCase())[0];
         that.generalSettings = responses[1];
-        that.getMappings();
+        that.mappingsCheck();
+
+        that.isLoading = false;
+
+        const data = {
+          pageSize: that.storageService.get('mappings.pageSize') || 50,
+          pageNumber: 0
+        };
+
+        that.getMappings(data);
       });
     });
 

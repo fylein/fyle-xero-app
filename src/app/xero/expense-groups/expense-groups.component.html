@@ -29,8 +29,12 @@
   <div *ngIf="!count && !isLoading">
     <zero-state message="You have no expense groups yet"></zero-state>
   </div>
+
+  <div *ngIf="count && !expenseGroups.filteredData.length &&  !isLoading">
+    <zero-state message="Looks like your search term doesn't match any of the Expense groups"></zero-state>
+  </div>
   
-  <div *ngIf="count" [hidden]="isLoading">
+  <div *ngIf="count && expenseGroups.filteredData.length" [hidden]="isLoading">
     <table mat-table [dataSource]="expenseGroups" class="page-table" matSort matSortActive="created_at"
       matSortDisableClear matSortDirection="desc">  
 
@@ -80,6 +84,6 @@
         (click)="goToExpenseGroup(row.id)"></tr>
     </table>
   
-    <mat-paginator [length]="count" [pageSizeOptions]="[10, 50, 100, 200]" [pageSize]="pageSize" [pageIndex]="pageNumber"
+    <mat-paginator [length]="count" [hidden]="!expenseGroups.filteredData.length" [pageSizeOptions]="[10, 50, 100, 200]" [pageSize]="pageSize" [pageIndex]="pageNumber"
       (page)="onPageChange($event)" showFirstLastButtons></mat-paginator>
   </div>

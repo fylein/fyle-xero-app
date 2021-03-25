@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras, ActivationEnd } from '@angular/router';
 import { ExpenseGroupsService } from '../../core/services/expense-groups.service';
 import { ExpenseGroup } from 'src/app/core/models/expense-group.model';
@@ -8,13 +8,14 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { TasksService } from 'src/app/core/services/tasks.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
 import { GeneralSetting } from 'src/app/core/models/general-setting.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-expense-groups',
   templateUrl: './expense-groups.component.html',
   styleUrls: ['./expense-groups.component.scss', '../xero.component.scss'],
 })
-export class ExpenseGroupsComponent implements OnInit {
+export class ExpenseGroupsComponent implements OnInit, OnDestroy {
   workspaceId: number;
   expenseGroups: MatTableDataSource<ExpenseGroup> = new MatTableDataSource([]);
   isLoading = true;
@@ -25,6 +26,7 @@ export class ExpenseGroupsComponent implements OnInit {
   pageSize: number;
   columnsToDisplay = ['employee', 'expensetype'];
   windowReference: Window;
+  routerEventSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -92,7 +94,7 @@ export class ExpenseGroupsComponent implements OnInit {
     const that = this;
     that.workspaceId = +that.route.snapshot.params.workspace_id;
     that.pageNumber = +that.route.snapshot.queryParams.page_number || 0;
-    let cachedPageSize = that.storageService.get('pageSize') || 10;
+    let cachedPageSize = that.storageService.get('expense-groups.pageSize') || 10;
     that.pageSize = +that.route.snapshot.queryParams.page_size || cachedPageSize;
     that.state = that.route.snapshot.queryParams.state || 'FAILED';
     that.settingsService.getGeneralSettings(that.workspaceId).subscribe((settings) => {
@@ -106,11 +108,11 @@ export class ExpenseGroupsComponent implements OnInit {
       that.getPaginatedExpenseGroups();
     });
 
-    that.router.events.subscribe(event => {
-      if (event instanceof ActivationEnd) {
+    that.routerEventSubscription = that.router.events.subscribe(event => {
+      if (event instanceof ActivationEnd  && that.router.url === `/workspaces/${that.workspaceId}/expense_groups?page_number=${+event.snapshot.queryParams.page_number}&page_size=${event.snapshot.queryParams.page_size}&state=${event.snapshot.queryParams.state}`) {
         const pageNumber = +event.snapshot.queryParams.page_number || 0;
         if (+event.snapshot.queryParams.page_size) {
-          that.storageService.set('pageSize', +event.snapshot.queryParams.page_size);
+          that.storageService.set('expense-groups.pageSize', +event.snapshot.queryParams.page_size);
           cachedPageSize = +event.snapshot.queryParams.page_size;
         }
 
@@ -181,4 +183,11 @@ export class ExpenseGroupsComponent implements OnInit {
     this.reset();
     this.expenseGroups.filterPredicate = this.searchByText;
   }
+
+  ngOnDestroy() {
+    if (this.routerEventSubscription) {
+      this.routerEventSubscription.unsubscribe();
+    }
+  }
+
 }

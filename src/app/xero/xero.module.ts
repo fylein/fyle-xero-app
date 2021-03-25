@@ -54,6 +54,7 @@ import { GenericMappingsDialogComponent } from './settings/generic-mappings/gene
 import { XeroCallbackComponent } from './settings/xero-callback/xero-callback.component';
 import { GroupXeroErrorComponent } from './expense-groups/view-expense-group/group-xero-error/group-xero-error.component';
 import { MatTooltipModule } from '@angular/material';
+import { PaginatorComponent } from './settings/paginator/paginator.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { MatTooltipModule } from '@angular/material';
     ExpenseGroupSettingsDialogComponent,
     GenericMappingsComponent,
     GenericMappingsDialogComponent,
-    XeroCallbackComponent
+    XeroCallbackComponent,
+    PaginatorComponent
   ],
   entryComponents: [
     ExpenseGroupSettingsDialogComponent,
