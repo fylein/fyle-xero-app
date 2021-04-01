@@ -8,10 +8,10 @@ import { StorageService } from 'src/app/core/services/storage.service';
     styleUrls: ['./paginator.component.scss']
 })
 export class PaginatorComponent implements OnInit {
-    pageNumber: number;
     pageSize: number;
     multiplier: number;
     tableDimension: number;
+    @Input() pageNumber: number;
     @Input() isLoading: boolean;
     @Input() count: number;
     @Input() coloumnArray: string[];
