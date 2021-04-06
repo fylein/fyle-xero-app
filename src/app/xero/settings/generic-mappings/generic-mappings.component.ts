@@ -106,12 +106,14 @@ export class GenericMappingsComponent implements OnInit {
 
   mappingsCheck() {
     const that = this;
-    that.mappingsService.getGeneralMappings().subscribe(res => {
-      // Do nothing
-    }, () => {
-      that.snackBar.open('You cannot access this page yet. Please follow the onboarding steps in the dashboard or refresh your page');
-      that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
-    });
+    if (this.generalSettings.corporate_credit_card_expenses_object && this.generalSettings.sync_fyle_to_xero_payments) {
+      that.mappingsService.getGeneralMappings().subscribe(res => {
+        // Do nothing
+      }, () => {
+        that.snackBar.open('You cannot access this page yet. Please follow the onboarding steps in the dashboard or refresh your page');
+        that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
+      });
+    }
   }
 
   ngOnInit() {
