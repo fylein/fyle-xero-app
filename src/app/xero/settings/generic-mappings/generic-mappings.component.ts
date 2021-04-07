@@ -104,18 +104,6 @@ export class GenericMappingsComponent implements OnInit {
     });
   }
 
-  mappingsCheck() {
-    const that = this;
-    if (that.generalSettings.corporate_credit_card_expenses_object || that.generalSettings.sync_fyle_to_xero_payments) {
-      that.mappingsService.getGeneralMappings().subscribe(res => {
-        // Do nothing
-      }, () => {
-        that.snackBar.open('You cannot access this page yet. Please follow the onboarding steps in the dashboard or refresh your page');
-        that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
-      });
-    }
-  }
-
   ngOnInit() {
     const that = this;
     that.route.params.subscribe(val => {
@@ -130,7 +118,6 @@ export class GenericMappingsComponent implements OnInit {
       ).subscribe(responses => {
         that.setting = responses[0].results.filter(setting => setting.source_field === that.sourceField.toUpperCase())[0];
         that.generalSettings = responses[1];
-        that.mappingsCheck();
 
         that.isLoading = false;
 
