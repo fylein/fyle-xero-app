@@ -12,26 +12,29 @@
           <div fxLayout="row" fxLayoutAlign="space-between center">
             <div>
               <div>
-                <div *ngIf="!isExporting">
+                <div *ngIf="!isProcessingExports && !isExporting">
                   {{exportableExpenseGroups.length}} expense groups can be exported
                 </div>
-                <div *ngIf="isExporting">
+                <div *ngIf="!isProcessingExports && isExporting">
                   {{exportableExpenseGroups.length}} expense groups are being exported
+                </div>
+                <div *ngIf="isProcessingExports">
+                  {{processingExportsCount}} expense group(s) are still being exported, please wait for sometime
                 </div>
               </div>
             </div>
             <div>
-              <button type="button" [disabled]="isExporting" *ngIf="exportableExpenseGroups.length > 0" mat-flat-button color="primary" (click)="createXeroItems()">
-                <div *ngIf="!isExporting">
+              <button type="button" [disabled]="isExporting || isProcessingExports" mat-flat-button color="primary" (click)="createXeroItems()">
+                <div *ngIf="!isExporting && !isProcessingExports && exportableExpenseGroups && exportableExpenseGroups.length > 0">
                   Export
                 </div>
-                <div *ngIf="isExporting">
+                <div *ngIf="isExporting || isProcessingExports">
                   Exporting
                 </div>
               </button>
             </div>
           </div>
-          <div class="export-card--loader" *ngIf="isExporting">
+          <div class="export-card--loader" *ngIf="isExporting || isProcessingExports">
             <mat-progress-bar mode="buffer"></mat-progress-bar>
           </div>
   
