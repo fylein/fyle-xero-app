@@ -106,7 +106,7 @@ export class GenericMappingsComponent implements OnInit {
 
   mappingsCheck() {
     const that = this;
-    if (this.generalSettings.corporate_credit_card_expenses_object || this.generalSettings.sync_fyle_to_xero_payments) {
+    if (that.generalSettings.corporate_credit_card_expenses_object || that.generalSettings.sync_fyle_to_xero_payments) {
       that.mappingsService.getGeneralMappings().subscribe(res => {
         // Do nothing
       }, () => {
