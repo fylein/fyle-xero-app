@@ -11,6 +11,7 @@ import { SettingsService } from 'src/app/core/services/settings.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
 import { BankTransactionsService } from 'src/app/core/services/bank-transactions';
 import { GeneralSetting } from 'src/app/core/models/general-setting.model';
+import { TaskResponse } from 'src/app/core/models/task-reponse.model';
 
 @Component({
   selector: 'app-export',
@@ -21,6 +22,8 @@ export class ExportComponent implements OnInit {
 
   isLoading: boolean;
   isExporting: boolean;
+  isProcessingExports: boolean;
+  processingExportsCount: number;
   workspaceId: number;
   exportableExpenseGroups: ExpenseGroup[];
   generalSettings: GeneralSetting;
@@ -133,6 +136,43 @@ export class ExportComponent implements OnInit {
     });
   }
 
+  filterOngoingTasks(tasks: TaskResponse) {
+    return tasks.results.filter(task => (task.status === 'IN_PROGRESS' || task.status === 'ENQUEUED') && task.type !== 'FETCHING_EXPENSES').length;
+  }
+
+  checkOngoingExports() {
+    const that = this;
+
+    that.isProcessingExports = true;
+    interval(7000).pipe(
+      switchMap(() => from(that.taskService.getAllTasks('ALL'))),
+      takeWhile((response: TaskResponse) => that.filterOngoingTasks(response) > 0, true)
+    ).subscribe((tasks: TaskResponse) => {
+      that.processingExportsCount = that.filterOngoingTasks(tasks);
+      if (that.filterOngoingTasks(tasks) === 0) {
+        that.isProcessingExports = false;
+        that.loadExportableExpenseGroups();
+        that.snackBar.open('Export Complete');
+      }
+    });
+  }
+
+  reset() {
+    const that = this;
+
+    that.isExporting = false;
+    that.isLoading = true;
+
+    that.taskService.getAllTasks('ALL').subscribe((tasks: TaskResponse) => {
+      that.isLoading = false;
+      if (that.filterOngoingTasks(tasks) === 0) {
+        that.loadExportableExpenseGroups();
+      } else {
+        that.processingExportsCount = that.filterOngoingTasks(tasks);
+        that.checkOngoingExports();
+      }
+    });
+  }
 
   ngOnInit() {
     const that = this;
@@ -140,8 +180,7 @@ export class ExportComponent implements OnInit {
     that.isExporting = false;
     that.workspaceId = +that.route.parent.snapshot.params.workspace_id;
 
-    that.isLoading = true;
-    that.loadExportableExpenseGroups();
+    that.reset();
   }
 
 }
