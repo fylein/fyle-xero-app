@@ -23,7 +23,7 @@ export class MappingsService {
   fyleProjects: Observable<MappingSource[]>;
   fyleCostCenters: Observable<MappingSource[]>;
   fyleExpenseCustomFields: Observable<MappingSource[]>;
-  destinationWorkspace: Observable<{}>
+  destinationWorkspace: Observable<{}>;
   xeroContacts: Observable<MappingDestination[]>;
   xeroTrackingCategories: Observable<MappingDestination[]>;
   xeroItems: Observable<MappingDestination[]>;
@@ -31,13 +31,12 @@ export class MappingsService {
   xeroAccounts: Observable<MappingDestination[]>;
   xeroTenants: Observable<MappingDestination[]>;
   generalMappings: Observable<GeneralMapping>;
-  sourceWorkspace: Observable<{}>
+  sourceWorkspace: Observable<{}>;
 
   constructor(
     private apiService: ApiService,
     private workspaceService: WorkspaceService) { }
 
-  
   syncXeroDimensions() {
     const workspaceId = this.workspaceService.getWorkspaceById();
 
@@ -168,7 +167,6 @@ export class MappingsService {
 
   postXeroContacts() {
     const workspaceId = this.workspaceService.getWorkspaceId();
-    console.log("wor", workspaceId)
     if (!this.xeroContacts) {
       this.xeroContacts = this.apiService.post(`/workspaces/${workspaceId}/xero/contacts/`, {}).pipe(
         map(data => data),
