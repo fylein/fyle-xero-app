@@ -195,7 +195,7 @@ export class DashboardComponent implements OnInit {
     that.mappingsService.refreshFyleDimensions().subscribe(() => {});
     that.mappingsService.refreshXeroDimensions().subscribe(() => {});
 
-    that.snackBar.open('Refreshing Fyle and Netsuite Data');
+    that.snackBar.open('Refreshing Fyle and Xero Data');
   }
 
   // to be callled in background whenever dashboard is opened for sncing fyle data for org
