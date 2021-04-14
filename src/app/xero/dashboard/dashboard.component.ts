@@ -9,6 +9,8 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GeneralSetting } from 'src/app/core/models/general-setting.model';
+import { WorkspaceService } from 'src/app/core/services/workspace.service';
+import { Workspace } from 'src/app/core/models/workspace.model';
 
 const FYLE_URL = environment.fyle_url;
 const FYLE_CLIENT_ID = environment.fyle_client_id;
@@ -187,24 +189,21 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  syncDimension() {
+    const that = this;
+
+    that.mappingsService.refreshFyleDimensions().subscribe(() => {});
+    that.mappingsService.refreshXeroDimensions().subscribe(() => {});
+
+    that.snackBar.open('Refreshing Fyle and Netsuite Data');
+  }
+
   // to be callled in background whenever dashboard is opened for sncing fyle data for org
   updateDimensionTables() {
     const that = this;
 
-    onErrorResumeNext(
-      that.mappingsService.postFyleEmployees(),
-      that.mappingsService.postFyleCategories(),
-      that.mappingsService.postFyleCostCenters(),
-      that.mappingsService.postFyleProjects(),
-      that.mappingsService.postExpenseCustomFields()
-    ).subscribe(() => {});
-
-    onErrorResumeNext(
-      that.mappingsService.postXeroAccounts(),
-      that.mappingsService.postXeroContacts(),
-      that.mappingsService.postXeroItems(),
-      that.mappingsService.postXeroTrackingCategories()
-    ).subscribe(() => {});
+    that.mappingsService.syncFyleDimensions().subscribe(() => {});
+    that.mappingsService.syncXeroDimensions().subscribe(() => {});
   }
 
   openSchedule(event) {

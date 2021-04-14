@@ -42,7 +42,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 import { XeroConfigurationsComponent } from './settings/xero-configurations/xero-configurations.component';
 import { TenantComponent } from './settings/xero-configurations/tenant/tenant.component';
