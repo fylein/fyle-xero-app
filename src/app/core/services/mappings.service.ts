@@ -66,13 +66,13 @@ export class MappingsService {
   refreshXeroDimensions() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
-    return this.apiService.post(`/workspaces/${workspaceId}/xero/refresh/`, {});
+    return this.apiService.post(`/workspaces/${workspaceId}/xero/refresh_dimensions/`, {});
   }
 
   refreshFyleDimensions() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
-    return this.apiService.post(`/workspaces/${workspaceId}/fyle/refresh/`, {});
+    return this.apiService.post(`/workspaces/${workspaceId}/fyle/refresh_dimensions/`, {});
   }
 
   postFyleEmployees(): Observable<MappingSource[]> {
