@@ -38,7 +38,7 @@ export class MappingsService {
     private workspaceService: WorkspaceService) { }
 
   syncXeroDimensions() {
-    const workspaceId = this.workspaceService.getWorkspaceById();
+    const workspaceId = this.workspaceService.getWorkspaceId();
 
     if (!this.destinationWorkspace) {
       this.destinationWorkspace = this.apiService.post(`/workspaces/${workspaceId}/xero/sync_dimensions/`, {}).pipe(
