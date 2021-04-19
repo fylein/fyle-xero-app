@@ -53,14 +53,14 @@ export class MappingsService {
   syncFyleDimensions() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
-    if (!this.destinationWorkspace) {
-      this.destinationWorkspace = this.apiService.post(`/workspaces/${workspaceId}/fyle/sync_dimensions/`, {}).pipe(
+    if (!this.sourceWorkspace) {
+      this.sourceWorkspace = this.apiService.post(`/workspaces/${workspaceId}/fyle/sync_dimensions/`, {}).pipe(
         map(data => data),
         publishReplay(1),
         refCount()
       );
     }
-    return this.destinationWorkspace;
+    return this.sourceWorkspace;
   }
 
   refreshXeroDimensions() {
