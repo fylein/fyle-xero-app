@@ -133,7 +133,14 @@
   <div class="dashboard" *ngIf="currentState === allOnboardingStates.isOnboarded && !isLoading">
     <div class="mat-h2 dashboard--header">
       Dashboard
+      <mat-icon class="dashboard--stats-card-sync"
+        mat-list-icon
+        matTooltip="Sync Fyle and Xero Dimensions"
+        matTooltipPosition="right" (click)="syncDimension()">
+          sync
+      </mat-icon>
     </div>
+    
     <div fxLayout="row">
       <div class="dashboard--actions" fxLayout="column" fxLayoutAlign="start center">
         <mat-card class="dashboard--actions-card">

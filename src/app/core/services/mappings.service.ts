@@ -23,6 +23,7 @@ export class MappingsService {
   fyleProjects: Observable<MappingSource[]>;
   fyleCostCenters: Observable<MappingSource[]>;
   fyleExpenseCustomFields: Observable<MappingSource[]>;
+  destinationWorkspace: Observable<{}>;
   xeroContacts: Observable<MappingDestination[]>;
   xeroTrackingCategories: Observable<MappingDestination[]>;
   xeroItems: Observable<MappingDestination[]>;
@@ -30,14 +31,52 @@ export class MappingsService {
   xeroAccounts: Observable<MappingDestination[]>;
   xeroTenants: Observable<MappingDestination[]>;
   generalMappings: Observable<GeneralMapping>;
+  sourceWorkspace: Observable<{}>;
 
   constructor(
     private apiService: ApiService,
     private workspaceService: WorkspaceService) { }
 
-  postFyleEmployees(): Observable<MappingSource[]> {
+  syncXeroDimensions() {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
+    if (!this.destinationWorkspace) {
+      this.destinationWorkspace = this.apiService.post(`/workspaces/${workspaceId}/xero/sync_dimensions/`, {}).pipe(
+        map(data => data),
+        publishReplay(1),
+        refCount()
+      );
+    }
+    return this.destinationWorkspace;
+  }
+
+  syncFyleDimensions() {
+    const workspaceId = this.workspaceService.getWorkspaceId();
+
+    if (!this.sourceWorkspace) {
+      this.sourceWorkspace = this.apiService.post(`/workspaces/${workspaceId}/fyle/sync_dimensions/`, {}).pipe(
+        map(data => data),
+        publishReplay(1),
+        refCount()
+      );
+    }
+    return this.sourceWorkspace;
+  }
+
+  refreshXeroDimensions() {
+    const workspaceId = this.workspaceService.getWorkspaceId();
+
+    return this.apiService.post(`/workspaces/${workspaceId}/xero/refresh_dimensions/`, {});
+  }
+
+  refreshFyleDimensions() {
+    const workspaceId = this.workspaceService.getWorkspaceId();
+
+    return this.apiService.post(`/workspaces/${workspaceId}/fyle/refresh_dimensions/`, {});
+  }
+
+  postFyleEmployees(): Observable<MappingSource[]> {
+    const workspaceId = this.workspaceService.getWorkspaceId();
     if (!this.fyleEmployees) {
       this.fyleEmployees = this.apiService.post(`/workspaces/${workspaceId}/fyle/employees/`, {}).pipe(
         map(data => data),
@@ -128,7 +167,6 @@ export class MappingsService {
 
   postXeroContacts() {
     const workspaceId = this.workspaceService.getWorkspaceId();
-
     if (!this.xeroContacts) {
       this.xeroContacts = this.apiService.post(`/workspaces/${workspaceId}/xero/contacts/`, {}).pipe(
         map(data => data),
