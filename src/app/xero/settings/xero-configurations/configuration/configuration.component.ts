@@ -137,7 +137,7 @@ export class ConfigurationComponent implements OnInit {
         }
 
         that.xero.getSettingsAndNavigate();
-        
+
         that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
 
       });
