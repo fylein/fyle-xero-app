@@ -137,13 +137,9 @@ export class ConfigurationComponent implements OnInit {
         }
 
         that.xero.getSettingsAndNavigate();
-        if (that.generalSettings && that.generalSettings.reimbursable_expenses_object) {
-          that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`).then(() => {
-            that.windowReference.location.reload();
-          });
-        } else {
-          that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
-        }
+        
+        that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
+
       });
     } else {
       that.snackBar.open('Form has invalid fields');
