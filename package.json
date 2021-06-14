@@ -22,7 +22,7 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
-    "@rxweb/reactive-form-validators": "^2.0.0",
+    "@rxweb/reactive-form-validators": "~2.0.0",
     "flatpickr": "^4.6.3",
     "i": "^0.3.6",
     "ng2-flatpickr": "^9.0.0",
