@@ -9,7 +9,6 @@ import { MappingSettingResponse } from '../models/mapping-setting-response.model
 import { GeneralSetting } from '../models/general-setting.model';
 import { MappingSetting } from '../models/mapping-setting.model';
 import { TenantMapping } from '../models/tenant-mapping.model';
-import { XeroOrganisation } from '../models/xero-organisation.model';
 
 const fyleCredentialsCache = new Subject<void>();
 const xeroCredentialsCache = new Subject<void>();
@@ -63,8 +62,8 @@ export class SettingsService {
   }
 
   @Cacheable()
-  getOrganisations(workspaceId: number): Observable<XeroOrganisation[]> {
-    return this.apiService.get(`/workspaces/${workspaceId}/xero/organisations/`, {});
+  getXeroTokenHealth(workspaceId: number): Observable<{}> {
+    return this.apiService.get(`/workspaces/${workspaceId}/xero/token_health/`, {});
   }
 
   postSettings(workspaceId: number, scheduleHours: number, scheduleEnabled: boolean): Observable<ScheduleSettings> {
