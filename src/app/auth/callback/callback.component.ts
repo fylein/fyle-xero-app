@@ -32,7 +32,7 @@ export class CallbackComponent implements OnInit {
   ngOnInit() {
     const that = this;
     if (that.authService.isLoggedIn()) {
-      that.router.navigate(['/workspaces']);
+      that.authService.logout();
     }
     that.route.queryParams.subscribe(params => {
       if (params.code) {
