@@ -13,13 +13,13 @@
             <div>
               <div>
                 <div *ngIf="!isProcessingExports && !isExporting">
-                  {{exportableExpenseGroups.length}} expense groups can be exported
+                  {{exportableExpenseGroups.length}} expense group{{exportableExpenseGroups.length > 1 ? 's' : ''}} can be exported
                 </div>
                 <div *ngIf="!isProcessingExports && isExporting">
-                  {{exportableExpenseGroups.length}} expense groups are being exported
+                  {{exportedCount}} out of {{exportableExpenseGroups.length}} expense group{{exportableExpenseGroups.length > 1 ? 's' : ''}} are processed
                 </div>
                 <div *ngIf="isProcessingExports">
-                  {{processingExportsCount}} expense group(s) are still being exported, please wait for sometime
+                  {{processingExportsCount}} expense group{{processingExportsCount > 1 ? 's' : ''}} are still being exported, please wait for sometime
                 </div>
               </div>
             </div>
