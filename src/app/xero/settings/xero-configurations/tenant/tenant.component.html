@@ -22,7 +22,7 @@
           </mat-select>
         </mat-form-field>
         <mandatory-error-message listName="tenant" *ngIf="tenantForm.controls.xeroTenant.touched && !tenantForm.controls.xeroTenant.valid"></mandatory-error-message>
-        <button [disabled]="tenantMappingDone || !tenantForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
+        <button [disabled]="!tenantForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
           Save
         </button>
       </div>

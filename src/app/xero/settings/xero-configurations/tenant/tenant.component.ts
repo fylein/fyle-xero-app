@@ -18,7 +18,6 @@ export class TenantComponent implements OnInit {
   xeroTenants: MappingDestination[];
   isLoading = true;
   tenantMappings: TenantMapping;
-  tenantMappingDone: boolean;
 
   constructor(private formBuilder: FormBuilder,
               private settingsService: SettingsService,
@@ -48,7 +47,6 @@ export class TenantComponent implements OnInit {
         xeroTenant: [that.tenantMappings.tenant_id]
       });
       that.tenantForm.controls.xeroTenant.disable();
-      that.tenantMappingDone = true;
       this.isLoading = false;
     }, error => {
         this.isLoading = false;

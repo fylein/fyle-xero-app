@@ -97,7 +97,7 @@ export class GenericMappingsComponent implements OnInit {
     that.isLoading = true;
     that.mappingsService.triggerAutoMapEmployees().subscribe(() => {
       that.isLoading = false;
-      that.snackBar.open('Auto mapping of employees may take up to 10 minutes');
+      that.snackBar.open('Auto mapping of employees may take few minutes');
     }, error => {
       that.isLoading = false;
       that.snackBar.open(error.error.message);

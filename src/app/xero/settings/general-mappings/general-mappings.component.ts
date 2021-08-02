@@ -52,7 +52,7 @@ export class GeneralMappingsComponent implements OnInit {
     that.isLoading = true;
     this.mappingsService.postGeneralMappings(generalMappings).subscribe(() => {
       const onboarded = that.storageService.get('onboarded');
-      if (onboarded === true) {
+      if (onboarded) {
         that.getGeneralMappings();
       } else {
         that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);

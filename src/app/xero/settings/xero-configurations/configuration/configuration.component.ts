@@ -130,7 +130,7 @@ export class ConfigurationComponent implements OnInit {
 
       if (autoMapEmployees) {
         setTimeout(() => {
-          that.snackBar.open('Auto mapping of employees may take up to 10 minutes');
+          that.snackBar.open('Auto mapping of employees may take few minutes');
         }, 1500);
       }
 
