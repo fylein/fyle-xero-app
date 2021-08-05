@@ -19,6 +19,7 @@
 
         <div class="mat-body-strong" *ngIf="generalSettings.corporate_credit_card_expenses_object">
           Bank Account
+          <mandatory-field *ngIf="isFieldMandatory('bankAccounts')"></mandatory-field>
         </div>
         <mat-form-field floatLabel="always" appearance="outline" *ngIf="generalSettings.corporate_credit_card_expenses_object" required>
           <mat-select class="general-mappings--input" placeholder="Select bank account" formControlName="bankAccounts">
@@ -27,9 +28,11 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <mandatory-error-message listName="bank account" *ngIf="form.controls.bankAccounts.touched && !form.controls.bankAccounts.valid"></mandatory-error-message>
 
         <div class="mat-body-strong" *ngIf="generalSettings.sync_fyle_to_xero_payments">
           Payment Account
+          <mandatory-field *ngIf="isFieldMandatory('paymentAccounts')"></mandatory-field>
         </div>
         <mat-form-field floatLabel="always" appearance="outline" required
           *ngIf="generalSettings.sync_fyle_to_xero_payments">
@@ -40,8 +43,9 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <mandatory-error-message listName="payment account" *ngIf="form.controls.paymentAccounts.touched && !form.controls.paymentAccounts.valid"></mandatory-error-message>
       </div>
-      <button class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
+      <button [disabled]="!form.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
         Save
       </button>
     </form>

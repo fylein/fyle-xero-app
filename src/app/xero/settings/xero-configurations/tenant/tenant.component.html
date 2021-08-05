@@ -12,6 +12,7 @@
       <div fxLayout="column" fxLayoutAlign="start stretch">
         <div class="mat-body-strong">
           Xero Tenant
+          <mandatory-field></mandatory-field>
         </div>
         <mat-form-field floatLabel="always" appearance="outline" required>
           <mat-select class="general-mappings--input" placeholder="Select Xero Tenant" formControlName="xeroTenant">
@@ -20,7 +21,8 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button [disabled]="tenantMappingDone" class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
+        <mandatory-error-message listName="tenant" *ngIf="tenantForm.controls.xeroTenant.touched && !tenantForm.controls.xeroTenant.valid"></mandatory-error-message>
+        <button [disabled]="!tenantForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
           Save
         </button>
       </div>

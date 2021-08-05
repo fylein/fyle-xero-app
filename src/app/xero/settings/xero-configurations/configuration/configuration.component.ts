@@ -18,7 +18,6 @@ import { MappingSetting } from 'src/app/core/models/mapping-setting.model';
 export class ConfigurationComponent implements OnInit {
 
   isLoading: boolean;
-  isSaveDisabled: boolean;
   showAutoCreate: boolean;
   generalSettingsForm: FormGroup;
   expenseOptions: { label: string, value: string }[];
@@ -92,59 +91,54 @@ export class ConfigurationComponent implements OnInit {
 
   save() {
     const that = this;
-    if (that.generalSettingsForm.valid) {
-      const mappingsSettingsPayload: MappingSetting[] = [
-        {
-          source_field: 'CATEGORY',
-          destination_field: 'ACCOUNT'
-        },
-        {
-          source_field: 'EMPLOYEE',
-          destination_field: 'CONTACT'
-        }
-      ];
+    const mappingsSettingsPayload: MappingSetting[] = [
+      {
+        source_field: 'CATEGORY',
+        destination_field: 'ACCOUNT'
+      },
+      {
+        source_field: 'EMPLOYEE',
+        destination_field: 'CONTACT'
+      }
+    ];
 
-      const reimbursableExpensesObject = that.generalSettingsForm.value.reimbursableExpense || (that.generalSettings ? that.generalSettings.reimbursable_expenses_object : null);
-      const cccExpensesObject = that.generalSettingsForm.value.cccExpense || (that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : null);
-      const importCategories = that.generalSettingsForm.value.importCategories;
-      const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
-      const autoCreateDestinationEntity = that.generalSettingsForm.value.autoCreateDestinationEntity;
+    const reimbursableExpensesObject = that.generalSettingsForm.value.reimbursableExpense || (that.generalSettings ? that.generalSettings.reimbursable_expenses_object : null);
+    const cccExpensesObject = that.generalSettingsForm.value.cccExpense || (that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : null);
+    const importCategories = that.generalSettingsForm.value.importCategories;
+    const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
+    const autoCreateDestinationEntity = that.generalSettingsForm.value.autoCreateDestinationEntity;
 
-      let fyleToXero = false;
-      let xeroToFyle = false;
+    let fyleToXero = false;
+    let xeroToFyle = false;
 
-      if (that.generalSettingsForm.controls.paymentsSync.value) {
-        fyleToXero = that.generalSettingsForm.value.paymentsSync === 'sync_fyle_to_xero_payments' ? true : false;
-        xeroToFyle = that.generalSettingsForm.value.paymentsSync === 'sync_xero_to_fyle_payments' ? true : false;
+    if (that.generalSettingsForm.controls.paymentsSync.value) {
+      fyleToXero = that.generalSettingsForm.value.paymentsSync === 'sync_fyle_to_xero_payments' ? true : false;
+      xeroToFyle = that.generalSettingsForm.value.paymentsSync === 'sync_xero_to_fyle_payments' ? true : false;
+    }
+
+    that.isLoading = true;
+
+    forkJoin(
+      [
+        that.settingsService.postMappingSettings(that.workspaceId, mappingsSettingsPayload),
+        that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories, autoCreateDestinationEntity, autoMapEmployees)
+      ]
+    ).subscribe(responses => {
+      that.isLoading = true;
+      that.storageService.set('generalSettings', responses[1]);
+      that.snackBar.open('Configuration saved successfully');
+
+      if (autoMapEmployees) {
+        setTimeout(() => {
+          that.snackBar.open('Auto mapping of employees may take few minutes');
+        }, 1500);
       }
 
-      that.isLoading = true;
+      that.xero.getSettingsAndNavigate();
 
-      forkJoin(
-        [
-          that.settingsService.postMappingSettings(that.workspaceId, mappingsSettingsPayload),
-          that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories, autoCreateDestinationEntity, autoMapEmployees)
-        ]
-      ).subscribe(responses => {
-        that.isLoading = true;
-        that.storageService.set('generalSettings', responses[1]);
-        that.snackBar.open('Configuration saved successfully');
+      that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
 
-        if (autoMapEmployees) {
-          setTimeout(() => {
-            that.snackBar.open('Auto mapping of employees may take up to 10 minutes');
-          }, 1500);
-        }
-
-        that.xero.getSettingsAndNavigate();
-
-        that.router.navigateByUrl(`workspaces/${that.workspaceId}/dashboard`);
-
-      });
-    } else {
-      that.snackBar.open('Form has invalid fields');
-      that.generalSettingsForm.markAllAsTouched();
-    }
+    });
   }
 
   showAutoCreateOption(autoMapEmployees) {

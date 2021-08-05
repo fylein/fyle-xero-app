@@ -221,7 +221,7 @@ export class DashboardComponent implements OnInit {
     that.workspaceId = +that.route.snapshot.params.workspace_id;
     const onboarded = that.storageService.get('onboarded');
 
-    if (onboarded === true) {
+    if (onboarded) {
       that.updateDimensionTables();
       that.loadDashboardData();
       that.getXeroStatus().then(() => {

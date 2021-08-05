@@ -14,6 +14,7 @@
     <div fxLayout="column" fxLayoutAlign="start stretch">
       <div class="configurations--label">
         Map reimbursable Expenses from Fyle to
+        <mandatory-field></mandatory-field>
       </div>
       <mat-form-field floatLabel="always" appearance="outline" required>
         <mat-select placeholder="Choose Xero equivalent of Reimbursable Expenses"
@@ -23,6 +24,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mandatory-error-message listName="export type" *ngIf="generalSettingsForm.controls.reimbursableExpense.touched && !generalSettingsForm.controls.reimbursableExpense.valid"></mandatory-error-message>
 
       <div class="configurations--label">
         Map Corporate Credit Card Expenses from Fyle to
@@ -91,7 +93,7 @@
         <div class="schedule--toggle-text">Import Xero Expense Accounts into Fyle</div>
       </mat-slide-toggle>
 
-      <button [disabled]="isSaveDisabled || !generalSettingsForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="save()" type="submit">
+      <button [disabled]="!generalSettingsForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="save()" type="submit">
         Save
       </button>
     </div>
