@@ -44,14 +44,23 @@ export class SyncComponent implements OnInit {
 
   checkSyncStatus() {
     const that = this;
+    const lastSyncedAt = that.workspace.last_synced_at;
     interval(3000).pipe(
       switchMap(() => from(that.taskService.getAllTasks('ALL'))),
       takeWhile((response) => response.results.filter(task => task.status === 'IN_PROGRESS'  && task.type === 'FETCHING_EXPENSES').length > 0, true)
     ).subscribe((res) => {
       if (res.results.filter(task => task.status === 'COMPLETE'  && task.type === 'FETCHING_EXPENSES').length === 1) {
-        that.updateLastSyncStatus();
+        that.updateLastSyncStatus().subscribe((response) => {
+            if (response[0].last_synced_at !== lastSyncedAt) {
+              that.snackBar.open('Import Complete');
+            } else {
+              const expenseState = that.expenseGroupSettings.expense_state;
+              that.snackBar.open(`No new expense groups were imported. Kindly check your Fyle account to see if there are any expenses in the ${expenseState} state`, null, {
+                duration: 5000
+              });
+            }
+        });
         that.isExpensesSyncing = false;
-        that.snackBar.open('Import Complete');
       }
     });
   }
@@ -115,20 +124,18 @@ export class SyncComponent implements OnInit {
 
   updateLastSyncStatus() {
     const that = this;
-    that.isLoading = true;
-    forkJoin(
+    return from(forkJoin(
       [
         that.workspaceService.getWorkspaceById(),
         that.expenseGroupService.getExpenseGroupSettings()
       ]
-    )
-
-    .subscribe((res) => {
+    ).toPromise().then(res => {
       that.workspace = res[0];
       that.expenseGroupSettings = res[1];
       that.isLoading = false;
-    });
-  }
+      return res;
+  }));
+}
 
   ngOnInit() {
     const that = this;
