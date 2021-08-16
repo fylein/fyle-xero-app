@@ -12,7 +12,8 @@ export const environment = {
   xero_authorize_uri: '{{XERO_AUTHORIZE_URI}}',
   xero_client_id: '{{XERO_CLIENT_ID}}',
   xero_scope: '{{XERO_SCOPE}}',
-  xero_callback_uri: '{{XERO_CALLBACK_URI}}'
+  xero_callback_uri: '{{XERO_CALLBACK_URI}}',
+  hotjar_id : '{{HOTJAR_ID}}',
 };
 
 /*
