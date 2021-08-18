@@ -63,18 +63,6 @@ export class GeneralMappingsComponent implements OnInit {
     });
   }
 
-  setMandatoryField() {
-    const that = this;
-
-    if (that.generalSettings.corporate_credit_card_expenses_object) {
-      that.form.controls.bankAccounts.setValidators(Validators.required);
-    }
-
-    if (that.generalSettings.sync_fyle_to_xero_payments) {
-      that.form.controls.paymentAccounts.setValidators(Validators.required);
-    }
-  }
-
   isFieldMandatory(controlName: string) {
     const abstractControl = this.form.controls[controlName];
     if (abstractControl.validator) {
@@ -91,22 +79,18 @@ export class GeneralMappingsComponent implements OnInit {
     that.isLoading = true;
     that.mappingsService.getGeneralMappings().subscribe(generalMappings => {
       that.generalMappings = generalMappings;
-      that.isLoading = false;
-
-      that.setMandatoryField();
 
       that.form = that.formBuilder.group({
         bankAccounts: [that.generalMappings ? that.generalMappings.bank_account_id : '', that.generalSettings.corporate_credit_card_expenses_object ? Validators.required : ''],
         paymentAccounts: [that.generalMappings ? that.generalMappings.payment_account_id : '', that.generalSettings.sync_fyle_to_xero_payments ? Validators.required : '']
       });
-    }, () => {
       that.isLoading = false;
+    }, () => {
       that.form = that.formBuilder.group({
         bankAccounts: [null, that.generalSettings.corporate_credit_card_expenses_object ? Validators.required : null],
         paymentAccounts: [null, that.generalSettings.sync_fyle_to_xero_payments ? Validators.required : null]
       });
-
-      that.setMandatoryField();
+      that.isLoading = false;
     });
   }
 
