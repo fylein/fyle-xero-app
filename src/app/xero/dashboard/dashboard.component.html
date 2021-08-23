@@ -57,7 +57,8 @@
             </div>
             <div routerLink="../settings/configurations/tenant/" class="onboarding-stepper--navigation cursor-pointer"
               *ngIf="currentState === allOnboardingStates.xeroConnected"
-              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.xeroConnected}">
+              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.xeroConnected}"
+              (click)="onSelectTenant()">
               Select Tenant
             </div>
           </div>
@@ -77,7 +78,8 @@
             </div>
             <div routerLink="../settings/configurations/general/" class="onboarding-stepper--navigation cursor-pointer"
             *ngIf="currentState === allOnboardingStates.tenantMappingDone"
-            [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.tenantMappingDone}">
+            [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.tenantMappingDone}"
+            (click)="onMapFyleFieldsToXeroFields()">
               Go to Configurations
             </div>
           </div>
@@ -97,7 +99,8 @@
             </div>
             <div routerLink="../settings/general/mappings/" class="onboarding-stepper--navigation cursor-pointer"
               *ngIf="currentState === allOnboardingStates.configurationsDone && showGeneralmappings"
-              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.configurationsDone}">
+              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.configurationsDone}"
+              (click)="onMapBankAccounts()">
               Go to General Mappings
             </div>
           </div>
@@ -110,7 +113,8 @@
             </div>
             <div routerLink="../settings/employee/mappings/" class="onboarding-stepper--navigation cursor-pointer"
               *ngIf="currentState === allOnboardingStates.generalMappingsDone"
-              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.generalMappingsDone}">
+              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.generalMappingsDone}"
+              (click)="onMapEmployees()">
               Go to Employee Mappings
             </div>
           </div>
@@ -121,7 +125,8 @@
             </div>
             <div routerLink="../settings/category/mappings/" class="onboarding-stepper--navigation cursor-pointer"
               *ngIf="currentState === allOnboardingStates.employeeMappingsDone"
-              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.employeeMappingsDone}">
+              [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.employeeMappingsDone}"
+              (click)="onMapCategories()">
               Go to Category Mappings
             </div>
           </div>

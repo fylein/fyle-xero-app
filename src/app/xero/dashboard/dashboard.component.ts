@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 import { WorkspaceService } from 'src/app/core/services/workspace.service';
 import { Workspace } from 'src/app/core/models/workspace.model';
+import { TrackingService } from 'src/app/core/services/tracking.service';
 
 const FYLE_URL = environment.fyle_url;
 const FYLE_CLIENT_ID = environment.fyle_client_id;
@@ -63,7 +64,8 @@ export class DashboardComponent implements OnInit {
     private mappingsService: MappingsService,
     private storageService: StorageService,
     private windowReferenceService: WindowReferenceService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private trackingService: TrackingService) {
       this.windowReference = this.windowReferenceService.nativeWindow;
     }
 
@@ -214,6 +216,27 @@ export class DashboardComponent implements OnInit {
 
   connectXero() {
     this.windowReference.location.href = XERO_AUTHORIZE_URI + '?client_id=' + XERO_CLIENT_ID + '&scope=' + XERO_SCOPE + '&response_type=code&redirect_uri=' + XERO_CALLBACK_URI + '&state=' + this.workspaceId;
+    this.trackingService.connectXero();
+  }
+
+  onSelectTenant() {
+    this.trackingService.selectTenant();
+  }
+
+  onMapFyleFieldsToXeroFields() {
+    this.trackingService.mapFyleFieldsToXeroFields();
+  }
+
+  onMapBankAccounts() {
+    this.trackingService.mapBankAccounts();
+  }
+
+  onMapEmployees() {
+    this.trackingService.mapEmployees();
+  }
+
+  onMapCategories() {
+    this.trackingService.mapCategories();
   }
 
   ngOnInit() {
