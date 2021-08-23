@@ -18,7 +18,7 @@ export class TrackingService {
   eventTrack(action, properties) {
     properties = {
       ...properties,
-      Asset: 'NetSuite Web'
+      Asset: 'Xero Web'
     };
     if (this.tracking) {
       this.tracking.track(action, properties);
