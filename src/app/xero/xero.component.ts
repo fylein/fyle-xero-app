@@ -130,7 +130,7 @@ export class XeroComponent implements OnInit {
   }
 
   onSelectTenantPageVisit() {
-    this.trackingService.onPageVisit('Select Tenant'); 
+    this.trackingService.onPageVisit('Select Tenant');
   }
 
   onConfigurationsPageVisit() {

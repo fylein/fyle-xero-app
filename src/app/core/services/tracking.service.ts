@@ -41,30 +41,6 @@ export class TrackingService {
     this.eventTrack(event);
   }
 
-  connectXero(properties= {}) {
-    this.eventTrack('Connect Xero', properties);
-  }
-
-  selectTenant(properties= {}) {
-    this.eventTrack('Select Tenant', properties);
-  }
-
-  mapFyleFieldsToXeroFields(properties= {}) {
-    this.eventTrack('Map Fyle Fields To Xero Fields', properties);
-  }
-
-  mapBankAccounts(properties= {}) {
-    this.eventTrack('Map Bank Accounts', properties);
-  }
-
-  mapEmployees(properties= {}) {
-    this.eventTrack('Map Employees', properties);
-  }
-
-  mapCategories(properties= {}) {
-    this.eventTrack('Map Categories', properties);
-  }
-
   onSignOut() {
     this.eventTrack('Sign Out');
   }
