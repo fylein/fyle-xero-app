@@ -15,7 +15,7 @@ export class TrackingService {
     return (window as any).analytics;
   }
 
-  eventTrack(action, properties) {
+  eventTrack(action: string, properties= {}) {
     properties = {
       ...properties,
       Asset: 'Xero Web'
@@ -25,13 +25,20 @@ export class TrackingService {
     }
   }
 
-  onSignIn(email: string, properties) {
+  onSignIn(email: string, workspaceId: number, properties) {
     if (this.tracking) {
       this.tracking.identify(email, {
+        workspaceId,
       });
       this.identityEmail = email;
     }
     this.eventTrack('Sign In', properties);
+  }
+
+  onPageVisit(page: string, onboarding: boolean= false) {
+    let event = `Visited ${page} Page`;
+    event = onboarding ? `Onboarding: ${event}` : event;
+    this.eventTrack(event);
   }
 
   connectXero(properties= {}) {
@@ -58,12 +65,12 @@ export class TrackingService {
     this.eventTrack('Map Categories', properties);
   }
 
-  onSignOut(properties= {}) {
-    this.eventTrack('Sign Out', properties);
+  onSignOut() {
+    this.eventTrack('Sign Out');
   }
 
-  onSwitchWorkspace(properties= {}) {
-    this.eventTrack('Switching Workspace', properties);
+  onSwitchWorkspace() {
+    this.eventTrack('Switching Workspace');
   }
 }
 
