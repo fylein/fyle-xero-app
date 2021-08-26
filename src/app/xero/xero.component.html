@@ -26,23 +26,23 @@
           Settings
         </a>
         <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="!xeroConnected" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
-         routerLink="{{workspace.id}}/settings/configurations/general/" routerLinkActive="active">
+         routerLink="{{workspace.id}}/settings/configurations/general/" routerLinkActive="active" (click)="onConfigurationsPageVisit()">
           Configurations
         </a>
         <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="xeroConnected" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
-         routerLink="{{workspace.id}}/settings/configurations/tenant/" routerLinkActive="active">
+         routerLink="{{workspace.id}}/settings/configurations/tenant/" routerLinkActive="active" (click)="onSelectTenantPageVisit()">
           Configurations
         </a>
         <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="showGeneralmappings" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/general/mappings/"
-          routerLinkActive="active">
+          routerLinkActive="active" (click)="onGeneralMappingsPageVisit()">
           General Mappings
         </a>
         <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
-        routerLink="{{workspace.id}}/settings/employee/mappings/" routerLinkActive="active">
+        routerLink="{{workspace.id}}/settings/employee/mappings/" routerLinkActive="active" (click)="onEmployeeMappingsPageVisit()">
           Employee Mappings
         </a>
         <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
-        routerLink="{{workspace.id}}/settings/category/mappings/" routerLinkActive="active">
+        routerLink="{{workspace.id}}/settings/category/mappings/" routerLinkActive="active" (click)="onCategoryMappingsPageVisit()">
           Category Mappings
         </a>
         <div *ngFor="let setting of mappingSettings">
@@ -80,7 +80,7 @@
               </strong>
             </div>
           </button>
-          <button type="button" mat-menu-item [routerLink]="['../auth/logout']">
+          <button type="button" mat-menu-item [routerLink]="['../auth/logout']" (click)="onSignOut()">
             <div fxLayoutAlign="space-around center">
               <mat-icon class="xero--menu-icon">
                 power_settings_new
