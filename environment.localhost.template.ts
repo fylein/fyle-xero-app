@@ -9,5 +9,6 @@ export const environment = {
     xero_authorize_uri: 'XERO AUTHORIZE URI',
     xero_client_id: 'XERO CLIENT ID',
     xero_scope: 'XERO SCOPE',
-    xero_callback_uri: 'XERO CALLBACK URI'
+    xero_callback_uri: 'XERO CALLBACK URI',
+    sentry_dsn: 'SENTRY_DSN'
 }
