@@ -145,7 +145,6 @@ export class XeroComponent implements OnInit {
   }
 
   onGeneralMappingsPageVisit() {
-    throw new Error('Xero App error');
     this.trackingService.onPageVisit('Genral Mappings');
   }
 
@@ -154,6 +153,7 @@ export class XeroComponent implements OnInit {
   }
 
   onCategoryMappingsPageVisit() {
+    throw new Error('Xero App error');
     this.trackingService.onPageVisit('Category Mappings');
   }
 
