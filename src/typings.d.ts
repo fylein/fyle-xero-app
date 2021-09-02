@@ -8,5 +8,5 @@ interface Env {
   API_URL: string;
   APP_URL: string;
   SENTRY_DSN: string;
-  RELEASE: string
+  RELEASE: string;
 }
