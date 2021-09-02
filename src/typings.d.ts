@@ -7,4 +7,6 @@ interface Env {
   CALLBACK_URI: string;
   API_URL: string;
   APP_URL: string;
+  SENTRY_DSN: string;
+  RELEASE: string;
 }

@@ -10,4 +10,6 @@ export const environment = {
   xero_scope: '{{XERO_SCOPE}}',
   xero_callback_uri: '{{XERO_CALLBACK_URI}}',
   hotjar_id : '{{HOTJAR_ID}}',
+  sentry_dsn: '{{SENTRY_DSN}}',
+  release: '{{RELEASE}}'
 };
