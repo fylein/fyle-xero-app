@@ -11,7 +11,7 @@ const env = hostname.substring(0, hostname.indexOf('.'));
 if (environment.sentry_dsn) {
   Sentry.init({
     dsn: environment.sentry_dsn,
-    release: 'v1',
+    release: environment.release,
     environment : env,
     ignoreErrors: [
       'Non-Error exception captured'

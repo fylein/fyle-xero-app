@@ -10,5 +10,6 @@ export const environment = {
     xero_client_id: 'XERO CLIENT ID',
     xero_scope: 'XERO SCOPE',
     xero_callback_uri: 'XERO CALLBACK URI',
-    sentry_dsn: 'SENTRY_DSN'
+    sentry_dsn: 'SENTRY_DSN',
+    release: 'RELEASE'
 }
