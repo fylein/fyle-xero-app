@@ -23,13 +23,20 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse, httpType: string) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
     } else {
-      console.error(
-        `Backend returned code ${error.status}, ` + `body was: ${error.error}`
-      );
+      if (error.status >= 500 && httpType === 'GET') {
+        console.error(
+          `Backend returned code ${error.status}, ` + `body was: ` + JSON.stringify(error.error)
+        );
+      }
+      if (error.status >= 400 && httpType === 'POST') {
+        console.error(
+          `Backend returned code ${error.status}, ` + `body was: ` + JSON.stringify(error.error)
+        );
+      }
     }
     return throwError(error);
   }
@@ -41,7 +48,9 @@ export class ApiService {
         body,
         httpOptions
       )
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(error => {
+        return this.handleError(error, 'POST');
+      }));
   }
   // Having any here is ok
   get(endpoint: string, apiParams: {}): Observable<any> {
@@ -54,6 +63,8 @@ export class ApiService {
         API_BASE_URL + endpoint,
         {params}
       )
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(error => {
+        return this.handleError(error, 'GET');
+      }));
   }
 }
