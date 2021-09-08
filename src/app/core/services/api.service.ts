@@ -23,18 +23,17 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  private handleError(error: HttpErrorResponse, httpType: string) {
+  private handleError(error: HttpErrorResponse, httpMethod: string) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
     } else {
-      if (error.status >= 500 && httpType === 'GET') {
+      if (error.status >= 500 && httpMethod === 'GET') {
         console.error(
-          `Backend returned code ${error.status}, ` + `body was: ` + JSON.stringify(error.error)
+          `Backend returned code ${error.status}, ` + `body was: ${JSON.stringify(error.error)}`
         );
-      }
-      if (error.status >= 400 && httpType === 'POST') {
+      } else if (error.status >= 400 && httpMethod === 'POST') {
         console.error(
-          `Backend returned code ${error.status}, ` + `body was: ` + JSON.stringify(error.error)
+          `Backend returned code ${error.status}, ` + `body was: ${JSON.stringify(error.error)}`
         );
       }
     }
