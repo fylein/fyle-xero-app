@@ -177,7 +177,7 @@ export class XeroComponent implements OnInit {
   syncDimension() {
     const that = this;
     that.mappingsService.refreshDimension();
-    that.snackBar.open('Refreshing Fyle and xero Data');
+    that.snackBar.open('Refreshing Fyle and Xero Data');
   }
 
   hideRefreshIconVisibility() {
