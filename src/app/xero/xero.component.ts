@@ -9,6 +9,8 @@ import { WindowReferenceService } from '../core/services/window.service';
 import { Workspace } from '../core/models/workspace.model';
 import { GeneralSetting } from '../core/models/general-setting.model';
 import { MappingSetting } from '../core/models/mapping-setting.model';
+import { MappingsService } from '../core/services/mappings.service';
+import { MatSnackBar } from '@angular/material';
 import { UserProfile } from '../core/models/user-profile.model';
 import { TrackingService } from '../core/services/tracking.service';
 import * as Sentry from '@sentry/angular';
@@ -29,6 +31,7 @@ export class XeroComponent implements OnInit {
   generalSettings: GeneralSetting;
   mappingSettings: MappingSetting[];
   showSwitchOrg = false;
+  showRefreshIcon: boolean;
   navDisabled = true;
   windowReference: Window;
 
@@ -39,7 +42,10 @@ export class XeroComponent implements OnInit {
     private authService: AuthService,
     private storageService: StorageService,
     private windowReferenceService: WindowReferenceService,
-    private trackingService: TrackingService) {
+    private trackingService: TrackingService,
+    private snackBar: MatSnackBar,
+    private mappingsService: MappingsService,
+    ) {
     this.windowReference = this.windowReferenceService.nativeWindow;
   }
 
@@ -168,9 +174,20 @@ export class XeroComponent implements OnInit {
     }
   }
 
+  syncDimension() {
+    const that = this;
+    that.mappingsService.refreshDimension();
+    that.snackBar.open('Refreshing Fyle and Quickbooks Data');
+  }
+
+  hideRefreshIconVisibility() {
+    this.showRefreshIcon = false;
+  }
+
   ngOnInit() {
     const that = this;
     const onboarded = that.storageService.get('onboarded');
+    that.showRefreshIcon = !onboarded;
     that.navDisabled = onboarded !== true;
     that.orgsCount = that.authService.getOrgCount();
     that.setupWorkspace();

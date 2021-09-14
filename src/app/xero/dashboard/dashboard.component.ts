@@ -12,6 +12,7 @@ import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 import { WorkspaceService } from 'src/app/core/services/workspace.service';
 import { Workspace } from 'src/app/core/models/workspace.model';
 import { TrackingService } from 'src/app/core/services/tracking.service';
+import { XeroComponent } from '../xero.component';
 
 const FYLE_URL = environment.fyle_url;
 const FYLE_CLIENT_ID = environment.fyle_client_id;
@@ -65,7 +66,8 @@ export class DashboardComponent implements OnInit {
     private storageService: StorageService,
     private windowReferenceService: WindowReferenceService,
     private snackBar: MatSnackBar,
-    private trackingService: TrackingService) {
+    private trackingService: TrackingService,
+    private xero: XeroComponent) {
       this.windowReference = this.windowReferenceService.nativeWindow;
     }
 
@@ -279,6 +281,7 @@ export class DashboardComponent implements OnInit {
         }).then(() => {
           that.currentState = onboardingStates.isOnboarded;
           that.storageService.set('onboarded', true);
+          that.xero.hideRefreshIconVisibility();
           return that.loadDashboardData();
         }).catch(() => {
           // do nothing as this just means some steps are left
