@@ -54,7 +54,7 @@ export class SyncComponent implements OnInit {
             if (response[0].last_synced_at !== lastSyncedAt) {
               that.snackBar.open('Import Complete');
             } else {
-              const expenseState = that.expenseGroupSettings.expense_state;
+              const expenseState = that.expenseGroupSettings.expense_state.toLowerCase().replace('_', ' ');
               that.snackBar.open(`No new expense groups were imported. Kindly check your Fyle account to see if there are any expenses in the ${expenseState} state`, null, {
                 duration: 5000
               });
