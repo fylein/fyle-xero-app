@@ -4,6 +4,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import * as Sentry from '@sentry/angular';
+import { Integrations as TracingIntegrations } from '@sentry/tracing';
 
 const hostname = window.location.hostname;
 const env = hostname.substring(0, hostname.indexOf('.'));
@@ -16,7 +17,10 @@ if (environment.sentry_dsn) {
     ignoreErrors: [
       'Non-Error exception captured'
     ],
-    tracesSampleRate: 0.5,
+    integrations: [new TracingIntegrations.BrowserTracing({
+      routingInstrumentation: Sentry.routingInstrumentation,
+    })],
+    tracesSampleRate: 1.0,
   });
 }
 
