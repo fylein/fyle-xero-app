@@ -20,18 +20,12 @@
         </div>
         <mat-form-field floatLabel="always" class="dialog--field" appearance="outline" required>
           <mat-select placeholder="Choose Expense fields to group Expenses"
-            formControlName="expenseGroupConfiguration" multiple>
-            <mat-option value="settlement_id">
-              Payment
-            </mat-option>
+            formControlName="expenseGroupConfiguration">
             <mat-option value="claim_number">
               Expense Report
             </mat-option>
-            <mat-option value="category">
-              Category
-            </mat-option>
-            <mat-option value="vendor">
-              Merchant
+            <mat-option value="settlement_id">
+              Payment
             </mat-option>
           </mat-select>
         </mat-form-field>
