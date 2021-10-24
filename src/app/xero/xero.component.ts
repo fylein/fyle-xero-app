@@ -49,6 +49,15 @@ export class XeroComponent implements OnInit {
     this.windowReference = this.windowReferenceService.nativeWindow;
   }
 
+  refreshDashboardMappingSettings(mappingSettings: MappingSetting[]) {
+    const that = this;
+
+    that.mappingSettings = mappingSettings.filter(
+      setting => (setting.source_field !== 'EMPLOYEE' && setting.source_field !== 'CATEGORY')
+    );
+    that.isLoading = false;
+  }
+
   getGeneralSettings() {
     const that = this;
     that.settingsService.getMappingSettings(that.workspace.id).subscribe((response) => {
