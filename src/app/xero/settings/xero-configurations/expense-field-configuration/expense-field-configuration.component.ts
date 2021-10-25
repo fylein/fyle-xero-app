@@ -43,7 +43,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
     this.windowReference = this.windowReferenceService.nativeWindow;
    }
 
-  createExpenseField(sourceField: string = '', destinationField: string = '', isCustom = false, importToFyle: boolean = false) {
+  createExpenseField(sourceField: string = '', destinationField: string = '', isCustom: boolean = false, importToFyle: boolean = false) {
     const that = this;
 
     const group = that.formBuilder.group({
