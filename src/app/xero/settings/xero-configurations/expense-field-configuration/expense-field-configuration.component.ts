@@ -18,7 +18,6 @@ import { MatSnackBar } from '@angular/material';
 })
 export class ExpenseFieldConfigurationComponent implements OnInit {
   expenseFieldsForm: FormGroup;
-  expenseFields: FormArray;
   workspaceId: number;
   isLoading: boolean;
   mappingSettings: MappingSetting[];
@@ -72,8 +71,8 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
   addExpenseField() {
     const that = this;
 
-    that.expenseFields = that.expenseFieldsForm.get('expenseFields') as FormArray;
-    that.expenseFields.push(that.createExpenseField());
+    const expenseFieldsFormsArray = that.expenseFieldsForm.get('expenseFields') as FormArray;
+    expenseFieldsFormsArray.push(that.createExpenseField());
     that.showAddButton = that.showOrHideAddButton();
   }
 
