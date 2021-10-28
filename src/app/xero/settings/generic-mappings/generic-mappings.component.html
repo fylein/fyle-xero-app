@@ -7,7 +7,9 @@
     </div>
     <div class="page-info">
       <div fxLayout="row" fxLayoutAlign="start center" class="page-info--description">
-        Map {{ getTitle(sourceField).toLowerCase() }} items from Fyle to their counterparts on Xero.<a href="https://www.fylehq.com/help/en/articles/4601898-onboarding-process-to-set-up-fyle-xero-integration" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+        <span *ngIf="sourceField === 'corporate_card'">Map Corporate Credit Cards in Fyle to Bank accounts in Xero.</span>
+        <span *ngIf="sourceField !== 'corporate_card'">Map {{ getTitle(sourceField).toLowerCase() }} items from Fyle to their counterparts on Xero.</span>
+        <a href="https://www.fylehq.com/help/en/articles/4601898-onboarding-process-to-set-up-fyle-xero-integration" target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row" fxLayoutAlign="start center">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
       </div>
       <button class="page-info--primary-action" mat-flat-button color="primary" type="button" (click)="open()">
         New {{ getTitle(sourceField) | titlecase }} Mapping
