@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MappingsService } from '../../../../core/services/mappings.service';
 import { SettingsService } from 'src/app/core/services/settings.service';
 import { MappingDestination } from 'src/app/core/models/mapping-destination.model';
 import { TenantMapping } from 'src/app/core/models/tenant-mapping.model';
+import { WindowReferenceService } from 'src/app/core/services/window.service';
 
 @Component({
   selector: 'app-tenant',
@@ -18,12 +20,18 @@ export class TenantComponent implements OnInit {
   xeroTenants: MappingDestination[];
   isLoading = true;
   tenantMappings: TenantMapping;
+  connectedToXero: boolean;
+  windowReference: Window;
 
   constructor(private formBuilder: FormBuilder,
               private settingsService: SettingsService,
               private mappingsService: MappingsService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private snackBar: MatSnackBar,
+              private windowReferenceService: WindowReferenceService,
+              private router: Router) {
+                this.windowReference = this.windowReferenceService.nativeWindow;
+              }
 
   submit() {
     const tenantId = this.tenantForm.value.xeroTenant;
@@ -36,6 +44,20 @@ export class TenantComponent implements OnInit {
         this.router.navigateByUrl(`workspaces/${this.workspaceId}/dashboard`);
       });
     }
+  }
+
+  connectToXero() {
+    this.windowReference.location.href = this.settingsService.generateXeroConnetionUrl(this.workspaceId);
+  }
+
+  disconnectFromXero() {
+    const that = this;
+    that.isLoading = true;
+    that.settingsService.revokeXeroConnection(that.workspaceId).subscribe(() => {
+      that.snackBar.open('Successfully disconnected from Xero');
+      that.connectedToXero = false;
+      that.isLoading = false;
+    });
   }
 
   getTenantMappings() {
@@ -62,6 +84,7 @@ export class TenantComponent implements OnInit {
     that.isLoading = true;
     that.mappingsService.getXeroTenants().subscribe(tenants => {
       that.xeroTenants = tenants;
+      that.settingsService.getXeroCredentials(that.workspaceId).subscribe(() => that.connectedToXero = true);
       that.getTenantMappings();
     });
   }

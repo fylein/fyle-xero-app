@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingsService } from 'src/app/core/services/settings.service';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin, onErrorResumeNext } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { MappingsService } from 'src/app/core/services/mappings.service';
 import { environment } from 'src/environments/environment';
 import { ExpenseGroupsService } from 'src/app/core/services/expense-groups.service';
@@ -9,19 +9,12 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GeneralSetting } from 'src/app/core/models/general-setting.model';
-import { WorkspaceService } from 'src/app/core/services/workspace.service';
-import { Workspace } from 'src/app/core/models/workspace.model';
 import { TrackingService } from 'src/app/core/services/tracking.service';
 import { XeroComponent } from '../xero.component';
 
 const FYLE_URL = environment.fyle_url;
 const FYLE_CLIENT_ID = environment.fyle_client_id;
 const APP_URL = environment.app_url;
-
-const XERO_AUTHORIZE_URI = environment.xero_authorize_uri;
-const XERO_CLIENT_ID = environment.xero_client_id;
-const XERO_SCOPE = environment.xero_scope;
-const XERO_CALLBACK_URI = environment.xero_callback_uri;
 
 enum onboardingStates {
   initialized,
@@ -217,7 +210,7 @@ export class DashboardComponent implements OnInit {
   }
 
   connectXero(onboarding: boolean = false) {
-    this.windowReference.location.href = XERO_AUTHORIZE_URI + '?client_id=' + XERO_CLIENT_ID + '&scope=' + XERO_SCOPE + '&response_type=code&redirect_uri=' + XERO_CALLBACK_URI + '&state=' + this.workspaceId;
+    this.windowReference.location.href = this.settingsService.generateXeroConnetionUrl(this.workspaceId);
     this.onConnectXeroPageVisit(onboarding);
   }
 

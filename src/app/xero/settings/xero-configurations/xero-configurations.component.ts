@@ -18,7 +18,6 @@ export class XeroConfigurationsComponent implements OnInit {
   isParentLoading: boolean;
   fyleFields: ExpenseField[];
   generalSettings: GeneralSetting;
-  xeroConnectionDone: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private mappingsService: MappingsService, private settingsService: SettingsService) { }
 
@@ -55,23 +54,17 @@ export class XeroConfigurationsComponent implements OnInit {
     that.workspaceId = +that.route.parent.snapshot.params.workspace_id;
     that.state = that.route.snapshot.firstChild.routeConfig.path.toUpperCase() || 'TENANT';
 
-    that.settingsService.getXeroCredentials(that.workspaceId).subscribe(credentials => {
-      if (credentials) {
-        that.xeroConnectionDone = true;
-      }
-      forkJoin(
-        [
-          that.mappingsService.getFyleExpenseFields(),
-          that.settingsService.getGeneralSettings(that.workspaceId),
-        ]
-      ).subscribe(response => {
-        that.fyleFields = response[0];
-        that.generalSettings = response[1];
-        that.isParentLoading = false;
-      }, () => {
-        that.isParentLoading = false;
-      });
-
+    forkJoin(
+      [
+        that.mappingsService.getFyleExpenseFields(),
+        that.settingsService.getGeneralSettings(that.workspaceId),
+      ]
+    ).subscribe(response => {
+      that.fyleFields = response[0];
+      that.generalSettings = response[1];
+      that.isParentLoading = false;
+    }, () => {
+      that.isParentLoading = false;
     });
   }
 }
