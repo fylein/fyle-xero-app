@@ -22,3 +22,26 @@
     max-width: 32px;
   }
 }
+
+.status-icon {
+  position: absolute;
+  margin-left: 8px;
+  cursor: default;
+
+  &--connected {
+    color: green;
+  }
+
+  &--disconnected {
+    color: red;
+  }
+}
+
+.action-buttons {
+  padding-top: 20px;
+}
+
+.xero-btn {
+  padding-left: 20px;
+  cursor: pointer;
+}
