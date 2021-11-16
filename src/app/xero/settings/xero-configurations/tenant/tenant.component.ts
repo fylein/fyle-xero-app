@@ -47,7 +47,7 @@ export class TenantComponent implements OnInit {
   }
 
   connectToXero() {
-    this.windowReference.location.href = this.settingsService.generateXeroConnetionUrl(this.workspaceId);
+    this.windowReference.location.href = this.settingsService.generateXeroConnectionUrl(this.workspaceId);
   }
 
   disconnectFromXero() {

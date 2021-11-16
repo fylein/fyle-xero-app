@@ -131,7 +131,7 @@ export class SettingsService {
     });
   }
 
-  generateXeroConnetionUrl(workspaceId: number): string {
+  generateXeroConnectionUrl(workspaceId: number): string {
     return environment.xero_authorize_uri + '?client_id=' + environment.xero_client_id + '&scope=' + environment.xero_scope + '&response_type=code&redirect_uri=' + environment.xero_callback_uri + '&state=' + workspaceId;
   }
 }

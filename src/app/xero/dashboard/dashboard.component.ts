@@ -210,7 +210,7 @@ export class DashboardComponent implements OnInit {
   }
 
   connectXero(onboarding: boolean = false) {
-    this.windowReference.location.href = this.settingsService.generateXeroConnetionUrl(this.workspaceId);
+    this.windowReference.location.href = this.settingsService.generateXeroConnectionUrl(this.workspaceId);
     this.onConnectXeroPageVisit(onboarding);
   }
 
