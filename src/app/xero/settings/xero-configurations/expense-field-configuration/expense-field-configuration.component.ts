@@ -91,7 +91,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
       ]
     ).subscribe(response => {
       that.mappingSettings = response[0].results.filter(
-        setting => setting.source_field !== 'EMPLOYEE' && setting.source_field !== 'CATEGORY'
+        setting => setting.source_field !== 'EMPLOYEE' && setting.source_field !== 'CATEGORY' && setting.source_field !== 'CORPORATE_CARD'
       );
 
       let expenseFieldFormArray;
