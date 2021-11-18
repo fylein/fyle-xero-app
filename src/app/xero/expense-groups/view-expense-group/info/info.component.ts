@@ -40,6 +40,7 @@ export class InfoComponent implements OnInit {
   }
 
   getTitle(name: string) {
+    name = name.replace('claim_number', 'report_number');
     return name.replace(/_/g, ' ');
   }
 
