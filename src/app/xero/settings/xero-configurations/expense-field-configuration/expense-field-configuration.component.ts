@@ -137,7 +137,6 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
 
   showCustomField(expenseField) {
     const that = this;
-
     expenseField.controls.import_to_fyle.setValue(true);
     expenseField.controls.import_to_fyle.disable();
     expenseField.controls.source_field.disable();
@@ -199,7 +198,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
   createFormFields(mappingSetting: MappingSetting[]) {
     const that = this;
     that.mappingSettings = mappingSetting.filter(
-      setting => setting.source_field !== 'EMPLOYEE' && setting.source_field !== 'CATEGORY'
+      setting => setting.source_field !== 'EMPLOYEE' && setting.source_field !== 'CATEGORY' && setting.source_field !== 'CORPORATE_CARD'
     );
 
     let expenseFieldFormArray;
@@ -241,6 +240,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
     const that = this;
 
     return that.mappingsService.getXeroFields().toPromise().then((xeroFields: ExpenseField[]) => {
+      console.log(xeroFields)
       that.xeroFields = xeroFields;
       that.xeroFormFieldList = xeroFields;
 

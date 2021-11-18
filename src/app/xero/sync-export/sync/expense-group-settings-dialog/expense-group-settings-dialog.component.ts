@@ -21,7 +21,7 @@ save() {
 
   that.isLoading = true;
 
-  const expensesGroupedBy = that.importExpensesForm.value.expenseGroupConfiguration;
+  const expensesGroupedBy = [that.importExpensesForm.value.expenseGroupConfiguration];
   const expenseState = that.importExpensesForm.value.expenseState;
   const exportDateType = that.importExpensesForm.value.exportDate;
 
@@ -34,9 +34,19 @@ getExpenseGroupSettings() {
   const that = this;
   that.expenseGroupsService.getExpenseGroupSettings().subscribe(response => {
     that.expenseGroupSettings = response;
+
+    const reimbursableFields = that.expenseGroupSettings.reimbursable_expense_group_fields;
+    let configuration = null;
+
+    if (reimbursableFields.includes('claim_number')) {
+      configuration = 'claim_number';
+    } else if (reimbursableFields.includes('settlement_id')) {
+      configuration = 'settlement_id';
+    }
+
     that.isLoading = false;
     that.importExpensesForm = that.formBuilder.group({
-      expenseGroupConfiguration: [ that.expenseGroupSettings.reimbursable_expense_group_fields ],
+      expenseGroupConfiguration: [ configuration ],
       expenseState: [ that.expenseGroupSettings.expense_state, [ Validators.required ]],
       exportDate: [ that.expenseGroupSettings.export_date_type]
     });

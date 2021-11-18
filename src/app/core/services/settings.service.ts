@@ -9,6 +9,7 @@ import { MappingSettingResponse } from '../models/mapping-setting-response.model
 import { GeneralSetting } from '../models/general-setting.model';
 import { MappingSetting } from '../models/mapping-setting.model';
 import { TenantMapping } from '../models/tenant-mapping.model';
+import { environment } from 'src/environments/environment';
 
 const fyleCredentialsCache = new Subject<void>();
 const xeroCredentialsCache = new Subject<void>();
@@ -41,6 +42,13 @@ export class SettingsService {
   })
   deleteXeroCredentials(workspaceId: number) {
     return this.apiService.post('/workspaces/' + workspaceId + '/credentials/xero/delete/', {});
+  }
+
+  @CacheBuster({
+    cacheBusterNotifier: xeroCredentialsCache
+  })
+  revokeXeroConnection(workspaceId: number) {
+    return this.apiService.post('/workspaces/' + workspaceId + '/connection/xero/revoke/', {});
   }
 
   @CacheBuster({
@@ -121,5 +129,9 @@ export class SettingsService {
       tenant_name: tenantName,
       tenant_id: tenantId
     });
+  }
+
+  generateXeroConnectionUrl(workspaceId: number): string {
+    return environment.xero_authorize_uri + '?client_id=' + environment.xero_client_id + '&scope=' + environment.xero_scope + '&response_type=code&redirect_uri=' + environment.xero_callback_uri + '&state=' + workspaceId;
   }
 }

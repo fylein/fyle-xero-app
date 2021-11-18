@@ -20,7 +20,7 @@ if (environment.sentry_dsn) {
     integrations: [new TracingIntegrations.BrowserTracing({
       routingInstrumentation: Sentry.routingInstrumentation,
     })],
-    tracesSampleRate: 1.0,
+    tracesSampleRate: 0.1,
   });
 }
 
