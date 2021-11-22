@@ -1,59 +1,134 @@
 <div class="internal-loader" fxLayoutAlign="center start" *ngIf="isLoading" fxFlexFill>
-    <app-loader></app-loader>
+  <app-loader></app-loader>
+</div>
+
+<div *ngIf="!isLoading" fxLayout="column" fxLayoutAlign="start stretch">
+  <div class="page-info">
+    <div class="page-info--description">
+        Please map the following Xero fields to their Fyle equivalent. You can either map fields from Xero to an existing
+        <br>
+        field in Fyle or can create new Fyle Field.
+      <a
+        href=""
+        target="_blank" rel="noopener noreferrer" class="read-more-link">Read more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+    </div>
   </div>
-  <div *ngIf="!isLoading" fxLayout="column" fxLayoutAlign="start stretch">
-    <div class="page-info">
-      <div fxLayout="row" fxLayoutAlign="start center" class="page-info--description">
-        <div>
-          Please map the following Fyle fields to their Xero equivalent. Added fields cannot be edited or removed after saving.
+
+  <div *ngIf="!isLoading" class="info-box" fxLayout="row" fxLayoutAlign="start center">
+    <div fxFlex="75" class="info-box-text">
+      <mat-icon [inline]="true" class="info-icon main">info</mat-icon>
+      Once saved, these mappings can neither be edited or removed.
+      Please reach out to <a href="mailto: support@fylehq.com">support@fylehq.com</a> if you wish to make any changes to the settings.
+    </div>
+    <div fxFlex="25"></div>
+  </div>
+
+  <form class="expense-fields--form" [formGroup]="expenseFieldsForm" fxLayout="column" fxLayoutAlign="start stretch">
+    <div formArrayName="expenseFields">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <div class="fields-header" fxFlex="38">Xero Fields</div>
+        <div fxFlex="10"></div>
+        <div class="fields-header fields-header--fyle" fxFlex="38">Fyle Fields</div>
+        <div class="fields-header" fxFlex="14">
+          Import to Fyle
+          <mat-icon [inline]="true" class="info-icon import"
+            matTooltip="Importing to Fyle will automatically sync all the fields from Xero to Fyle"
+            matTooltipPosition="above">
+            info
+          </mat-icon>
         </div>
-        <a href="#"
-          target="_blank" rel="noopener noreferrer" class="read-more-link" fxLayout="row"
-          fxLayoutAlign="start center">Read
-          more<mat-icon class="read-more-link--icon">open_in_new</mat-icon></a>
+      </div>
+
+      <div class="row" *ngFor="let expenseField of expenseFieldsForm.controls.expenseFields['controls']; let i = index"
+        [formGroupName]="i">
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-form-field floatLabel="always" fxFlex="38" appearance="outline">
+            <mat-select placeholder="Choose Xero field" formControlName="destination_field">
+              <mat-option *ngFor="let xeroField of xeroFormFieldList" [(value)]="xeroField.attribute_type">
+                {{ xeroField.display_name | titlecase }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div fxFlex="10">
+            <div class="map">Map to</div>
+          </div>
+          <mat-form-field floatLabel="always" appearance="outline" fxFlex="38" required>
+            <mat-select [placeholder]="customFieldName || 'Choose Fyle Expense field'" formControlName="source_field">
+              <mat-option *ngFor="let fyleExpenseField of fyleExpenseFields"
+                [(value)]="fyleExpenseField.attribute_type">
+                  {{ fyleExpenseField.display_name | titlecase }}
+              </mat-option>
+              <mat-option (click)="showCustomField(expenseField)" [value]="expenseField.source_field">
+                <div class="expense-fields--custom-option">
+                  <img class="expense-fields--add-custom-icon" src="assets/images/pngs/add.png"
+                    (click)="showCustomField(expenseField)">
+                  <div class="expense-fields--custom-option-text">Create Fyle Expense field</div>
+                </div>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div fxFlex="5" *ngIf="i !== 0 && expenseField.controls.destination_field.status !== 'DISABLED'">
+            <img class="expense-fields--delete-icon" src="assets/images/pngs/delete.png"
+            (click)="removeExpenseField(i, expenseField.controls.source_field.value)">
+          </div>
+          <div fxFlex="5" *ngIf="!(i !== 0 && expenseField.controls.destination_field.status !== 'DISABLED')">
+          </div>
+
+          <mat-slide-toggle floatLabel="always" appearance="outline" fxFlex="14" color="primary" class="toggle"
+            formControlName="import_to_fyle">
+          </mat-slide-toggle>
+        </div>
+
+        <div class="expense-fields--errors" md-colors="{color:'warning'}"
+          *ngIf="expenseField.status === 'INVALID' && expenseField.value.source_field && expenseField.value.destination_field">
+          Fyle and Xero fields should be unique
+        </div>
       </div>
     </div>
-    <form class="expense-fields--form" [formGroup]="expenseFieldsForm">
-      <div formArrayName="expenseFields">
-        <div class="row" *ngFor="let expenseField of expenseFieldsForm.controls.expenseFields['controls']; let i = index"
-          [formGroupName]="i">
-          <div fxLayout="row" fxLayoutAlign="start center">
-            <mat-form-field floatLabel="always" appearance="outline" fxFlex="35" required>
-              <mat-select placeholder="Choose Fyle Expense field" formControlName="source_field">
-                <mat-option *ngFor="let fyleExpenseField of fyleFormFieldList"
-                  [(value)]="fyleExpenseField.attribute_type">
-                  {{ fyleExpenseField.display_name | titlecase }}
-                </mat-option>
-              </mat-select>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <div fxFlex="35" fxLayout="row" fxLayoutAlign="center" *ngIf="showCustomFieldName" [formGroup]="customFieldForm">
+        <mat-card class="custom-field-box">
+          <mat-list role="list">
+            Add a custom field
+            <mat-form-field class="custom-field-name" appearance="outline">
+              <input autocomplete="off" type="text" formControlName="customFieldName" placeholder="Enter Custom Field"
+                (input)="updateCustomFieldName($event.target.value)" matInput>
             </mat-form-field>
-            <div fxFlex="5">
-              <img class="expense-fields--arrow-icon" src="../../../../../assets/images/pngs/arrow-right.png">
+
+            <p *ngIf="isSystemField" class="existing-field-warning">
+              <mat-icon [inline]="true" class="info-icon warning">info</mat-icon>
+              This field already exists. Please enter new.
+            </p>
+
+            <div class="custom-field-grp" fxLayoutAlign="start stretch">
+              <div fxFlex="10"></div>
+              <a fxLayout="row" fxLayoutAlign="start center" class="custom-field-btn" mat-raised-button
+                color="basic" (click)="hideCustomField($event.target.innerText)">
+                <span>Cancel</span>
+              </a>
+              <div fxFlex="10"></div>
+              <button fxLayout="row" fxLayoutAlign="start center" data-dismiss="modal" class="custom-field-btn" mat-flat-button
+                color="primary" (click)="hideCustomField($event.target.innerText)" [disabled]="isSystemField">
+                <span>Done</span>
+              </button>
             </div>
-            <mat-form-field floatLabel="always" fxFlex="35" appearance="outline">
-              <mat-select placeholder="Choose Xero equivalent" formControlName="destination_field">
-                <mat-option *ngFor="let xeroField of xeroFormFieldList" [(value)]="xeroField.attribute_type">
-                  {{ xeroField.display_name | titlecase }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-  
-            <div fxFlex="25" *ngIf="i !== 0 && !expenseField.disabled">
-              <img class="expense-fields--delete-icon" src="../../../../../assets/images/pngs/delete.png" (click)="removeExpenseField(i)">
-            </div>
-          </div>
-          <div class="expense-fields--errors" md-colors="{color:'warning'}"
-            *ngIf="expenseField.status === 'INVALID' && expenseField.value.source_field && expenseField.value.destination_field">
-              Fyle and Xero fields should be unique
-          </div>
-        </div>
+          </mat-list>
+        </mat-card>
       </div>
-      <div>
-        <img class="expense-fields--add-icon" src="../../../../../assets/images/pngs/add.png" *ngIf="showAddButton()" (click)="addExpenseField()">
-      </div>
-  
-      <button class="expense-fields--save-btn" mat-flat-button color="primary" [disabled]="!expenseFieldsForm.valid"
-        (click)="saveExpenseFields()" type="submit">
-        Save
-      </button>
-    </form>
-  </div> 
+    </div>
+
+    <div fxLayoutAlign="start stretch" *ngIf="showAddButton">
+      <img class="expense-fields--add-icon" src="assets/images/pngs/add.png">
+      <a class="add-row-text" (click)="addExpenseField()">
+        Add another field
+      </a>
+    </div>
+
+    <button class="expense-fields--save-btn" mat-flat-button color="primary" [disabled]="!expenseFieldsForm.valid"
+      (click)="saveExpenseFields()" type="submit">
+      Save
+    </button>
+  </form>
+</div>
