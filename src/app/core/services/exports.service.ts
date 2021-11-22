@@ -5,15 +5,15 @@ import { WorkspaceService } from './workspace.service';
 @Injectable({
   providedIn: 'root',
 })
-export class BankTransactionsService {
+export class ExportsService {
   constructor(
     private apiService: ApiService,
     private workspaceService: WorkspaceService) {}
 
-  createBankTransactions(expenseGroupIds: number[]) {
+  triggerExports(expenseGroupIds: { personal: number[], ccc: number[] }) {
     const workspaceId = this.workspaceService.getWorkspaceId();
     return this.apiService.post(
-      `/workspaces/${workspaceId}/xero/bank_transactions/trigger/`, {
+      `/workspaces/${workspaceId}/xero/exports/trigger/`, {
         expense_group_ids: expenseGroupIds
       }
     );
