@@ -240,7 +240,6 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
     const that = this;
 
     return that.mappingsService.getXeroFields().toPromise().then((xeroFields: ExpenseField[]) => {
-      console.log(xeroFields)
       that.xeroFields = xeroFields;
       that.xeroFormFieldList = xeroFields;
 
