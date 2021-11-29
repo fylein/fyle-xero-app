@@ -3,6 +3,7 @@ import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 import { StorageService } from './storage.service';
 import { Workspace } from '../models/workspace.model';
+import { Cacheable } from 'ngx-cacheable';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class WorkspaceService {
     });
   }
 
+  @Cacheable()
   getWorkspaceById(): Observable<Workspace> {
     const workspaceId = this.getWorkspaceId();
     return this.apiService.get(`/workspaces/${workspaceId}/`, {});
