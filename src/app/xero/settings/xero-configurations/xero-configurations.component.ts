@@ -17,6 +17,7 @@ export class XeroConfigurationsComponent implements OnInit {
   workspaceId: number;
   isParentLoading: boolean;
   fyleFields: ExpenseField[];
+  xeroFields: ExpenseField[];
   generalSettings: GeneralSetting;
 
   constructor(private route: ActivatedRoute, private router: Router, private mappingsService: MappingsService, private settingsService: SettingsService) { }
@@ -40,7 +41,7 @@ export class XeroConfigurationsComponent implements OnInit {
   showExpenseFields() {
     const that = this;
 
-    if (that.fyleFields && that.fyleFields.length && that.generalSettings) {
+    if (that.fyleFields && that.fyleFields.length && that.generalSettings && that.xeroFields.length >= 1) {
       return true;
     }
 
@@ -58,10 +59,12 @@ export class XeroConfigurationsComponent implements OnInit {
       [
         that.mappingsService.getFyleExpenseFields(),
         that.settingsService.getGeneralSettings(that.workspaceId),
+        that.mappingsService.getXeroFields()
       ]
     ).subscribe(response => {
       that.fyleFields = response[0];
       that.generalSettings = response[1];
+      that.xeroFields = response[2];
       that.isParentLoading = false;
     }, () => {
       that.isParentLoading = false;
