@@ -9,6 +9,8 @@ import { TasksService } from 'src/app/core/services/tasks.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
 import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 import { Subscription } from 'rxjs';
+import { WorkspaceService } from 'src/app/core/services/workspace.service';
+import { Workspace } from 'src/app/core/models/workspace.model';
 
 @Component({
   selector: 'app-expense-groups',
@@ -27,6 +29,7 @@ export class ExpenseGroupsComponent implements OnInit, OnDestroy {
   columnsToDisplay = ['employee', 'expensetype'];
   windowReference: Window;
   routerEventSubscription: Subscription;
+  xeroShortCode: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,7 +38,8 @@ export class ExpenseGroupsComponent implements OnInit, OnDestroy {
     private router: Router,
     private settingsService: SettingsService,
     private windowReferenceService: WindowReferenceService,
-    private storageService: StorageService) {
+    private storageService: StorageService,
+    private workspaceService: WorkspaceService) {
       this.windowReference = this.windowReferenceService.nativeWindow;
     }
 
@@ -136,12 +140,25 @@ export class ExpenseGroupsComponent implements OnInit, OnDestroy {
   }
 
   openInXero(itemId, accountId, type) {
-    const baseUrl = 'https://go.xero.com';
+    const that = this;
+
+    let xeroUrl = 'https://go.xero.com';
+
     if (type === 'CREATING_BILL') {
-      this.windowReference.open(`${baseUrl}/AccountsPayable/View.aspx?invoiceID=${itemId}`, '_blank');
+      if (that.xeroShortCode) {
+        xeroUrl = `${xeroUrl}/organisationlogin/default.aspx?shortcode=${that.xeroShortCode}&redirecturl=/AccountsPayable/Edit.aspx?InvoiceID=${itemId}`;
+      } else {
+        xeroUrl = `${xeroUrl}/AccountsPayable/View.aspx?invoiceID=${itemId}`;
+      }
     } else if (type === 'CREATING_BANK_TRANSACTION') {
-      this.windowReference.open(`${baseUrl}/Bank/ViewTransaction.aspx?bankTransactionID=${itemId}&accountID=${accountId}`, '_blank');
+      if (that.xeroShortCode) {
+        xeroUrl = `${xeroUrl}/organisationlogin/default.aspx?shortcode=${that.xeroShortCode}&redirecturl=/Bank/ViewTransaction.aspx?bankTransactionID=${itemId}`;
+      } else {
+        xeroUrl = `${xeroUrl}/Bank/ViewTransaction.aspx?bankTransactionID=${itemId}&accountID=${accountId}`;
+      }
     }
+
+    that.windowReference.open(xeroUrl, '_blank');
   }
 
   openInXeroHandler(clickedExpenseGroup: ExpenseGroup) {
@@ -180,8 +197,13 @@ export class ExpenseGroupsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.reset();
-    this.expenseGroups.filterPredicate = this.searchByText;
+    const that = this;
+
+    that.workspaceService.getWorkspaceById().subscribe((workspace: Workspace) => {
+      that.xeroShortCode = workspace.xero_short_code;
+      that.reset();
+      that.expenseGroups.filterPredicate = that.searchByText;
+    });
   }
 
   ngOnDestroy() {
