@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ExpenseGroup } from 'src/app/core/models/expense-group.model';
 import { ExpenseGroupsService } from 'src/app/core/services/expense-groups.service';
 import { ActivatedRoute } from '@angular/router';
-import { BillsService } from 'src/app/core/services/bills.service';
+import { ExportsService } from 'src/app/core/services/exports.service';
 import { TasksService } from 'src/app/core/services/tasks.service';
 import { interval, from, forkJoin } from 'rxjs';
 import { switchMap, takeWhile } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SettingsService } from 'src/app/core/services/settings.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
-import { BankTransactionsService } from 'src/app/core/services/bank-transactions';
 import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 import { TaskResponse } from 'src/app/core/models/task-reponse.model';
 
@@ -36,35 +35,12 @@ export class ExportComponent implements OnInit {
     private route: ActivatedRoute,
     private taskService: TasksService,
     private expenseGroupService: ExpenseGroupsService,
-    private billsService: BillsService,
-    private bankTransactionsService: BankTransactionsService,
+    private exportsService: ExportsService,
     private snackBar: MatSnackBar,
     private settingsService: SettingsService,
     private windowReferenceService: WindowReferenceService) {
       this.windowReference = this.windowReferenceService.nativeWindow;
     }
-
-  exportReimbursableExpenses(reimbursableExpensesObject) {
-    const that = this;
-    const handlerMap = {
-      'PURCHASE BILL': (filteredIds) => {
-        return that.billsService.createBills(filteredIds);
-      }
-    };
-
-    return handlerMap[reimbursableExpensesObject];
-  }
-
-  exportCCCExpenses(corporateCreditCardExpensesObject) {
-    const that = this;
-    const handlerMap = {
-      'BANK TRANSACTION': (filteredIds) => {
-        return that.bankTransactionsService.createBankTransactions(filteredIds);
-      }
-    };
-
-    return handlerMap[corporateCreditCardExpensesObject];
-  }
 
   openFailedExports() {
     const that = this;
@@ -100,12 +76,16 @@ export class ExportComponent implements OnInit {
     that.isExporting = true;
     that.settingsService.getGeneralSettings(that.workspaceId).subscribe((settings) => {
       that.generalSettings = settings;
-      const promises = [];
       let allFilteredIds = [];
+      const expenseGroupIds = {
+        personal: [],
+        ccc: [],
+      };
+
       if (that.generalSettings.reimbursable_expenses_object) {
         const filteredIds = that.exportableExpenseGroups.filter(expenseGroup => expenseGroup.fund_source === 'PERSONAL').map(expenseGroup => expenseGroup.id);
         if (filteredIds.length > 0) {
-          promises.push(that.exportReimbursableExpenses(that.generalSettings.reimbursable_expenses_object)(filteredIds));
+          expenseGroupIds.personal = filteredIds;
           allFilteredIds = allFilteredIds.concat(filteredIds);
         }
       }
@@ -113,16 +93,13 @@ export class ExportComponent implements OnInit {
       if (that.generalSettings.corporate_credit_card_expenses_object) {
         const filteredIds = that.exportableExpenseGroups.filter(expenseGroup => expenseGroup.fund_source === 'CCC').map(expenseGroup => expenseGroup.id);
         if (filteredIds.length > 0) {
-          promises.push(that.exportCCCExpenses(that.generalSettings.corporate_credit_card_expenses_object)(filteredIds));
-
+          expenseGroupIds.ccc = filteredIds;
           allFilteredIds = allFilteredIds.concat(filteredIds);
         }
       }
 
-      if (promises.length > 0) {
-        forkJoin(
-          promises
-        ).subscribe(() => {
+      if (expenseGroupIds.personal.length > 0 || expenseGroupIds.ccc.length > 0) {
+          that.exportsService.triggerExports(expenseGroupIds).subscribe(() => {
           that.checkResultsOfExport(allFilteredIds);
         });
       }
