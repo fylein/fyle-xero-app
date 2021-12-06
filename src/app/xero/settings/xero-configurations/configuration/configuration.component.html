@@ -90,7 +90,10 @@
       </mat-slide-toggle>
 
       <mat-slide-toggle color="primary" class="schedule" formControlName="importCategories">
-        <div class="schedule--toggle-text">Import Xero Expense Accounts into Fyle</div>
+        <div class="schedule--toggle-text">
+          Import Xero Expense Accounts into Fyle
+          <mat-icon [inline]="true" class="info-icon" matTooltip="Import Xero Expense Accounts as Categories in Fyle" matTooltipPosition="after">info</mat-icon>
+        </div>
       </mat-slide-toggle>
 
       <button [disabled]="!generalSettingsForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="save()" type="submit">
