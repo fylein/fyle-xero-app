@@ -126,11 +126,13 @@ export class XeroComponent implements OnInit {
     that.workspaceService.getWorkspaces(that.user.org_id).subscribe(workspaces => {
       if (Array.isArray(workspaces) && workspaces.length > 0) {
         that.workspace = workspaces[0];
+        that.storageService.set('workspace', workspaces[0]);
         that.setUserIdentity(that.user.employee_email, workspaces[0].id, {fullName: that.user.full_name});
         that.getSettingsAndNavigate();
       } else {
         that.workspaceService.createWorkspace().subscribe(workspace => {
           that.workspace = workspace;
+          that.storageService.set('workspace', workspace);
           that.setUserIdentity(that.user.employee_email, workspace.id, {fullName: that.user.full_name});
           that.getSettingsAndNavigate();
         });

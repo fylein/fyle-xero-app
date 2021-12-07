@@ -198,12 +198,20 @@ export class ExpenseGroupsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const that = this;
+    const cachedWorkspace = that.storageService.get('workspace');
 
-    that.workspaceService.getWorkspaceById().subscribe((workspace: Workspace) => {
-      that.xeroShortCode = workspace.xero_short_code;
+    if (!cachedWorkspace) {
+      that.workspaceService.getWorkspaceById().subscribe((workspace: Workspace) => {
+        that.storageService.set('workspace', workspace);
+        that.xeroShortCode = workspace.xero_short_code;
+        that.reset();
+        that.expenseGroups.filterPredicate = that.searchByText;
+      });
+    } else {
+      that.xeroShortCode = cachedWorkspace.xero_short_code;
       that.reset();
       that.expenseGroups.filterPredicate = that.searchByText;
-    });
+    }
   }
 
   ngOnDestroy() {
