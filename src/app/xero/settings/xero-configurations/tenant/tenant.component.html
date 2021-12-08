@@ -23,26 +23,27 @@
         </mat-form-field>
         <mandatory-error-message listName="tenant" *ngIf="tenantForm.controls.xeroTenant.touched && !tenantForm.controls.xeroTenant.valid"></mandatory-error-message>
 
-        <div class="mat-body-strong">
-          Current Status
-          <mat-icon
-            class="status-icon"
-            [ngClass]="{'status-icon--connected': connectedToXero, 'status-icon--disconnected' : !connectedToXero }"
+        <div fxLayout="row" class="mat-body-strong" *ngIf="tenantMappings">
+          <div class="current-status">
+            Current Status
+          </div>
 
-            mat-list-icon
-            [matTooltip]="connectedToXero ? 'Connected' : 'Disconnected'"
-            matTooltipPosition="right">
-              {{connectedToXero ? 'check_circle' : 'clear'}}
-          </mat-icon>
+          <div class="current-status-btn">
+            <button mat-raised-button class="status"
+              [ngClass]="{'status--connected': connectedToXero, 'status--disconnected' : !connectedToXero }">
+              {{connectedToXero ? 'Active' : 'Inactive'}}
+            </button>
+          </div>
+
         </div>
 
-        <div fxLayout="row" class="action-buttons">
+        <div fxLayout="row">
           <div>
-            <button [disabled]="!tenantForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
+            <button *ngIf="!tenantMappings" [disabled]="!tenantForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
               Save
             </button>
           </div>
-          <div class="xero-btn">
+          <div class="xero-btn" *ngIf="tenantMappings">
             <img *ngIf="connectedToXero" src="../../../../../assets/images/svgs/disconnect-white.svg" width="85%" (click)="disconnectFromXero()">
             <img *ngIf="!connectedToXero" src="../../../../../assets/images/svgs/connect-white.svg" width="85%" (click)="connectToXero()">
           </div>

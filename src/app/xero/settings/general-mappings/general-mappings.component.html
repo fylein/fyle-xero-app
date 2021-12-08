@@ -20,6 +20,7 @@
         <div class="mat-body-strong" *ngIf="generalSettings.corporate_credit_card_expenses_object">
           Bank Account
           <mandatory-field *ngIf="isFieldMandatory('bankAccounts')"></mandatory-field>
+          <mat-icon [inline]="true" class="info-icon" matTooltip="The default bank account against which bank transactions will be created" matTooltipPosition="after">info</mat-icon>
         </div>
         <mat-form-field floatLabel="always" appearance="outline" *ngIf="generalSettings.corporate_credit_card_expenses_object" required>
           <mat-select class="general-mappings--input" placeholder="Select bank account" formControlName="bankAccounts">

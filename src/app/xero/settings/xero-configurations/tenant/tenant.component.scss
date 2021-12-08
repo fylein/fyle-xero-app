@@ -37,11 +37,30 @@
   }
 }
 
-.action-buttons {
-  padding-top: 20px;
+.status {
+  color: #F2F6DA;
+  height: 30px;
+  line-height: 1px;
+  cursor: auto;
+
+  &--connected {
+    background-color: #019f01;
+  }
+
+  &--disconnected {
+    background-color: #C34427;
+  }
 }
 
 .xero-btn {
-  padding-left: 20px;
   cursor: pointer;
+  padding-top: 20px;
+}
+
+.current-status {
+  padding: 5px;
+}
+
+.current-status-btn {
+  padding-left: 10px;
 }
