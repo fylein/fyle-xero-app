@@ -2,6 +2,7 @@
 export const environment = {
     production: false,
     fyle_url: 'FYLE URL',
+    fyle_app_url: 'FYLE APP URL',
     fyle_client_id: 'FYLE CLIENT ID',
     callback_uri: 'CALLBACK URL',
     api_url: 'XERO API URL',

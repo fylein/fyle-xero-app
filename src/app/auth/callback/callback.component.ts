@@ -43,12 +43,17 @@ export class CallbackComponent implements OnInit {
             that.storageService.set('refresh_token', response.refresh_token);
             forkJoin([
               that.authService.getUserProfile(),
-              that.authService.getClusterDomain(),
               that.authService.getFyleOrgs()
             ]).subscribe(responses => {
-              that.storageService.set('user', responses[0]);
-              that.storageService.set('clusterDomain', responses[1]);
-              that.storageService.set('orgsCount', responses[2].length);
+              // Formatting user profile payload to existing tpa response format so that logged in users are not affected
+              const user = {
+                employee_email: responses[0].data.user.email,
+                full_name: responses[0].data.user.full_name,
+                org_id: responses[0].data.org.id,
+                org_name: responses[0].data.org.name
+              };
+              that.storageService.set('user', user);
+              that.storageService.set('orgsCount', responses[1].length);
               that.router.navigate(['/workspaces']);
             });
           },

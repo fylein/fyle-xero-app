@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   fyle_url: '{{FYLE_URL}}',
+  fyle_app_url: '{{FYLE_APP_URL}}',
   fyle_client_id: '{{FYLE_CLIENT_ID}}',
   callback_uri: '{{CALLBACK_URI}}',
   api_url: '{{API_URL}}',

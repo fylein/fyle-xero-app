@@ -6,8 +6,8 @@ import { forkJoin } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { Expense } from 'src/app/core/models/expense.model';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { StorageService } from 'src/app/core/services/storage.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-info',
@@ -29,7 +29,6 @@ export class InfoComponent implements OnInit {
     private expenseGroupsService: ExpenseGroupsService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private storageService: StorageService,
     private windowReferenceService: WindowReferenceService) {
     this.windowReference = this.windowReferenceService.nativeWindow;
   }
@@ -46,9 +45,8 @@ export class InfoComponent implements OnInit {
 
   openExpenseInFyle(expense) {
     const that = this;
-    const clusterDomain = this.storageService.get('clusterDomain');
     const user = that.authService.getUser();
-    this.windowReference.open(`${clusterDomain}/app/main/#/enterprise/view_expense/${expense.expense_id}?org_id=${user.org_id}`, '_blank');
+    this.windowReference.open(`${environment.fyle_app_url}/app/main/#/enterprise/view_expense/${expense.expense_id}?org_id=${user.org_id}`, '_blank');
   }
 
   ngOnInit() {

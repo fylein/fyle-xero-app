@@ -7,6 +7,7 @@ import { ExpenseGroup } from 'src/app/core/models/expense-group.model';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
 import { Task } from 'src/app/core/models/task.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-view-expense-group',
@@ -47,8 +48,7 @@ export class ViewExpenseGroupComponent implements OnInit {
   }
 
   openExpenseInFyle(expenseId: string) {
-    const clusterDomain = this.storageService.get('clusterDomain');
-    this.windowReference.open(`${clusterDomain}/app/main/#/enterprise/view_expense/${expenseId}`, '_blank');
+    this.windowReference.open(`${environment.fyle_app_url}/app/main/#/enterprise/view_expense/${expenseId}`, '_blank');
   }
 
   ngOnInit() {
