@@ -126,7 +126,7 @@ export class SettingsService {
   })
   skipCardsMapping(workspaceId: number, ): Observable<GeneralSetting> {
     return this.apiService.patch(`/workspaces/${workspaceId}/settings/general/`, {
-      'skip_cards_mapping': true
+      skip_cards_mapping: true
     });
   }
 
