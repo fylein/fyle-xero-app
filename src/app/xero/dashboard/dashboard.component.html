@@ -114,10 +114,10 @@
             <div (click)="onCardsMappingsPageVisit(true)" class="onboarding-stepper--navigation cursor-pointer"
               *ngIf="currentState === allOnboardingStates.generalMappingsDone && showCardsMapping"
               [ngClass]="{'onboarding-stepper--navigation__active': currentState === allOnboardingStates.generalMappingsDone}">
-              <span routerLink="../settings/corporate_card/mappings/">
+              <span class="cards-mapping" routerLink="../settings/corporate_card/mappings/">
                 Go to Cards Mappings
               </span>
-              <span class="skip-cards-mapping" (click)="skipCardsMapping()">
+              <span (click)="skipCardsMapping()">
                 Skip
               </span>
             </div>
