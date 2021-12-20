@@ -266,6 +266,7 @@ export class DashboardComponent implements OnInit {
     that.isLoading = true;
     that.settingsService.skipCardsMapping(that.workspaceId).subscribe((generalSetting: GeneralSetting) => {
       that.generalSettings = generalSetting;
+      that.currentState = onboardingStates.cardsMappingDone;
       that.isLoading = false;
     });
   }
