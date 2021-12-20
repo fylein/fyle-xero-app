@@ -130,8 +130,17 @@ export class DashboardComponent implements OnInit {
   getCardsMappings() {
     const that = this;
     if (that.generalSettings && that.generalSettings.skip_cards_mapping) {
-        that.currentState = onboardingStates.cardsMappingDone;
-      }
+      that.currentState = onboardingStates.cardsMappingDone;
+    } else {
+      return that.mappingsService.getMappings('CORPORATE_CARD', 1).toPromise().then((res) => {
+        if (res.results.length > 0) {
+          that.currentState = onboardingStates.cardsMappingDone;
+        } else {
+          throw new Error('card mappings have no entries');
+        }
+        return res;
+      });
+    }
   }
 
   getEmployeeMappings() {
