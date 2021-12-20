@@ -107,7 +107,7 @@
           <div class="onboarding-stepper--step" fxLayout="row" fxLayoutAlign="space-between center">
             <div fxLayout="row" fxLayoutAlign="start center" *ngIf="showCardsMapping">
               <mat-icon class="onboarding-stepper--check"
-                [ngClass]="{'onboarding-stepper--check__complete': generalSettings && generalSettings.skip_cards_mapping}">
+                [ngClass]="{'onboarding-stepper--check__complete': (generalSettings && generalSettings.skip_cards_mapping) || currentState === allOnboardingStates.cardsMappingDone || currentState === allOnboardingStates.employeeMappingsDone}">
                 check_circle</mat-icon>
               <div class="onboarding-stepper--desc">Map Corporate Cards</div>
             </div>
