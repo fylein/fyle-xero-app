@@ -107,10 +107,11 @@ export class DashboardComponent implements OnInit {
     ).toPromise().then(res => {
       that.generalSettings = res[0];
       that.currentState = onboardingStates.configurationsDone;
-      if (!res[0].corporate_credit_card_expenses_object && !res[0].sync_fyle_to_xero_payments) {
-        that.showGeneralmappings = false;
+      if (!res[0].corporate_credit_card_expenses_object) {
         that.showCardsMapping = false;
-        that.currentState = onboardingStates.generalMappingsDone;
+        if (!res[0].sync_fyle_to_xero_payments) {
+          that.showGeneralmappings = false;
+        }
       }
       return res;
     });
@@ -129,17 +130,22 @@ export class DashboardComponent implements OnInit {
 
   getCardsMappings() {
     const that = this;
-    if (that.generalSettings && that.generalSettings.skip_cards_mapping) {
-      that.currentState = onboardingStates.cardsMappingDone;
-    } else {
-      return that.mappingsService.getMappings('CORPORATE_CARD', 1).toPromise().then((res) => {
-        if (res.results.length > 0) {
-          that.currentState = onboardingStates.cardsMappingDone;
-        } else {
-          throw new Error('card mappings have no entries');
-        }
-        return res;
-      });
+    if (that.generalSettings && that.showCardsMapping) {
+      if (that.generalSettings.skip_cards_mapping) {
+        that.currentState = onboardingStates.cardsMappingDone;
+      } else {
+        return that.mappingsService.getMappings('CORPORATE_CARD', 1).toPromise().then((res) => {
+          if (res.results.length > 0) {
+            that.currentState = onboardingStates.cardsMappingDone;
+          } else if (!that.generalSettings.corporate_credit_card_expenses_object) {
+            console.log('asdasdds')
+            that.currentState = onboardingStates.cardsMappingDone;
+          } else if (!that.generalSettings.skip_cards_mapping) {
+            throw new Error('card mappings have no entries');
+          }
+          return res;
+        });
+      }
     }
   }
 
@@ -263,12 +269,14 @@ export class DashboardComponent implements OnInit {
 
   skipCardsMapping() {
     const that = this;
-    that.isLoading = true;
-    that.settingsService.skipCardsMapping(that.workspaceId).subscribe((generalSetting: GeneralSetting) => {
-      that.generalSettings = generalSetting;
-      that.currentState = onboardingStates.cardsMappingDone;
-      that.isLoading = false;
-    });
+    if (that.showCardsMapping) {
+      that.isLoading = true;
+      that.settingsService.skipCardsMapping(that.workspaceId).subscribe((generalSetting: GeneralSetting) => {
+        that.generalSettings = generalSetting;
+        that.currentState = onboardingStates.cardsMappingDone;
+        that.isLoading = false;
+      });
+    }
   }
 
   ngOnInit() {
