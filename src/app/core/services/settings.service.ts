@@ -122,6 +122,15 @@ export class SettingsService {
   }
 
   @CacheBuster({
+    cacheBusterNotifier: generalSettingsCache
+  })
+  skipCardsMapping(workspaceId: number, ): Observable<GeneralSetting> {
+    return this.apiService.patch(`/workspaces/${workspaceId}/settings/general/`, {
+      skip_cards_mapping: true
+    });
+  }
+
+  @CacheBuster({
     cacheBusterNotifier: tenantMappingCache
   })
   postTenantMappings(workspaceId: number, tenantName: string, tenantId: string): Observable<TenantMapping> {

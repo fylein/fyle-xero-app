@@ -99,6 +99,9 @@ export class ConfigurationComponent implements OnInit {
       {
         source_field: 'EMPLOYEE',
         destination_field: 'CONTACT'
+      }, {
+        source_field: 'CORPORATE_CARD',
+        destination_field: 'BANK_ACCOUNT'
       }
     ];
 

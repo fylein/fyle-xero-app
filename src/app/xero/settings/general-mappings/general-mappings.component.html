@@ -18,7 +18,7 @@
       <div fxLayout="column" fxLayoutAlign="start stretch">
 
         <div class="mat-body-strong" *ngIf="generalSettings.corporate_credit_card_expenses_object">
-          Bank Account
+          Default Bank Account
           <mandatory-field *ngIf="isFieldMandatory('bankAccounts')"></mandatory-field>
           <mat-icon [inline]="true" class="info-icon" matTooltip="The default bank account against which bank transactions will be created" matTooltipPosition="after">info</mat-icon>
         </div>
