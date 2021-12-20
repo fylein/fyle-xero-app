@@ -29,6 +29,7 @@ export class GenericMappingsComponent implements OnInit {
   pageNumber: number;
   rowElement: Mapping;
   columnsToDisplay = ['sourceField', 'destinationField'];
+  helpDocLink: string;
 
 
   constructor(private mappingsService: MappingsService, private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private snackBar: MatSnackBar, private storageService: StorageService, private settingsService: SettingsService) { }
@@ -110,6 +111,13 @@ export class GenericMappingsComponent implements OnInit {
       that.isLoading = true;
       that.workspaceId = +that.route.parent.snapshot.params.workspace_id;
       that.sourceField = that.route.snapshot.params.source_field;
+
+      if (that.sourceField === 'corporate_card') {
+        that.helpDocLink = 'https://help.fylehq.com/en/articles/5719985-mapping-corporate-credit-cards-in-fyle-to-a-bank-account-in-xero';
+      } else {
+        that.helpDocLink = 'https://www.fylehq.com/help/en/articles/4601898-onboarding-process-to-set-up-fyle-xero-integration';
+      }
+
       forkJoin(
         [
           that.settingsService.getMappingSettings(that.workspaceId),
