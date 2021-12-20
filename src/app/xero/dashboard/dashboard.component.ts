@@ -138,7 +138,6 @@ export class DashboardComponent implements OnInit {
           if (res.results.length > 0) {
             that.currentState = onboardingStates.cardsMappingDone;
           } else if (!that.generalSettings.corporate_credit_card_expenses_object) {
-            console.log('asdasdds')
             that.currentState = onboardingStates.cardsMappingDone;
           } else if (!that.generalSettings.skip_cards_mapping) {
             throw new Error('card mappings have no entries');
