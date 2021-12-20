@@ -14,8 +14,42 @@
     margin: 12px 0;
   }
 
+  &--group-field-left {
+    margin: 5px 0;
+    width: 40%;
+    float: left;
+  }
+
+  &--group-field-right {
+    margin: 5px 0;
+    width: 40%;
+    float: right;
+  }
+
+  &--group-field {
+    margin: 5px 0;
+    width: 100%;
+  }
+
+  &--group-label-left {
+    margin: 16px 0 4px;
+    font-weight: 400;
+    float: left;
+    width: 60%;
+    overflow: hidden;
+  }
+
+  &--group-label-right {
+    margin: 16px 0 4px;
+    font-weight: 400;
+    float: left;
+    width: 40%;
+    overflow: hidden;
+  }
+
   &--label {
     font-weight: 500;
+    margin: 0 0 4px;
   }
 
   &--error {
