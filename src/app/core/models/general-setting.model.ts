@@ -9,6 +9,7 @@ export type GeneralSetting = {
     sync_xero_to_fyle_payments: boolean;
     auto_map_employees: string;
     auto_create_destination_entity: boolean;
+    skip_cards_mapping: boolean;
     created_at: Date;
     updated_at: Date;
     workspace: number;

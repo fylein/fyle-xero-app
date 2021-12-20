@@ -23,6 +23,7 @@ enum onboardingStates {
   tenantMappingDone,
   configurationsDone,
   generalMappingsDone,
+  cardsMappingDone,
   employeeMappingsDone,
   categoryMappingsDone,
   isOnboarded
@@ -36,6 +37,7 @@ export class DashboardComponent implements OnInit {
   workspaceId: number;
   isLoading: boolean;
   showGeneralmappings = true;
+  showCardsMapping = true;
   generalSettings: GeneralSetting;
 
   currentState = onboardingStates.initialized;
@@ -107,6 +109,7 @@ export class DashboardComponent implements OnInit {
       that.currentState = onboardingStates.configurationsDone;
       if (!res[0].corporate_credit_card_expenses_object && !res[0].sync_fyle_to_xero_payments) {
         that.showGeneralmappings = false;
+        that.showCardsMapping = false;
         that.currentState = onboardingStates.generalMappingsDone;
       }
       return res;
@@ -122,6 +125,13 @@ export class DashboardComponent implements OnInit {
         return generalMappings;
       });
     }
+  }
+
+  getCardsMappings() {
+    const that = this;
+    if (that.generalSettings && that.generalSettings.skip_cards_mapping) {
+        that.currentState = onboardingStates.cardsMappingDone;
+      }
   }
 
   getEmployeeMappings() {
@@ -227,7 +237,11 @@ export class DashboardComponent implements OnInit {
   }
 
   onGeneralMappingsPageVisit(onboarding: boolean = false) {
-    this.trackingService.onPageVisit('Genral Mappings', onboarding);
+    this.trackingService.onPageVisit('General Mappings', onboarding);
+  }
+
+  onCardsMappingsPageVisit(onboarding: boolean = false) {
+    this.trackingService.onPageVisit('Cards Mappings', onboarding);
   }
 
   onEmployeeMappingsPageVisit(onboarding: boolean = false) {
@@ -236,6 +250,15 @@ export class DashboardComponent implements OnInit {
 
   onCategoryMappingsPageVisit(onboarding: boolean = false) {
     this.trackingService.onPageVisit('Category Mappings', onboarding);
+  }
+
+  skipCardsMapping() {
+    const that = this;
+    that.isLoading = true;
+    that.settingsService.skipCardsMapping(that.workspaceId).subscribe((generalSetting: GeneralSetting) => {
+      that.generalSettings = generalSetting;
+      that.isLoading = true;
+    });
   }
 
   ngOnInit() {
@@ -267,6 +290,8 @@ export class DashboardComponent implements OnInit {
           return that.getConfigurations();
         }).then(() => {
           return that.getGeneralMappings();
+        }).then(() => {
+          return that.getCardsMappings();
         }).then(() => {
           return that.getEmployeeMappings();
         }).then(() => {
