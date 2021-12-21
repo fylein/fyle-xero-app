@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ExpenseGroupsService } from 'src/app/core/services/expense-groups.service';
 import { ActivatedRoute } from '@angular/router';
 import { TasksService } from 'src/app/core/services/tasks.service';
+import { SettingsService } from 'src/app/core/services/settings.service';
 import { Task } from 'src/app/core/models/task.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder } from '@angular/forms';
@@ -28,7 +29,7 @@ export class SyncComponent implements OnInit {
   errorOccurred = false;
   expenseGroupSettings: ExpenseGroupSetting;
 
-  constructor(private expenseGroupService: ExpenseGroupsService, private route: ActivatedRoute, private taskService: TasksService, private snackBar: MatSnackBar, private workspaceService: WorkspaceService, public dialog: MatDialog) { }
+  constructor(private expenseGroupService: ExpenseGroupsService, private route: ActivatedRoute, private settingsService: SettingsService, private taskService: TasksService, private snackBar: MatSnackBar, private workspaceService: WorkspaceService, public dialog: MatDialog) { }
 
   syncExpenses() {
     const that = this;
@@ -68,49 +69,25 @@ export class SyncComponent implements OnInit {
   getDescription() {
     const that = this;
 
-    const allowedFields = ['vendor', 'claim_number', 'settlement_id', 'category'];
-
-    const expensesGroupedByList = [];
-    that.expenseGroupSettings.reimbursable_expense_group_fields.forEach(element => {
-      if (allowedFields.indexOf(element) >= 0) {
-        if (element === 'vendor') {
-          element = 'Merchant';
-        } else if (element === 'claim_number') {
-          element = 'Expense Report';
-        } else if (element === 'settlement_id') {
-          element = 'Payment';
-        } else if (element === 'category') {
-          element = 'Category';
-        }
-        expensesGroupedByList.push(element);
-      }
-    });
-
-    const expensesGroup = expensesGroupedByList.join(', ');
     const expenseState: string = that.expenseGroupSettings.expense_state;
-    let exportDateConfiguration = null;
-
-    if (that.expenseGroupSettings.export_date_type === 'spent_at') {
-      exportDateConfiguration = 'Spend Date';
-    } else if (that.expenseGroupSettings.export_date_type === 'approved_at') {
-      exportDateConfiguration = 'Approval Date';
-    } else if (that.expenseGroupSettings.export_date_type === 'verified_at') {
-      exportDateConfiguration = 'Verification Date';
-    } else if (that.expenseGroupSettings.export_date_type === 'last_spent_at') {
-      exportDateConfiguration = 'Last Spend Date';
-    }
 
     return {
-      expensesGroupedBy: expensesGroup,
       expenseState: expenseState.replace(/_/g, ' '),
-      exportDateType: exportDateConfiguration
     };
   }
 
   open() {
     const that = this;
+    let dialogWidth = '450px';
+
+    that.settingsService.getGeneralSettings(that.workspaceId).subscribe(response => {
+      if (response.corporate_credit_card_expenses_object) {
+        dialogWidth = '750px';
+      }
+    });
+
     const dialogRef = that.dialog.open(ExpenseGroupSettingsDialogComponent, {
-      width: '450px',
+      width: dialogWidth,
       data: {
         workspaceId: that.workspaceId
       }
