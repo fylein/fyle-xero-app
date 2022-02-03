@@ -30,7 +30,7 @@
     "ng2-flatpickr": "^9.0.0",
     "ngx-cacheable": "^1.4.2",
     "normalize.css": "^8.0.1",
-    "npm": "^6.13.7",
+    "npm": "^6.14.16",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
@@ -48,15 +48,11 @@
     "dotenv": "^8.2.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~4.1.0",
-    "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "~2.0.1",
-    "karma-jasmine": "~2.0.1",
-    "karma-jasmine-html-reporter": "^1.4.0",
     "prettier": "^1.19.1",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.5.3"
+    "typescript": "~3.5.3",
+    "node-forge": ">=1.0.0"
   }
 }
