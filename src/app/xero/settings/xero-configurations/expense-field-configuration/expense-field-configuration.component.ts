@@ -198,7 +198,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
   createFormFields(mappingSetting: MappingSetting[]) {
     const that = this;
     that.mappingSettings = mappingSetting.filter(
-      setting => setting.source_field !== 'EMPLOYEE' && setting.source_field !== 'CATEGORY' && setting.source_field !== 'CORPORATE_CARD'
+      setting => setting.source_field !== 'EMPLOYEE' && setting.source_field !== 'CATEGORY' && setting.source_field !== 'CORPORATE_CARD' && setting.source_field !== 'TAX_GROUP'
     );
 
     let expenseFieldFormArray;

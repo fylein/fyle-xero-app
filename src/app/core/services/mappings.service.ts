@@ -27,6 +27,7 @@ export class MappingsService {
   xeroContacts: Observable<MappingDestination[]>;
   xeroTrackingCategories: Observable<MappingDestination[]>;
   xeroItems: Observable<MappingDestination[]>;
+  xeroTaxCodes: Observable<MappingDestination[]>;
   accountPayables: Observable<MappingDestination[]>;
   xeroAccounts: Observable<MappingDestination[]>;
   xeroTenants: Observable<MappingDestination[]>;
@@ -263,6 +264,12 @@ export class MappingsService {
     return this.apiService.get(
       `/workspaces/${workspaceId}/xero/bank_accounts/`, {}
     );
+  }
+
+  getXeroTaxCodes(): Observable<MappingDestination[]> {
+    const workspaceId = this.workspaceService.getWorkspaceId();
+    
+    return this.apiService.get(`/workspaces/${workspaceId}/xero/tax_codes/`, {});
   }
 
   getXeroTenants(): Observable<MappingDestination[]> {

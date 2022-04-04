@@ -9,6 +9,8 @@ import { XeroComponent } from 'src/app/xero/xero.component';
 import { WindowReferenceService } from 'src/app/core/services/window.service';
 import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 import { MappingSetting } from 'src/app/core/models/mapping-setting.model';
+import { XeroCredentials } from 'src/app/core/models/xero-credentials.model';
+
 
 @Component({
   selector: 'app-configuration',
@@ -26,6 +28,8 @@ export class ConfigurationComponent implements OnInit {
   generalSettings: GeneralSetting;
   mappingSettings: MappingSetting[];
   windowReference: Window;
+  xeroCompanyCountry: string;
+
 
   constructor(private formBuilder: FormBuilder, private storageService: StorageService, private settingsService: SettingsService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private xero: XeroComponent, private windowReferenceService: WindowReferenceService) {
     this.windowReference = this.windowReferenceService.nativeWindow;
@@ -56,7 +60,8 @@ export class ConfigurationComponent implements OnInit {
         paymentsSync: [paymentsSyncOption],
         importCategories: [that.generalSettings.import_categories],
         autoMapEmployees: [that.generalSettings.auto_map_employees],
-        autoCreateDestinationEntity: [that.generalSettings.auto_create_destination_entity]
+        autoCreateDestinationEntity: [that.generalSettings.auto_create_destination_entity],
+        importTaxCodes: [that.generalSettings.import_tax_codes ? that.generalSettings.import_tax_codes : false],
       });
 
       that.showAutoCreateOption(that.generalSettings.auto_map_employees);
@@ -65,6 +70,10 @@ export class ConfigurationComponent implements OnInit {
 
       if (that.generalSettings.corporate_credit_card_expenses_object) {
         that.generalSettingsForm.controls.cccExpense.disable();
+      }
+
+      if (that.xeroCompanyCountry === 'US') {
+        that.generalSettingsForm.controls.importTaxCodes.disable();
       }
 
       that.generalSettingsForm.controls.autoMapEmployees.valueChanges.subscribe((employeeMappingPreference) => {
@@ -80,7 +89,8 @@ export class ConfigurationComponent implements OnInit {
         paymentsSync: [null],
         importCategories: [false],
         autoMapEmployees: [null],
-        autoCreateDestinationEntity: [false]
+        autoCreateDestinationEntity: [false],
+        importTaxCodes: [false],
       });
 
       that.generalSettingsForm.controls.autoMapEmployees.valueChanges.subscribe((employeeMappingPreference) => {
@@ -102,6 +112,9 @@ export class ConfigurationComponent implements OnInit {
       }, {
         source_field: 'CORPORATE_CARD',
         destination_field: 'BANK_ACCOUNT'
+      }, {
+        source_field: 'TAX_GROUP',
+        destination_field: 'TAX_CODE'
       }
     ];
 
@@ -110,6 +123,7 @@ export class ConfigurationComponent implements OnInit {
     const importCategories = that.generalSettingsForm.value.importCategories;
     const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
     const autoCreateDestinationEntity = that.generalSettingsForm.value.autoCreateDestinationEntity;
+    const importTaxCodes = that.generalSettingsForm.value.importTaxCodes ? that.generalSettingsForm.value.importTaxCodes : false;
 
     let fyleToXero = false;
     let xeroToFyle = false;
@@ -124,7 +138,7 @@ export class ConfigurationComponent implements OnInit {
     forkJoin(
       [
         that.settingsService.postMappingSettings(that.workspaceId, mappingsSettingsPayload),
-        that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories, autoCreateDestinationEntity, autoMapEmployees)
+        that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories, importTaxCodes, autoCreateDestinationEntity, autoMapEmployees)
       ]
     ).subscribe(responses => {
       that.isLoading = true;
@@ -154,10 +168,22 @@ export class ConfigurationComponent implements OnInit {
     }
   }
 
+  getXeroCompanyName(): Promise<string> {
+    const that = this;
+    return that.settingsService.getXeroCredentials(that.workspaceId).toPromise().then((xeroCredentials: XeroCredentials) => {
+      if (xeroCredentials.country) {
+        return xeroCredentials.country;
+      }
+    });
+  }
+
   ngOnInit() {
     const that = this;
     that.workspaceId = that.route.snapshot.parent.parent.params.workspace_id;
     that.getAllSettings();
+    that.getXeroCompanyName().then((xeroCountry: string) => {
+      that.xeroCompanyCountry = xeroCountry;
+    });
   }
 
 }

@@ -45,7 +45,30 @@
           </mat-select>
         </mat-form-field>
         <mandatory-error-message listName="payment account" *ngIf="form.controls.paymentAccounts.touched && !form.controls.paymentAccounts.valid"></mandatory-error-message>
+
+      <div class="mat-body-strong" *ngIf="generalSettings.import_tax_codes">
+        Default Tax Code
+        <mandatory-field *ngIf="isFieldMandatory('xeroTaxCodes')"></mandatory-field>
+        <mat-icon
+          [inline]="true"
+          class="info-icon"
+          matTooltip="The default Tax Code would be applied to exported expenses in case the original expense in Fyle does not carry any Tax Group."
+          matTooltipPosition="after">
+            info
+        </mat-icon>
       </div>
+        <mat-form-field floatLabel="always" appearance="outline" required
+          *ngIf="generalSettings.import_tax_codes">
+          <mat-select class="general-mappings--input" placeholder="Select Tax Group"
+            formControlName="xeroTaxCodes">
+            <mat-option *ngFor="let taxCode of taxCodes; let i = index" [value]="taxCodes[i].destination_id">
+              {{taxCodes[i].value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mandatory-error-message listName="default tax code" *ngIf="form.controls.xeroTaxCodes.touched && !form.controls.xeroTaxCodes.valid"></mandatory-error-message>
+      </div>
+
       <button [disabled]="!form.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="submit()" type="submit">
         Save
       </button>

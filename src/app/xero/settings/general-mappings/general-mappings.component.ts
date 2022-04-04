@@ -22,6 +22,7 @@ export class GeneralMappingsComponent implements OnInit {
   paymentAccounts: MappingDestination[];
   generalMappings: GeneralMapping;
   generalSettings: GeneralSetting;
+  taxCodes: MappingDestination[];
   isLoading = true;
 
   constructor(
@@ -36,18 +37,22 @@ export class GeneralMappingsComponent implements OnInit {
 
   submit() {
     const that = this;
-
     const bankAccountId = that.form.value.bankAccounts || '';
     const bankAccount: MappingDestination = that.bankAccounts.filter(filteredBankAccount => filteredBankAccount.destination_id === bankAccountId)[0] || null;
 
     const paymentAccountId = that.generalSettings.sync_fyle_to_xero_payments ? that.form.value.paymentAccounts : '';
     const paymentAccount: MappingDestination = that.generalSettings.sync_fyle_to_xero_payments ? that.paymentAccounts.filter(filteredAccountsPayableAccount => filteredAccountsPayableAccount.destination_id === paymentAccountId)[0] : null;
 
+    const defaultTaxCodeId = that.generalSettings.import_tax_codes ? that.form.value.xeroTaxCodes: null;
+    const defaultTaxCode: MappingDestination = that.generalSettings.import_tax_codes ? that.taxCodes.filter(filteredTaxCode => filteredTaxCode.destination_id === defaultTaxCodeId)[0] : null;
+
     const generalMappings = {
       bank_account_name: bankAccount ? bankAccount.value : null,
       bank_account_id: bankAccount ? bankAccount.destination_id : null,
       payment_account_name: paymentAccount ? paymentAccount.value : null,
-      payment_account_id: paymentAccount ? paymentAccount.destination_id : null
+      payment_account_id: paymentAccount ? paymentAccount.destination_id : null,
+      default_tax_code_name: defaultTaxCode ? defaultTaxCode.value : null,
+      default_tax_code_id: defaultTaxCode ? defaultTaxCode.destination_id : null
     };
     that.isLoading = true;
     this.mappingsService.postGeneralMappings(generalMappings).subscribe(() => {
@@ -82,13 +87,15 @@ export class GeneralMappingsComponent implements OnInit {
 
       that.form = that.formBuilder.group({
         bankAccounts: [that.generalMappings ? that.generalMappings.bank_account_id : '', that.generalSettings.corporate_credit_card_expenses_object ? Validators.required : ''],
-        paymentAccounts: [that.generalMappings ? that.generalMappings.payment_account_id : '', that.generalSettings.sync_fyle_to_xero_payments ? Validators.required : '']
+        paymentAccounts: [that.generalMappings ? that.generalMappings.payment_account_id : '', that.generalSettings.sync_fyle_to_xero_payments ? Validators.required : ''],
+        xeroTaxCodes: [that.generalMappings ? that.generalMappings.default_tax_code_id : '', that.generalSettings.import_tax_codes ? Validators.required : ''],
       });
       that.isLoading = false;
     }, () => {
       that.form = that.formBuilder.group({
         bankAccounts: [null, that.generalSettings.corporate_credit_card_expenses_object ? Validators.required : null],
-        paymentAccounts: [null, that.generalSettings.sync_fyle_to_xero_payments ? Validators.required : null]
+        paymentAccounts: [null, that.generalSettings.sync_fyle_to_xero_payments ? Validators.required : null],
+        xeroTaxCodes: [null, that.generalSettings.import_tax_codes ? Validators.required : null],
       });
       that.isLoading = false;
     });
@@ -99,12 +106,14 @@ export class GeneralMappingsComponent implements OnInit {
     that.isLoading = true;
     forkJoin(
       [
-        that.mappingsService.getBankAccounts()
+        that.mappingsService.getBankAccounts(),
+        that.mappingsService.getXeroTaxCodes()
       ]
     ).subscribe(responses => {
       that.isLoading = false;
       that.bankAccounts = responses[0];
       that.paymentAccounts = responses[0];
+      that.taxCodes = responses[1];
       that.getGeneralMappings();
     });
   }

@@ -96,6 +96,18 @@
         </div>
       </mat-slide-toggle>
 
+      <mat-slide-toggle color="primary" class="schedule" *ngIf="xeroCompanyCountry !== 'US'" formControlName="importTaxCodes">
+        <div class="schedule--toggle-text">Import Xero Tax Codes to Fyle
+          <mat-icon
+            [inline]="true"
+            class="info-icon"
+            matTooltip="Import Tax Codes and Groups from Xero as Tax Groups in Fyle"
+            matTooltipPosition="after">
+              info
+          </mat-icon>
+        </div>
+      </mat-slide-toggle>
+
       <button [disabled]="!generalSettingsForm.valid" class="configurations--save-btn" mat-flat-button color="primary" (click)="save()" type="submit">
         Save
       </button>

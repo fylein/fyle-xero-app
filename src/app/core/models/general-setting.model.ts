@@ -10,6 +10,7 @@ export type GeneralSetting = {
     auto_map_employees: string;
     auto_create_destination_entity: boolean;
     skip_cards_mapping: boolean;
+    import_tax_codes: boolean;
     created_at: Date;
     updated_at: Date;
     workspace: number;
