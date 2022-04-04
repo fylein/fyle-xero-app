@@ -43,7 +43,7 @@ export class GeneralMappingsComponent implements OnInit {
     const paymentAccountId = that.generalSettings.sync_fyle_to_xero_payments ? that.form.value.paymentAccounts : '';
     const paymentAccount: MappingDestination = that.generalSettings.sync_fyle_to_xero_payments ? that.paymentAccounts.filter(filteredAccountsPayableAccount => filteredAccountsPayableAccount.destination_id === paymentAccountId)[0] : null;
 
-    const defaultTaxCodeId = that.generalSettings.import_tax_codes ? that.form.value.xeroTaxCodes: null;
+    const defaultTaxCodeId = that.generalSettings.import_tax_codes ? that.form.value.xeroTaxCodes : null;
     const defaultTaxCode: MappingDestination = that.generalSettings.import_tax_codes ? that.taxCodes.filter(filteredTaxCode => filteredTaxCode.destination_id === defaultTaxCodeId)[0] : null;
 
     const generalMappings = {
