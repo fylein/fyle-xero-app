@@ -48,7 +48,7 @@ export class ConfigurationComponent implements OnInit {
       that.generalSettings = responses[0];
       that.mappingSettings = responses[1].results;
       that.xeroCompanyCountry = responses[2].country;
-      
+
       let paymentsSyncOption = '';
       if (that.generalSettings.sync_fyle_to_xero_payments) {
         paymentsSyncOption = 'sync_fyle_to_xero_payments';
