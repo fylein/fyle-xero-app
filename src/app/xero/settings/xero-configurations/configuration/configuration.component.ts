@@ -41,12 +41,14 @@ export class ConfigurationComponent implements OnInit {
     forkJoin(
       [
         that.settingsService.getGeneralSettings(that.workspaceId),
-        that.settingsService.getMappingSettings(that.workspaceId)
+        that.settingsService.getMappingSettings(that.workspaceId),
+        that.settingsService.getXeroCredentials(that.workspaceId)
       ]
     ).subscribe(responses => {
       that.generalSettings = responses[0];
       that.mappingSettings = responses[1].results;
-
+      that.xeroCompanyCountry = responses[2].country;
+      
       let paymentsSyncOption = '';
       if (that.generalSettings.sync_fyle_to_xero_payments) {
         paymentsSyncOption = 'sync_fyle_to_xero_payments';
@@ -168,22 +170,10 @@ export class ConfigurationComponent implements OnInit {
     }
   }
 
-  getXeroCompanyName(): Promise<string> {
-    const that = this;
-    return that.settingsService.getXeroCredentials(that.workspaceId).toPromise().then((xeroCredentials: XeroCredentials) => {
-      if (xeroCredentials.country) {
-        return xeroCredentials.country;
-      }
-    });
-  }
-
   ngOnInit() {
     const that = this;
     that.workspaceId = that.route.snapshot.parent.parent.params.workspace_id;
     that.getAllSettings();
-    that.getXeroCompanyName().then((xeroCountry: string) => {
-      that.xeroCompanyCountry = xeroCountry;
-    });
   }
 
 }
