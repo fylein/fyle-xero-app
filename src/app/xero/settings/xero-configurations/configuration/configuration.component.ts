@@ -41,13 +41,11 @@ export class ConfigurationComponent implements OnInit {
     forkJoin(
       [
         that.settingsService.getGeneralSettings(that.workspaceId),
-        that.settingsService.getMappingSettings(that.workspaceId),
-        that.settingsService.getXeroCredentials(that.workspaceId)
+        that.settingsService.getMappingSettings(that.workspaceId)
       ]
     ).subscribe(responses => {
       that.generalSettings = responses[0];
       that.mappingSettings = responses[1].results;
-      that.xeroCompanyCountry = responses[2].country;
 
       let paymentsSyncOption = '';
       if (that.generalSettings.sync_fyle_to_xero_payments) {
@@ -173,7 +171,10 @@ export class ConfigurationComponent implements OnInit {
   ngOnInit() {
     const that = this;
     that.workspaceId = that.route.snapshot.parent.parent.params.workspace_id;
-    that.getAllSettings();
+    that.settingsService.getXeroCredentials(that.workspaceId).subscribe((xeroCredentials: XeroCredentials) => {
+      that.xeroCompanyCountry = xeroCredentials.country;
+      that.getAllSettings();
+    });
   }
 
 }

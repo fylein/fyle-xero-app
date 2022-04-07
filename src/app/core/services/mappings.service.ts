@@ -268,7 +268,6 @@ export class MappingsService {
 
   getXeroTaxCodes(): Observable<MappingDestination[]> {
     const workspaceId = this.workspaceService.getWorkspaceId();
-
     return this.apiService.get(`/workspaces/${workspaceId}/xero/tax_codes/`, {});
   }
 
