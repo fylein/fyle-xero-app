@@ -41,11 +41,16 @@ export class ConfigurationComponent implements OnInit {
     forkJoin(
       [
         that.settingsService.getGeneralSettings(that.workspaceId),
-        that.settingsService.getMappingSettings(that.workspaceId)
+        that.settingsService.getMappingSettings(that.workspaceId),
+        that.settingsService.getXeroCredentials(that.workspaceId)
       ]
     ).subscribe(responses => {
       that.generalSettings = responses[0];
       that.mappingSettings = responses[1].results;
+      that.xeroCompanyCountry = responses[2].country;
+
+      console.log(that.xeroCompanyCountry)
+      console.log(that.xeroCompanyCountry !== 'US')
 
       let paymentsSyncOption = '';
       if (that.generalSettings.sync_fyle_to_xero_payments) {
