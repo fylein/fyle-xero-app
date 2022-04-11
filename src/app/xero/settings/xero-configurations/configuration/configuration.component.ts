@@ -10,6 +10,7 @@ import { WindowReferenceService } from 'src/app/core/services/window.service';
 import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 import { MappingSetting } from 'src/app/core/models/mapping-setting.model';
 import { XeroCredentials } from 'src/app/core/models/xero-credentials.model';
+import { TrackingService } from 'src/app/core/services/tracking.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { XeroCredentials } from 'src/app/core/models/xero-credentials.model';
 })
 export class ConfigurationComponent implements OnInit {
 
-  isLoading: boolean;
+  isLoading = true;
   showAutoCreate: boolean;
   generalSettingsForm: FormGroup;
   expenseOptions: { label: string, value: string }[];
@@ -31,13 +32,12 @@ export class ConfigurationComponent implements OnInit {
   xeroCompanyCountry: string;
 
 
-  constructor(private formBuilder: FormBuilder, private storageService: StorageService, private settingsService: SettingsService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private xero: XeroComponent, private windowReferenceService: WindowReferenceService) {
+  constructor(private formBuilder: FormBuilder, private storageService: StorageService, private settingsService: SettingsService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private xero: XeroComponent, private windowReferenceService: WindowReferenceService, private trackingService: TrackingService) {
     this.windowReference = this.windowReferenceService.nativeWindow;
   }
 
   getAllSettings() {
     const that = this;
-    that.isLoading = true;
     forkJoin(
       [
         that.settingsService.getGeneralSettings(that.workspaceId),
@@ -149,6 +149,15 @@ export class ConfigurationComponent implements OnInit {
         setTimeout(() => {
           that.snackBar.open('Auto mapping of employees may take few minutes');
         }, 1500);
+      }
+
+      if (importTaxCodes) {
+        const trackingProperties = {
+          workspace_id: that.workspaceId,
+          importTaxCodes: importTaxCodes
+        }
+
+        that.trackingService.onImportingTaxGroups(trackingProperties);
       }
 
       that.xero.getSettingsAndNavigate();
