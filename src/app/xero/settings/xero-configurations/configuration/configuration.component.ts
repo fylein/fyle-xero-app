@@ -112,9 +112,6 @@ export class ConfigurationComponent implements OnInit {
       }, {
         source_field: 'CORPORATE_CARD',
         destination_field: 'BANK_ACCOUNT'
-      }, {
-        source_field: 'TAX_GROUP',
-        destination_field: 'TAX_CODE'
       }
     ];
 
@@ -135,6 +132,13 @@ export class ConfigurationComponent implements OnInit {
 
     that.isLoading = true;
 
+    if (importTaxCodes) {
+      mappingsSettingsPayload.push({
+        source_field: 'TAX_GROUP',
+        destination_field: 'TAX_CODE'
+      });
+    }
+
     forkJoin(
       [
         that.settingsService.postMappingSettings(that.workspaceId, mappingsSettingsPayload),
@@ -153,7 +157,6 @@ export class ConfigurationComponent implements OnInit {
 
       if (importTaxCodes) {
         const trackingProperties = {
-          workspace_id: that.workspaceId,
           import_tax_codes_enabled: importTaxCodes
         };
 
