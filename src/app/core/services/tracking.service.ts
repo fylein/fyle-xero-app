@@ -48,5 +48,9 @@ export class TrackingService {
   onSwitchWorkspace() {
     this.eventTrack('Switching Workspace');
   }
+
+  onImportingTaxGroups(taxGroups) {
+    this.eventTrack('Importing Tax Groups', taxGroups);
+  }
 }
 
