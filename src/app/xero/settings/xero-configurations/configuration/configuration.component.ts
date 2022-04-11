@@ -154,8 +154,8 @@ export class ConfigurationComponent implements OnInit {
       if (importTaxCodes) {
         const trackingProperties = {
           workspace_id: that.workspaceId,
-          importTaxCodes: importTaxCodes
-        }
+          import_tax_codes_enabled: importTaxCodes
+        };
 
         that.trackingService.onImportingTaxGroups(trackingProperties);
       }
