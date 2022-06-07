@@ -95,7 +95,27 @@
           <mat-icon [inline]="true" class="info-icon" matTooltip="Import Xero Expense Accounts as Categories in Fyle" matTooltipPosition="after">info</mat-icon>
         </div>
       </mat-slide-toggle>
-
+      
+      <div class="configurations--label" *ngIf="isChartOfAccountsEnabled">
+        Select Chart of Accounts to Import
+        <mat-icon
+          [inline]="true"
+          class="info-icon"
+          matTooltip="The selected accounts from Quickbooks Online will be imported as categories in Fyle in an enabled state. These categories can be disabled if needed from Fyle Admin settings"
+          matTooltipPosition="after">
+            info
+        </mat-icon>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center" *ngIf="isChartOfAccountsEnabled">
+        <mat-form-field floatLabel="always" appearance="outline" fxFlex="100">
+          <mat-select placeholder="Choose Accounts You want to Import to Fyle"
+            formControlName="chartOfAccounts" multiple>
+            <mat-option *ngFor="let option of allAccountTypes" [disabled]="option === 'Expense'" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <mat-slide-toggle color="primary" class="schedule" *ngIf="xeroCompanyCountry !== 'US'" formControlName="importTaxCodes">
         <div class="schedule--toggle-text">Import Xero Tax Codes to Fyle
           <mat-icon

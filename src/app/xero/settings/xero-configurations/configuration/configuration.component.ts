@@ -30,7 +30,8 @@ export class ConfigurationComponent implements OnInit {
   mappingSettings: MappingSetting[];
   windowReference: Window;
   xeroCompanyCountry: string;
-
+  isChartOfAccountsEnabled: boolean;
+  allAccountTypes: string[];
 
   constructor(private formBuilder: FormBuilder, private storageService: StorageService, private settingsService: SettingsService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private xero: XeroComponent, private windowReferenceService: WindowReferenceService, private trackingService: TrackingService) {
     this.windowReference = this.windowReferenceService.nativeWindow;
@@ -65,7 +66,7 @@ export class ConfigurationComponent implements OnInit {
       });
 
       that.showAutoCreateOption(that.generalSettings.auto_map_employees);
-
+      that.showChartOfAccounts(that.generalSettings.import_categories)
       that.generalSettingsForm.controls.reimbursableExpense.disable();
 
       if (that.generalSettings.corporate_credit_card_expenses_object) {
@@ -97,6 +98,15 @@ export class ConfigurationComponent implements OnInit {
         that.showAutoCreateOption(employeeMappingPreference);
       });
     });
+  }
+
+  showChartOfAccounts(importCategories: boolean) {
+    const that = this;
+    if (importCategories) {
+      that.isChartOfAccountsEnabled = true;
+    } else {
+      that.isChartOfAccountsEnabled = false;
+    }
   }
 
   save() {
@@ -185,6 +195,7 @@ export class ConfigurationComponent implements OnInit {
     that.workspaceId = that.route.snapshot.parent.parent.params.workspace_id;
     that.settingsService.getXeroCredentials(that.workspaceId).subscribe((xeroCredentials: XeroCredentials) => {
       that.xeroCompanyCountry = xeroCredentials.country;
+      that.allAccountTypes = ['Expense', 'ASSET', 'EQUITY', 'EXPENSE', 'LIABILITY', 'REVENUE']
       that.getAllSettings();
     });
   }
