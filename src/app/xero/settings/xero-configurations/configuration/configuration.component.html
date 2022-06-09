@@ -89,7 +89,7 @@
         <div class="schedule--toggle-text">Auto Create Contact on Xero</div>
       </mat-slide-toggle>
 
-      <mat-slide-toggle color="primary" class="schedule" formControlName="importCategories">
+      <mat-slide-toggle color="primary" class="schedule" formControlName="importCategories" (click)="showChartOfAccounts(!generalSettingsForm.value.importCategories)">
         <div class="schedule--toggle-text">
           Import Xero Expense Accounts into Fyle
           <mat-icon [inline]="true" class="info-icon" matTooltip="Import Xero Expense Accounts as Categories in Fyle" matTooltipPosition="after">info</mat-icon>
