@@ -63,7 +63,7 @@ export class ConfigurationComponent implements OnInit {
         autoMapEmployees: [that.generalSettings.auto_map_employees],
         autoCreateDestinationEntity: [that.generalSettings.auto_create_destination_entity],
         importTaxCodes: [that.generalSettings.import_tax_codes ? that.generalSettings.import_tax_codes : false],
-        chartOfAccounts: [['Expense']],
+        chartOfAccounts: [that.generalSettings.charts_of_accounts ? that.generalSettings.charts_of_accounts : ['Expense']],
       });
 
       that.showAutoCreateOption(that.generalSettings.auto_map_employees);
