@@ -110,8 +110,8 @@
         <mat-form-field floatLabel="always" appearance="outline" fxFlex="100">
           <mat-select placeholder="Choose Accounts You want to Import to Fyle"
             formControlName="chartOfAccounts" multiple>
-            <mat-option *ngFor="let option of allAccountTypes" [disabled]="option === 'Expense'" [value]="option">
-              {{option}}
+            <mat-option *ngFor="let option of allAccountTypes" [disabled]="option.value === 'EXPENSE'" [value]="option.value">
+              {{option.label}}
             </mat-option>
           </mat-select>
         </mat-form-field>
