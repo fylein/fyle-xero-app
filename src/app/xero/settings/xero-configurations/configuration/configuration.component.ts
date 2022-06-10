@@ -55,6 +55,9 @@ export class ConfigurationComponent implements OnInit {
         paymentsSyncOption = 'sync_xero_to_fyle_payments';
       }
 
+      const COA = that.generalSettings.charts_of_accounts.map(element => {
+        return element[0]+element.substring(1).toLowerCase();
+      });
       that.generalSettingsForm = that.formBuilder.group({
         reimbursableExpense: [that.generalSettings ? that.generalSettings.reimbursable_expenses_object : ''],
         cccExpense: [that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : ''],
@@ -63,7 +66,7 @@ export class ConfigurationComponent implements OnInit {
         autoMapEmployees: [that.generalSettings.auto_map_employees],
         autoCreateDestinationEntity: [that.generalSettings.auto_create_destination_entity],
         importTaxCodes: [that.generalSettings.import_tax_codes ? that.generalSettings.import_tax_codes : false],
-        chartOfAccounts: [that.generalSettings.charts_of_accounts ? that.generalSettings.charts_of_accounts : ['Expense']],
+        chartOfAccounts: [COA ? COA : ['EXPENSE']],
       });
 
       that.showAutoCreateOption(that.generalSettings.auto_map_employees);
@@ -132,7 +135,10 @@ export class ConfigurationComponent implements OnInit {
     const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
     const autoCreateDestinationEntity = that.generalSettingsForm.value.autoCreateDestinationEntity;
     const importTaxCodes = that.generalSettingsForm.value.importTaxCodes ? that.generalSettingsForm.value.importTaxCodes : false;
-    const chartOfAccounts = importCategories ? this.generalSettingsForm.value.chartOfAccounts : ['Expense'];
+    const COA = this.generalSettingsForm.value.chartOfAccounts.map(element => {
+      return element.toUpperCase();
+    });
+    const chartOfAccounts = importCategories ? COA : ['EXPENSE'];
     let fyleToXero = false;
     let xeroToFyle = false;
 
