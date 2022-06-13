@@ -30,7 +30,8 @@ export class ConfigurationComponent implements OnInit {
   mappingSettings: MappingSetting[];
   windowReference: Window;
   xeroCompanyCountry: string;
-
+  isChartOfAccountsEnabled: boolean;
+  allAccountTypes: { label: string, value: string }[];
 
   constructor(private formBuilder: FormBuilder, private storageService: StorageService, private settingsService: SettingsService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private xero: XeroComponent, private windowReferenceService: WindowReferenceService, private trackingService: TrackingService) {
     this.windowReference = this.windowReferenceService.nativeWindow;
@@ -53,7 +54,6 @@ export class ConfigurationComponent implements OnInit {
       } else if (that.generalSettings.sync_xero_to_fyle_payments) {
         paymentsSyncOption = 'sync_xero_to_fyle_payments';
       }
-
       that.generalSettingsForm = that.formBuilder.group({
         reimbursableExpense: [that.generalSettings ? that.generalSettings.reimbursable_expenses_object : ''],
         cccExpense: [that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : ''],
@@ -62,10 +62,11 @@ export class ConfigurationComponent implements OnInit {
         autoMapEmployees: [that.generalSettings.auto_map_employees],
         autoCreateDestinationEntity: [that.generalSettings.auto_create_destination_entity],
         importTaxCodes: [that.generalSettings.import_tax_codes ? that.generalSettings.import_tax_codes : false],
+        chartOfAccounts: [that.generalSettings.charts_of_accounts ? that.generalSettings.charts_of_accounts : ['EXPENSE']],
       });
 
       that.showAutoCreateOption(that.generalSettings.auto_map_employees);
-
+      that.showChartOfAccounts(that.generalSettings.import_categories);
       that.generalSettingsForm.controls.reimbursableExpense.disable();
 
       if (that.generalSettings.corporate_credit_card_expenses_object) {
@@ -91,12 +92,22 @@ export class ConfigurationComponent implements OnInit {
         autoMapEmployees: [null],
         autoCreateDestinationEntity: [false],
         importTaxCodes: [false],
+        chartOfAccounts: [['EXPENSE']],
       });
 
       that.generalSettingsForm.controls.autoMapEmployees.valueChanges.subscribe((employeeMappingPreference) => {
         that.showAutoCreateOption(employeeMappingPreference);
       });
     });
+  }
+
+  showChartOfAccounts(importCategories: boolean) {
+    const that = this;
+    if (importCategories) {
+      that.isChartOfAccountsEnabled = true;
+    } else {
+      that.isChartOfAccountsEnabled = false;
+    }
   }
 
   save() {
@@ -121,7 +132,7 @@ export class ConfigurationComponent implements OnInit {
     const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
     const autoCreateDestinationEntity = that.generalSettingsForm.value.autoCreateDestinationEntity;
     const importTaxCodes = that.generalSettingsForm.value.importTaxCodes ? that.generalSettingsForm.value.importTaxCodes : false;
-
+    const chartOfAccounts = importCategories ? that.generalSettingsForm.value.chartOfAccounts : ['EXPENSE'];
     let fyleToXero = false;
     let xeroToFyle = false;
 
@@ -142,7 +153,7 @@ export class ConfigurationComponent implements OnInit {
     forkJoin(
       [
         that.settingsService.postMappingSettings(that.workspaceId, mappingsSettingsPayload),
-        that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories, importTaxCodes, autoCreateDestinationEntity, autoMapEmployees)
+        that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories, importTaxCodes, autoCreateDestinationEntity, autoMapEmployees, chartOfAccounts)
       ]
     ).subscribe(responses => {
       that.isLoading = true;
@@ -185,6 +196,28 @@ export class ConfigurationComponent implements OnInit {
     that.workspaceId = that.route.snapshot.parent.parent.params.workspace_id;
     that.settingsService.getXeroCredentials(that.workspaceId).subscribe((xeroCredentials: XeroCredentials) => {
       that.xeroCompanyCountry = xeroCredentials.country;
+      that.allAccountTypes = [
+        {
+          label: 'Expense',
+          value: 'EXPENSE'
+        },
+        {
+          label: 'Asset',
+          value: 'ASSET'
+        },
+        {
+          label: 'Equity',
+          value: 'EQUITY'
+        },
+        {
+          label: 'Liability',
+          value: 'LIABILITY'
+        },
+        {
+          label: 'Revenue',
+          value: 'REVENUE'
+        }
+      ];
       that.getAllSettings();
     });
   }
