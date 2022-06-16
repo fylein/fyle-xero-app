@@ -10,6 +10,7 @@ import { MappingSetting } from 'src/app/core/models/mapping-setting.model';
 import { ExpenseField } from 'src/app/core/models/expense-field.model';
 import { MappingSettingResponse } from 'src/app/core/models/mapping-setting-response.model';
 import { MatSnackBar } from '@angular/material';
+import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 
 @Component({
   selector: 'app-expense-field-configuration',
@@ -21,6 +22,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
   workspaceId: number;
   isLoading: boolean;
   mappingSettings: MappingSetting[];
+  generalSetting: GeneralSetting;
   fyleExpenseFields: ExpenseField[];
   xeroFields: ExpenseField[];
   windowReference: Window;
@@ -114,7 +116,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
         } else {
           that.snackBar.open('Something went wrong while saving expense fields mapping');
         }
-        that.getSettings();
+        that.getSettings(this.generalSetting.import_customers);
       });
     } else {
       that.snackBar.open('Please fill all mandatory fields');
@@ -236,18 +238,25 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
     });
   }
 
-  getXeroFields() {
+  getXeroFields(importCustomers: boolean) {
     const that = this;
 
     return that.mappingsService.getXeroFields().toPromise().then((xeroFields: ExpenseField[]) => {
       that.xeroFields = xeroFields;
+
+      if (importCustomers) {
+        xeroFields.push({
+          attribute_type: 'CUSTOMER',
+          display_name: 'Customer'
+        });
+      }
       that.xeroFormFieldList = xeroFields;
 
       return xeroFields;
     });
   }
 
-  getSettings() {
+  getSettings(importCustomers: boolean) {
     const that = this;
 
     that.customFieldForm = that.formBuilder.group({
@@ -259,7 +268,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
         return that.getFyleFields();
       })
       .then(() => {
-        return that.getXeroFields();
+        return that.getXeroFields(importCustomers);
       }).finally(() => {
         that.showAddButton = that.showOrHideAddButton();
         that.isLoading = false;
@@ -273,6 +282,9 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
 
     that.workspaceId = that.route.snapshot.parent.parent.params.workspace_id;
 
-    that.getSettings();
+    that.settingsService.getGeneralSettings(that.workspaceId).subscribe((generalSetting: GeneralSetting) => {
+      that.generalSetting = generalSetting;
+      that.getSettings(generalSetting.import_customers);
+    });
   }
 }
