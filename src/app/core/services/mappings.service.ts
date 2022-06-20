@@ -230,11 +230,17 @@ export class MappingsService {
     return this.apiService.get(`/workspaces/${workspaceId}/fyle/categories/`, {});
   }
 
-  getFyleExpenseCustomFields(attributeType: string): Observable<MappingSource[]> {
+  getFyleExpenseCustomFields(attributeType: string, active: boolean = false): Observable<MappingSource[]> {
     const workspaceId = this.workspaceService.getWorkspaceId();
+    const params: {[key: string]: any} = {};
+    params.attribute_type = attributeType;
+
+    if (active === true) {
+      params.active = true;
+    }
 
     return this.apiService.get(`/workspaces/${workspaceId}/fyle/expense_custom_fields/`, {
-      attribute_type: attributeType
+      params
     });
   }
 
@@ -244,11 +250,17 @@ export class MappingsService {
     return this.apiService.get(`/workspaces/${workspaceId}/xero/xero_fields/`, {});
   }
 
-  getXeroTrackingCategories(attributeType: string): Observable<MappingDestination[]> {
+  getXeroTrackingCategories(attributeType: string, active: boolean = false): Observable<MappingDestination[]> {
     const workspaceId = this.workspaceService.getWorkspaceId();
+    const params: {[key: string]: any} = {};
+    params.attribute_types = attributeType;
+
+    if (active === true) {
+      params.active = true;
+    }
 
     return this.apiService.get(`/workspaces/${workspaceId}/xero/tracking_categories/`, {
-      attribute_type: attributeType
+      params
     });
   }
 
@@ -304,7 +316,8 @@ export class MappingsService {
 
   getMappings(sourceType: string, limit: number = 500, uri: string = null, pageOffset: number = 0, tableDimension: number = 2): Observable<MappingsResponse> {
     const workspaceId = this.workspaceService.getWorkspaceId();
-    const url = uri ? uri.split('/api')[1] : `/workspaces/${workspaceId}/mappings/?limit=${limit}&offset=${pageOffset}&source_type=${sourceType}&table_dimension=${tableDimension}`;
+    const active: boolean = sourceType === 'CATEGORY' ? true : false;
+    const url = uri ? uri.split('/api')[1] : `/workspaces/${workspaceId}/mappings/?limit=${limit}&offset=${pageOffset}&source_type=${sourceType}&table_dimension=${tableDimension}&source_active=${active}`;
     return this.apiService.get(url, {});
   }
 
