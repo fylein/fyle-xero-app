@@ -90,10 +90,11 @@ export class ConfigurationComponent implements OnInit {
         cccExpense: [null],
         paymentsSync: [null],
         importCategories: [false],
+        importCustomers: [false],
         autoMapEmployees: [null],
         autoCreateDestinationEntity: [false],
         importTaxCodes: [false],
-        chartOfAccounts: [['EXPENSE']],
+        chartOfAccounts: [['EXPENSE']]
       });
 
       that.generalSettingsForm.controls.autoMapEmployees.valueChanges.subscribe((employeeMappingPreference) => {
@@ -149,13 +150,6 @@ export class ConfigurationComponent implements OnInit {
       mappingsSettingsPayload.push({
         source_field: 'TAX_GROUP',
         destination_field: 'TAX_CODE'
-      });
-    }
-
-    if (importTaxCodes) {
-      mappingsSettingsPayload.push({
-        source_field: 'PROJECT',
-        destination_field: 'CUSTOMER'
       });
     }
 

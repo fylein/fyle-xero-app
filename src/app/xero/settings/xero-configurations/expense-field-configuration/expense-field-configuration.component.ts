@@ -22,7 +22,6 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
   workspaceId: number;
   isLoading: boolean;
   mappingSettings: MappingSetting[];
-  generalSetting: GeneralSetting;
   fyleExpenseFields: ExpenseField[];
   xeroFields: ExpenseField[];
   windowReference: Window;
@@ -116,7 +115,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
         } else {
           that.snackBar.open('Something went wrong while saving expense fields mapping');
         }
-        that.getSettings(this.generalSetting.import_customers);
+        that.getSettings();
       });
     } else {
       that.snackBar.open('Please fill all mandatory fields');
@@ -238,17 +237,27 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
     });
   }
 
-  getXeroFields(importCustomers: boolean) {
+  getXeroFields() {
     const that = this;
 
     return that.mappingsService.getXeroFields().toPromise().then((xeroFields: ExpenseField[]) => {
       that.xeroFields = xeroFields;
 
-      if (importCustomers) {
+      const projectCustomerMapping = that.mappingSettings = that.mappingSettings.filter(
+        setting => setting.source_field === 'PROJECT' && setting.destination_field === 'CUSTOMER'
+      );
+
+      if (projectCustomerMapping.length) {
+        // Customer has enabled importing of Xero Customers to Fyle at some point of time
         xeroFields.push({
           attribute_type: 'CUSTOMER',
           display_name: 'Customer'
         });
+
+        // Disabling the row for Project -> Customer mapping
+        const expenseFields = that.expenseFieldsForm.get('expenseFields') as FormArray;
+        const fieldToDisable = expenseFields.controls.filter(mappingRow => mappingRow.get('source_field').value === 'PROJECT' && mappingRow.get('destination_field').value === 'CUSTOMER')[0];
+        fieldToDisable.disable();
       }
       that.xeroFormFieldList = xeroFields;
 
@@ -256,7 +265,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
     });
   }
 
-  getSettings(importCustomers: boolean) {
+  getSettings() {
     const that = this;
 
     that.customFieldForm = that.formBuilder.group({
@@ -268,7 +277,7 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
         return that.getFyleFields();
       })
       .then(() => {
-        return that.getXeroFields(importCustomers);
+        return that.getXeroFields();
       }).finally(() => {
         that.showAddButton = that.showOrHideAddButton();
         that.isLoading = false;
@@ -282,9 +291,6 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
 
     that.workspaceId = that.route.snapshot.parent.parent.params.workspace_id;
 
-    that.settingsService.getGeneralSettings(that.workspaceId).subscribe((generalSetting: GeneralSetting) => {
-      that.generalSetting = generalSetting;
-      that.getSettings(generalSetting.import_customers);
-    });
+    that.getSettings();
   }
 }
