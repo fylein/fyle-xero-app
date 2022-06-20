@@ -232,11 +232,11 @@ export class MappingsService {
 
   getFyleExpenseCustomFields(attributeType: string): Observable<MappingSource[]> {
     const workspaceId = this.workspaceService.getWorkspaceId();
-    const active: boolean = attributeType === 'CATEGORY' ? true : false;
+    const isActive: boolean = attributeType === 'CATEGORY' ? true : false;
 
     return this.apiService.get(`/workspaces/${workspaceId}/fyle/expense_custom_fields/`, {
       attribute_type: attributeType,
-      active: active
+      active: isActive
     });
   }
 
@@ -248,11 +248,11 @@ export class MappingsService {
 
   getXeroTrackingCategories(attributeType: string): Observable<MappingDestination[]> {
     const workspaceId = this.workspaceService.getWorkspaceId();
-    const active: boolean = attributeType === 'ACCOUNT' ? true : false;
+    const isActive: boolean = attributeType === 'ACCOUNT' ? true : false;
 
     return this.apiService.get(`/workspaces/${workspaceId}/xero/tracking_categories/`, {
       attribute_type: attributeType,
-      active: active
+      active: isActive
     });
   }
 
