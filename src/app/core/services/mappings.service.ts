@@ -233,8 +233,11 @@ export class MappingsService {
   getFyleExpenseCustomFields(attributeType: string): Observable<MappingSource[]> {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
+    const active: boolean = attributeType === 'CATEGORY' ? true : false;
+
     return this.apiService.get(`/workspaces/${workspaceId}/fyle/expense_custom_fields/`, {
-      attribute_type: attributeType
+      attribute_type: attributeType,
+      active: active
     });
   }
 
@@ -247,8 +250,11 @@ export class MappingsService {
   getXeroTrackingCategories(attributeType: string): Observable<MappingDestination[]> {
     const workspaceId = this.workspaceService.getWorkspaceId();
 
+    const active: boolean = attributeType === 'ACCOUNT' ? true : false;
+
     return this.apiService.get(`/workspaces/${workspaceId}/xero/tracking_categories/`, {
-      attribute_type: attributeType
+      attribute_type: attributeType,
+      active: active
     });
   }
 
@@ -304,7 +310,8 @@ export class MappingsService {
 
   getMappings(sourceType: string, limit: number = 500, uri: string = null, pageOffset: number = 0, tableDimension: number = 2): Observable<MappingsResponse> {
     const workspaceId = this.workspaceService.getWorkspaceId();
-    const url = uri ? uri.split('/api')[1] : `/workspaces/${workspaceId}/mappings/?limit=${limit}&offset=${pageOffset}&source_type=${sourceType}&table_dimension=${tableDimension}`;
+    const active: boolean = sourceType === 'CATEGORY' ? true : false;
+    const url = uri ? uri.split('/api')[1] : `/workspaces/${workspaceId}/mappings/?limit=${limit}&offset=${pageOffset}&source_type=${sourceType}&table_dimension=${tableDimension}&source_active=${active}`;
     return this.apiService.get(url, {});
   }
 
