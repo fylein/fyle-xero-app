@@ -10,6 +10,7 @@ import { MappingSetting } from 'src/app/core/models/mapping-setting.model';
 import { ExpenseField } from 'src/app/core/models/expense-field.model';
 import { MappingSettingResponse } from 'src/app/core/models/mapping-setting-response.model';
 import { MatSnackBar } from '@angular/material';
+import { GeneralSetting } from 'src/app/core/models/general-setting.model';
 
 @Component({
   selector: 'app-expense-field-configuration',
@@ -241,6 +242,23 @@ export class ExpenseFieldConfigurationComponent implements OnInit {
 
     return that.mappingsService.getXeroFields().toPromise().then((xeroFields: ExpenseField[]) => {
       that.xeroFields = xeroFields;
+
+      const projectCustomerMapping = that.mappingSettings = that.mappingSettings.filter(
+        setting => setting.source_field === 'PROJECT' && setting.destination_field === 'CUSTOMER'
+      );
+
+      if (projectCustomerMapping.length) {
+        // Customer has enabled importing of Xero Customers to Fyle at some point of time
+        xeroFields.push({
+          attribute_type: 'CUSTOMER',
+          display_name: 'Customer'
+        });
+
+        // Disabling the row for Project -> Customer mapping
+        const expenseFields = that.expenseFieldsForm.get('expenseFields') as FormArray;
+        const fieldToDisable = expenseFields.controls.filter(mappingRow => mappingRow.get('source_field').value === 'PROJECT' && mappingRow.get('destination_field').value === 'CUSTOMER')[0];
+        fieldToDisable.disable();
+      }
       that.xeroFormFieldList = xeroFields;
 
       return xeroFields;

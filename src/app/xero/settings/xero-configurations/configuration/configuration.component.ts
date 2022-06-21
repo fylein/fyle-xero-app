@@ -59,6 +59,7 @@ export class ConfigurationComponent implements OnInit {
         cccExpense: [that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : ''],
         paymentsSync: [paymentsSyncOption],
         importCategories: [that.generalSettings.import_categories],
+        importCustomers: [that.generalSettings.import_customers],
         autoMapEmployees: [that.generalSettings.auto_map_employees],
         autoCreateDestinationEntity: [that.generalSettings.auto_create_destination_entity],
         importTaxCodes: [that.generalSettings.import_tax_codes ? that.generalSettings.import_tax_codes : false],
@@ -89,10 +90,11 @@ export class ConfigurationComponent implements OnInit {
         cccExpense: [null],
         paymentsSync: [null],
         importCategories: [false],
+        importCustomers: [false],
         autoMapEmployees: [null],
         autoCreateDestinationEntity: [false],
         importTaxCodes: [false],
-        chartOfAccounts: [['EXPENSE']],
+        chartOfAccounts: [['EXPENSE']]
       });
 
       that.generalSettingsForm.controls.autoMapEmployees.valueChanges.subscribe((employeeMappingPreference) => {
@@ -129,6 +131,7 @@ export class ConfigurationComponent implements OnInit {
     const reimbursableExpensesObject = that.generalSettingsForm.value.reimbursableExpense || (that.generalSettings ? that.generalSettings.reimbursable_expenses_object : null);
     const cccExpensesObject = that.generalSettingsForm.value.cccExpense || (that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : null);
     const importCategories = that.generalSettingsForm.value.importCategories;
+    const importCustomers = that.generalSettingsForm.value.importCustomers;
     const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
     const autoCreateDestinationEntity = that.generalSettingsForm.value.autoCreateDestinationEntity;
     const importTaxCodes = that.generalSettingsForm.value.importTaxCodes ? that.generalSettingsForm.value.importTaxCodes : false;
@@ -150,10 +153,23 @@ export class ConfigurationComponent implements OnInit {
       });
     }
 
+    const generalSettingsPayload: GeneralSetting = {
+      reimbursable_expenses_object: reimbursableExpensesObject,
+      corporate_credit_card_expenses_object: cccExpensesObject,
+      sync_fyle_to_xero_payments: fyleToXero,
+      sync_xero_to_fyle_payments: xeroToFyle,
+      import_categories: importCategories,
+      import_tax_codes: importTaxCodes,
+      auto_map_employees: autoMapEmployees,
+      auto_create_destination_entity: autoCreateDestinationEntity,
+      charts_of_accounts: chartOfAccounts,
+      import_customers: importCustomers
+    };
+
     forkJoin(
       [
         that.settingsService.postMappingSettings(that.workspaceId, mappingsSettingsPayload),
-        that.settingsService.postGeneralSettings(that.workspaceId, reimbursableExpensesObject, cccExpensesObject, fyleToXero, xeroToFyle, importCategories, importTaxCodes, autoCreateDestinationEntity, autoMapEmployees, chartOfAccounts)
+        that.settingsService.postGeneralSettings(that.workspaceId, generalSettingsPayload)
       ]
     ).subscribe(responses => {
       that.isLoading = true;

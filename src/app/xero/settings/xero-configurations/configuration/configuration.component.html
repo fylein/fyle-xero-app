@@ -32,9 +32,6 @@
       <mat-form-field floatLabel="always" appearance="outline">
         <mat-select placeholder="Choose Xero equivalent of Corporate Credit Card Expenses"
           formControlName="cccExpense">
-          <mat-option>
-            None
-          </mat-option>
           <mat-option [value]="'BANK TRANSACTION'">
             Bank Transaction
           </mat-option>
@@ -115,6 +112,18 @@
             [inline]="true"
             class="info-icon"
             matTooltip="Import Tax Codes and Groups from Xero as Tax Groups in Fyle"
+            matTooltipPosition="after">
+              info
+          </mat-icon>
+        </div>
+      </mat-slide-toggle>
+
+      <mat-slide-toggle color="primary" class="schedule" formControlName="importCustomers">
+        <div class="schedule--toggle-text">Import Xero Customers to Fyle
+          <mat-icon
+            [inline]="true"
+            class="info-icon"
+            matTooltip="Import Customers from Xero as Projects in Fyle"
             matTooltipPosition="after">
               info
           </mat-icon>

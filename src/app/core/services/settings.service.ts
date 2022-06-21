@@ -95,18 +95,8 @@ export class SettingsService {
   @CacheBuster({
     cacheBusterNotifier: generalSettingsCache
   })
-  postGeneralSettings(workspaceId: number, reimbursableExpensesObject: string, corporateCreditCardExpensesObject: string, fyleToXero: boolean, xeroToFyle: boolean, importCategories: boolean, importTaxCodes: boolean, autoCreateDestinationEntity: boolean, autoMapEmployees: string = null, chartOfAccounts: string[]): Observable<GeneralSetting> {
-    return this.apiService.post(`/workspaces/${workspaceId}/settings/general/`, {
-      reimbursable_expenses_object: reimbursableExpensesObject,
-      corporate_credit_card_expenses_object: corporateCreditCardExpensesObject,
-      sync_fyle_to_xero_payments: fyleToXero,
-      sync_xero_to_fyle_payments: xeroToFyle,
-      import_categories: importCategories,
-      import_tax_codes: importTaxCodes,
-      auto_map_employees: autoMapEmployees,
-      auto_create_destination_entity: autoCreateDestinationEntity,
-      charts_of_accounts: chartOfAccounts
-    });
+  postGeneralSettings(workspaceId: number, generalSettingsPayload: GeneralSetting): Observable<GeneralSetting> {
+    return this.apiService.post(`/workspaces/${workspaceId}/settings/general/`, generalSettingsPayload);
   }
 
   @CacheBuster({
