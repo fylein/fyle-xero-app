@@ -61,6 +61,7 @@ export class ConfigurationComponent implements OnInit {
         importCategories: [that.generalSettings.import_categories],
         importCustomers: [that.generalSettings.import_customers],
         autoMapEmployees: [that.generalSettings.auto_map_employees],
+        importVendorsAsMerchants: [that.generalSettings.import_vendors_as_merchants],
         autoCreateDestinationEntity: [that.generalSettings.auto_create_destination_entity],
         importTaxCodes: [that.generalSettings.import_tax_codes ? that.generalSettings.import_tax_codes : false],
         chartOfAccounts: [that.generalSettings.charts_of_accounts ? that.generalSettings.charts_of_accounts : ['EXPENSE']],
@@ -91,6 +92,7 @@ export class ConfigurationComponent implements OnInit {
         paymentsSync: [null],
         importCategories: [false],
         importCustomers: [false],
+        importVendorsAsMerchants: [false],
         autoMapEmployees: [null],
         autoCreateDestinationEntity: [false],
         importTaxCodes: [false],
@@ -132,6 +134,7 @@ export class ConfigurationComponent implements OnInit {
     const cccExpensesObject = that.generalSettingsForm.value.cccExpense || (that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : null);
     const importCategories = that.generalSettingsForm.value.importCategories;
     const importCustomers = that.generalSettingsForm.value.importCustomers;
+    const importVendorsAsMerchants = that.generalSettingsForm.value.importVendorsAsMerchants ? that.generalSettingsForm.value.importVendorsAsMerchants : false;
     const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
     const autoCreateDestinationEntity = that.generalSettingsForm.value.autoCreateDestinationEntity;
     const importTaxCodes = that.generalSettingsForm.value.importTaxCodes ? that.generalSettingsForm.value.importTaxCodes : false;
@@ -163,7 +166,8 @@ export class ConfigurationComponent implements OnInit {
       auto_map_employees: autoMapEmployees,
       auto_create_destination_entity: autoCreateDestinationEntity,
       charts_of_accounts: chartOfAccounts,
-      import_customers: importCustomers
+      import_customers: importCustomers,
+      import_vendors_as_merchants: importVendorsAsMerchants
     };
 
     forkJoin(

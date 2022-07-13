@@ -13,6 +13,7 @@ export type GeneralSetting = {
     skip_cards_mapping?: boolean;
     import_tax_codes: boolean;
     import_customers: boolean;
+    import_vendors_as_merchants: boolean;
     created_at?: Date;
     updated_at?: Date;
     workspace?: number;
