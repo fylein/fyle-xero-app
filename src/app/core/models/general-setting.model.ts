@@ -6,6 +6,7 @@ export type GeneralSetting = {
     import_projects?: boolean;
     import_categories: boolean;
     charts_of_accounts: string[];
+    change_accounting_period: boolean;
     sync_fyle_to_xero_payments: boolean;
     sync_xero_to_fyle_payments: boolean;
     auto_map_employees: string;
