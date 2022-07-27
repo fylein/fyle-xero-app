@@ -58,6 +58,7 @@ export class ConfigurationComponent implements OnInit {
         reimbursableExpense: [that.generalSettings ? that.generalSettings.reimbursable_expenses_object : ''],
         cccExpense: [that.generalSettings ? that.generalSettings.corporate_credit_card_expenses_object : ''],
         paymentsSync: [paymentsSyncOption],
+        changeAccountingPeriod: [that.generalSettings.change_accounting_period],
         importCategories: [that.generalSettings.import_categories],
         importCustomers: [that.generalSettings.import_customers],
         autoMapEmployees: [that.generalSettings.auto_map_employees],
@@ -89,6 +90,7 @@ export class ConfigurationComponent implements OnInit {
         reimbursableExpense: ['', Validators.required],
         cccExpense: [null],
         paymentsSync: [null],
+        changeAccountingPeriod: [false],
         importCategories: [false],
         importCustomers: [false],
         autoMapEmployees: [null],
@@ -136,6 +138,8 @@ export class ConfigurationComponent implements OnInit {
     const autoCreateDestinationEntity = that.generalSettingsForm.value.autoCreateDestinationEntity;
     const importTaxCodes = that.generalSettingsForm.value.importTaxCodes ? that.generalSettingsForm.value.importTaxCodes : false;
     const chartOfAccounts = importCategories ? that.generalSettingsForm.value.chartOfAccounts : ['EXPENSE'];
+    const changeAccountingPeriod =  that.generalSettingsForm.value.changeAccountingPeriod ? that.generalSettingsForm.value.changeAccountingPeriod : false;
+
     let fyleToXero = false;
     let xeroToFyle = false;
 
@@ -158,6 +162,7 @@ export class ConfigurationComponent implements OnInit {
       corporate_credit_card_expenses_object: cccExpensesObject,
       sync_fyle_to_xero_payments: fyleToXero,
       sync_xero_to_fyle_payments: xeroToFyle,
+      change_accounting_period: changeAccountingPeriod,
       import_categories: importCategories,
       import_tax_codes: importTaxCodes,
       auto_map_employees: autoMapEmployees,
