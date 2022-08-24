@@ -86,6 +86,10 @@
         <div class="schedule--toggle-text">Auto Create Contact on Xero</div>
       </mat-slide-toggle>
 
+      <mat-slide-toggle color="primary" class="schedule" formControlName="autoCreateMerchantDestinationEntity">
+        <div class="schedule--toggle-text">Auto Create Fyle Merchants as Contacts on Xero</div>
+      </mat-slide-toggle>
+
       <mat-slide-toggle color="primary" class="schedule" formControlName="importCategories" (click)="showChartOfAccounts(!generalSettingsForm.value.importCategories)">
         <div class="schedule--toggle-text">
           Import Xero Chart of Accounts into Fyle
