@@ -160,13 +160,6 @@ export class ConfigurationComponent implements OnInit {
       });
     }
 
-    if (autoCreateMerchantDestinationEntity) {
-      mappingsSettingsPayload.push({
-        source_field: 'MERCHANT',
-        destination_field: 'CONTACT'
-      });
-    }
-
     const generalSettingsPayload: GeneralSetting = {
       reimbursable_expenses_object: reimbursableExpensesObject,
       corporate_credit_card_expenses_object: cccExpensesObject,
