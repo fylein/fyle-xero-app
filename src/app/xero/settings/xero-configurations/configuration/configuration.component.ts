@@ -63,6 +63,7 @@ export class ConfigurationComponent implements OnInit {
         importCustomers: [that.generalSettings.import_customers],
         autoMapEmployees: [that.generalSettings.auto_map_employees],
         autoCreateDestinationEntity: [that.generalSettings.auto_create_destination_entity],
+        autoCreateMerchantDestinationEntity: [that.generalSettings.auto_create_merchant_destination_entity],
         importTaxCodes: [that.generalSettings.import_tax_codes ? that.generalSettings.import_tax_codes : false],
         chartOfAccounts: [that.generalSettings.charts_of_accounts ? that.generalSettings.charts_of_accounts : ['EXPENSE']],
       });
@@ -95,6 +96,7 @@ export class ConfigurationComponent implements OnInit {
         importCustomers: [false],
         autoMapEmployees: [null],
         autoCreateDestinationEntity: [false],
+        autoCreateMerchantDestinationEntity: [false],
         importTaxCodes: [false],
         chartOfAccounts: [['EXPENSE']]
       });
@@ -136,6 +138,7 @@ export class ConfigurationComponent implements OnInit {
     const importCustomers = that.generalSettingsForm.value.importCustomers;
     const autoMapEmployees = that.generalSettingsForm.value.autoMapEmployees ? that.generalSettingsForm.value.autoMapEmployees : null;
     const autoCreateDestinationEntity = that.generalSettingsForm.value.autoCreateDestinationEntity;
+    const autoCreateMerchantDestinationEntity = that.generalSettingsForm.value.autoCreateMerchantDestinationEntity;
     const importTaxCodes = that.generalSettingsForm.value.importTaxCodes ? that.generalSettingsForm.value.importTaxCodes : false;
     const chartOfAccounts = importCategories ? that.generalSettingsForm.value.chartOfAccounts : ['EXPENSE'];
     const changeAccountingPeriod =  that.generalSettingsForm.value.changeAccountingPeriod ? that.generalSettingsForm.value.changeAccountingPeriod : false;
@@ -167,6 +170,7 @@ export class ConfigurationComponent implements OnInit {
       import_tax_codes: importTaxCodes,
       auto_map_employees: autoMapEmployees,
       auto_create_destination_entity: autoCreateDestinationEntity,
+      auto_create_merchant_destination_entity: autoCreateMerchantDestinationEntity,
       charts_of_accounts: chartOfAccounts,
       import_customers: importCustomers
     };

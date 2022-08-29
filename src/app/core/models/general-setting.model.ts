@@ -11,6 +11,7 @@ export type GeneralSetting = {
     sync_xero_to_fyle_payments: boolean;
     auto_map_employees: string;
     auto_create_destination_entity: boolean;
+    auto_create_merchant_destination_entity: boolean;
     skip_cards_mapping?: boolean;
     import_tax_codes: boolean;
     import_customers: boolean;
