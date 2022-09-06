@@ -227,7 +227,6 @@ export class ConfigurationComponent implements OnInit {
   }
 
   showAutoCreateMerchantDestinationEntityOption(corporateCreditCardExpensesObject) {
-    console.log('corporateCreditCardExpensesObject', corporateCreditCardExpensesObject)
     const that = this;
     if (corporateCreditCardExpensesObject) {
       that.showAutoCreateMerchantDestinationEntity = true;
