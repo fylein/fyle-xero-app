@@ -84,13 +84,13 @@
 
       <mat-slide-toggle color="primary" class="schedule" *ngIf="showAutoCreate" formControlName="autoCreateDestinationEntity">
         <div class="schedule--toggle-text">Auto Create Contact on Xero
-          <mat-icon [inline]="true" class="info-icon" matTooltip="If an employee added in Fyle does not exist in Xero, Fyle will auto-create a contact in Xero for that employee" matTooltipPosition="after">info</mat-icon>
+          <mat-icon [inline]="true" class="info-icon" matTooltip="If an employee added in Fyle does not exist in Xero, Fyle will auto-create a contact in Xero for the employee." matTooltipPosition="after">info</mat-icon>
         </div>
       </mat-slide-toggle>
 
       <mat-slide-toggle color="primary" class="schedule" *ngIf="showAutoCreateMerchantDestinationEntity" formControlName="autoCreateMerchantDestinationEntity">
         <div class="schedule--toggle-text">Auto Create Fyle Merchants as Contacts on Xero
-          <mat-icon [inline]="true" class="info-icon" matTooltip="While exporting corporate card expenses from Fyle, Fyle will auto-create a contact if a merchant added in Fyle does not exist in the supplier/contact list in Xero" matTooltipPosition="after">info</mat-icon>
+          <mat-icon [inline]="true" class="info-icon" matTooltip="While exporting corporate card expenses from Fyle, the integration will auto-create a contact in Xero if a merchant added in Fyle does not exist in Xero." matTooltipPosition="after">info</mat-icon>
         </div>
       </mat-slide-toggle>
 
