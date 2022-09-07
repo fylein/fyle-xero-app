@@ -22,6 +22,7 @@ export class ConfigurationComponent implements OnInit {
 
   isLoading = true;
   showAutoCreate: boolean;
+  showAutoCreateMerchantDestinationEntity: boolean;
   generalSettingsForm: FormGroup;
   expenseOptions: { label: string, value: string }[];
   cccExpenseOptions: { label: string, value: string }[];
@@ -69,6 +70,7 @@ export class ConfigurationComponent implements OnInit {
       });
 
       that.showAutoCreateOption(that.generalSettings.auto_map_employees);
+      that.showAutoCreateMerchantDestinationEntityOption(that.generalSettings.corporate_credit_card_expenses_object);
       that.showChartOfAccounts(that.generalSettings.import_categories);
       that.generalSettingsForm.controls.reimbursableExpense.disable();
 
@@ -82,6 +84,10 @@ export class ConfigurationComponent implements OnInit {
 
       that.generalSettingsForm.controls.autoMapEmployees.valueChanges.subscribe((employeeMappingPreference) => {
         that.showAutoCreateOption(employeeMappingPreference);
+      });
+
+      that.generalSettingsForm.controls.cccExpense.valueChanges.subscribe((corporateCreditCardObject) => {
+        that.showAutoCreateMerchantDestinationEntityOption(corporateCreditCardObject);
       });
 
       that.isLoading = false;
@@ -103,6 +109,10 @@ export class ConfigurationComponent implements OnInit {
 
       that.generalSettingsForm.controls.autoMapEmployees.valueChanges.subscribe((employeeMappingPreference) => {
         that.showAutoCreateOption(employeeMappingPreference);
+      });
+
+      that.generalSettingsForm.controls.cccExpense.valueChanges.subscribe((corporateCreditCardObject) => {
+        that.showAutoCreateMerchantDestinationEntityOption(corporateCreditCardObject);
       });
     });
   }
@@ -213,6 +223,16 @@ export class ConfigurationComponent implements OnInit {
     } else {
       that.showAutoCreate = false;
       that.generalSettingsForm.controls.autoCreateDestinationEntity.setValue(false);
+    }
+  }
+
+  showAutoCreateMerchantDestinationEntityOption(corporateCreditCardExpensesObject) {
+    const that = this;
+    if (corporateCreditCardExpensesObject) {
+      that.showAutoCreateMerchantDestinationEntity = true;
+    } else {
+      that.showAutoCreateMerchantDestinationEntity = false;
+      that.generalSettingsForm.controls.autoCreateMerchantDestinationEntity.setValue(false);
     }
   }
 
