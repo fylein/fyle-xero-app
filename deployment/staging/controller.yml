@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: xero-app
-          image: docker.io/{{DOCKERHUB_USERNAME}}}/fyle_xero-app:{{RELEASE_VERSION}}
+          image: docker.io/{{DOCKERHUB_USERNAME}}/fyle_xero-app:{{RELEASE_VERSION}}
           resources:
             limits:
               memory: 450Mi
