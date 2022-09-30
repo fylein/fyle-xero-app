@@ -15,10 +15,10 @@ export class CallbackComponent implements OnInit {
   windowReference: Window;
 
   constructor(private router: Router,
-    private route: ActivatedRoute,
-    private authService: AuthService,
-    private storageService: StorageService,
-    private windowReferenceService: WindowReferenceService) {
+              private route: ActivatedRoute,
+              private authService: AuthService,
+              private storageService: StorageService,
+              private windowReferenceService: WindowReferenceService) {
     this.windowReference = this.windowReferenceService.nativeWindow;
   }
 
