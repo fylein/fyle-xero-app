@@ -9,13 +9,15 @@ import { LogoutComponent } from './logout/logout.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedLoginComponent } from './shared-login/shared-login.component';
 
 @NgModule({
   declarations: [
     AuthComponent,
     LoginComponent,
     CallbackComponent,
-    LogoutComponent
+    LogoutComponent,
+    SharedLoginComponent
   ],
   imports: [
     CommonModule,

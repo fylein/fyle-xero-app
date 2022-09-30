@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 import { StorageService } from './storage.service';
-import { Workspace } from '../models/workspace.model';
+import { MinimalPatchWorkspace, Workspace } from '../models/workspace.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,10 @@ export class WorkspaceService {
     return this.apiService.get(`/workspaces/`, {
       org_id: orgId
     });
+  }
+
+  patchWorkspace(workspace: MinimalPatchWorkspace): Observable<Workspace> {
+    return this.apiService.patch(`/workspaces/${this.getWorkspaceId()}/`, workspace);
   }
 
   getWorkspaceById(): Observable<Workspace> {

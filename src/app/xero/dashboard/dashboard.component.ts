@@ -63,8 +63,8 @@ export class DashboardComponent implements OnInit {
     private snackBar: MatSnackBar,
     private trackingService: TrackingService,
     private xero: XeroComponent) {
-      this.windowReference = this.windowReferenceService.nativeWindow;
-    }
+    this.windowReference = this.windowReferenceService.nativeWindow;
+  }
 
   connectFyle() {
     this.windowReference.location.href = `${FYLE_URL}/app/developers/#/oauth/authorize?client_id=${FYLE_CLIENT_ID}&redirect_uri=${APP_URL}/workspaces/fyle/callback&response_type=code&state=${this.workspaceId}`;
@@ -213,8 +213,8 @@ export class DashboardComponent implements OnInit {
   syncDimension() {
     const that = this;
 
-    that.mappingsService.refreshFyleDimensions().subscribe(() => {});
-    that.mappingsService.refreshXeroDimensions().subscribe(() => {});
+    that.mappingsService.refreshFyleDimensions().subscribe(() => { });
+    that.mappingsService.refreshXeroDimensions().subscribe(() => { });
 
     that.snackBar.open('Refreshing Fyle and Xero Data');
   }
@@ -223,8 +223,8 @@ export class DashboardComponent implements OnInit {
   updateDimensionTables() {
     const that = this;
 
-    that.mappingsService.syncFyleDimensions().subscribe(() => {});
-    that.mappingsService.syncXeroDimensions().subscribe(() => {});
+    that.mappingsService.syncFyleDimensions().subscribe(() => { });
+    that.mappingsService.syncXeroDimensions().subscribe(() => { });
   }
 
   openSchedule(event) {
@@ -284,6 +284,7 @@ export class DashboardComponent implements OnInit {
     const onboarded = that.storageService.get('onboarded');
 
     if (onboarded) {
+      that.xero.showAppSwitcher();
       that.updateDimensionTables();
       that.loadDashboardData();
       that.getXeroStatus().then(() => {
@@ -316,6 +317,7 @@ export class DashboardComponent implements OnInit {
         }).then(() => {
           that.currentState = onboardingStates.isOnboarded;
           that.storageService.set('onboarded', true);
+          that.xero.showAppSwitcher();
           that.xero.hideRefreshIconVisibility();
           return that.loadDashboardData();
         }).catch(() => {

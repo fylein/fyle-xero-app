@@ -4,4 +4,5 @@ export type User = {
   full_name: string;
   org_id: string;
   org_name: string;
+  user_id: string;
 };

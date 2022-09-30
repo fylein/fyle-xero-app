@@ -120,6 +120,10 @@ simple-snack-bar span { // @vikas wanted a center aligned snack-bar :P
     &-separator {
       margin: 8px;
     }
+
+    &-xero-org {
+      font-weight: 500;
+    }
   }
 
   .simple-search {
