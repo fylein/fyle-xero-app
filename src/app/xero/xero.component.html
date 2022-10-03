@@ -76,6 +76,23 @@
             {{user.org_name}}
           </span>
         </div>
+        <!-- <div class="mat-small xero--title-separator" *ngIf="user.org_name || showSwitchApp">
+          |
+        </div>
+        <div class="mat-small" *ngIf="user.org_name">
+          Xero Company Name:
+          <span class="xero--title-xero-org">
+            {{user.org_name}}
+          </span>
+        </div>
+        <div class="mat-small xero--title-separator" *ngIf="user.org_name && showSwitchApp">
+          |
+        </div>
+        <div *ngIf="showSwitchApp" (click)="switchToNewApp()" fxLayout="row" fxLayoutAlign="space-between center"
+          class="switcher--back-btn">
+          <img src="assets/images/svgs/sync.svg" class="switcher--back-btn-arrow" width="12px" height="9px" />
+          <span class="switcher--btn-icon">Switch to Integration 2.0</span>
+        </div> -->
 
         <div class="mat-small" *ngIf="showRefreshIcon">
           <mat-icon class="refresh" mat-list-icon matTooltip="Sync Fyle and Xero Dimensions" matTooltipPosition="right"
