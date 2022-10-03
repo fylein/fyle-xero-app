@@ -45,7 +45,8 @@ export class CallbackComponent implements OnInit {
               employee_email: response.user.email,
               full_name: response.user.full_name,
               org_id: response.user.org_id,
-              org_name: response.user.org_name
+              org_name: response.user.org_name,
+              user_id: response.user.user_id
             };
             that.storageService.set('user', user);
             that.authService.getFyleOrgs().subscribe(responses => {

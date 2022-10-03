@@ -16,9 +16,9 @@ export const environment = {
   xero_callback_uri: '{{XERO_CALLBACK_URI}}',
   hotjar_id : '{{HOTJAR_ID}}',
   sentry_dsn: '{{SENTRY_DSN}}',
-  release: '{{RELEASE}}'
+  release: '{{RELEASE}}',
+  new_xero_app_url: 'NEW XERO APP URL'
 };
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

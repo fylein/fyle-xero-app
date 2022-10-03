@@ -12,5 +12,6 @@ export const environment = {
   xero_callback_uri: '{{XERO_CALLBACK_URI}}',
   hotjar_id : '{{HOTJAR_ID}}',
   sentry_dsn: '{{SENTRY_DSN}}',
-  release: '{{RELEASE}}'
+  release: '{{RELEASE}}',
+  new_xero_app_url: '{{NEW_xero_APP_URL}}'
 };

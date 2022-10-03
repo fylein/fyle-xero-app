@@ -14,6 +14,7 @@ do
     sed -i $SED_EXTRA_ARGS "s?{{CALLBACK_URI}}?${CALLBACK_URI}?g" $f;
     sed -i $SED_EXTRA_ARGS "s?{{FYLE_CLIENT_ID}}?${FYLE_CLIENT_ID}?g" $f;
     sed -i $SED_EXTRA_ARGS "s?{{FYLE_URL}}?${FYLE_URL}?g" $f;
+    sed -i $SED_EXTRA_ARGS "s?{{NEW_XERO_APP_URL}}?${NEW_XERO_APP_URL}?g" $f;
     sed -i $SED_EXTRA_ARGS "s?{{XERO_AUTHORIZE_URI}}?${XERO_AUTHORIZE_URI}?g" $f;
     sed -i $SED_EXTRA_ARGS "s?{{XERO_CLIENT_ID}}?${XERO_CLIENT_ID}?g" $f;
     sed -i $SED_EXTRA_ARGS "s?{{XERO_SCOPE}}?${XERO_SCOPE}?g" $f;

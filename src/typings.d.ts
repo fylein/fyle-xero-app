@@ -10,4 +10,5 @@ interface Env {
   APP_URL: string;
   SENTRY_DSN: string;
   RELEASE: string;
+  NEW_XERO_APP_URL: string;
 }

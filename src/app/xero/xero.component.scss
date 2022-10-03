@@ -14,6 +14,7 @@ $fy-page-info-desc: #414562;
     max-width: 340px;
     overflow-x: hidden;
     overflow: hidden;
+
     &--header {
       padding: 32px 0;
     }
@@ -32,6 +33,7 @@ $fy-page-info-desc: #414562;
       &-icon {
         color: $fy-nav-text;
         margin: 4px;
+
         &__active {
           color: $fy-primary;
         }
@@ -44,6 +46,7 @@ $fy-page-info-desc: #414562;
 
     &--nav-item {
       margin: 0;
+
       &.mat-list-item {
         padding-left: 45px;
         color: $fy-nav-text;
@@ -51,6 +54,7 @@ $fy-page-info-desc: #414562;
         font-weight: 500;
         font-size: 18px;
       }
+
       &.active {
         background-color: $fy-nav-active-background;
         color: $fy-primary;
@@ -65,6 +69,7 @@ $fy-page-info-desc: #414562;
 
     &--nav-sub-item {
       margin: 0;
+
       &.mat-list-item {
         padding-left: 60px;
         color: $fy-nav-text;
@@ -72,6 +77,7 @@ $fy-page-info-desc: #414562;
         font-weight: 500;
         font-size: 18px;
       }
+
       &.active {
         background-color: $fy-nav-active-background;
         color: $fy-primary;
@@ -91,8 +97,10 @@ $fy-page-info-desc: #414562;
 
   &--menu {
     cursor: pointer;
+
     &-icon {
       opacity: .75;
+
       &__offset {
         position: relative;
         top: 2px;
@@ -164,6 +172,7 @@ $fy-page-info-desc: #414562;
 
 .page-info {
   margin: 16px 24px;
+
   &--description {
     color: $fy-page-info-desc;
     margin: 12px 0;
@@ -182,6 +191,7 @@ $fy-page-info-desc: #414562;
 
 .simple-search {
   font-size: 12px;
+
   &--icon {
     color: $fy-search-icon
   }
@@ -190,9 +200,37 @@ $fy-page-info-desc: #414562;
 .read-more-link {
   text-decoration: none;
   margin-left: 8px;
+
   &--icon {
     font-size: 18px;
     height: auto;
     margin-left: 4px;
+  }
+}
+
+.switcher {
+  &--back-btn {
+    border: 1px solid #DFDFE2;
+    box-sizing: border-box;
+    border-radius: 4px;
+    height: 32px;
+    cursor: pointer;
+    background: #FFFFFF;
+
+    &:hover {
+      box-shadow: 0px 4px 4px rgba(44, 48, 78, 0.1);
+    }
+  }
+
+  &--back-btn-arrow {
+    padding-left: 17px;
+  }
+
+  &--btn-icon {
+    font-size: 14px;
+    font-weight: 400;
+    padding-left: 9px;
+    padding-right: 16px;
+    text-align: center;
   }
 }
