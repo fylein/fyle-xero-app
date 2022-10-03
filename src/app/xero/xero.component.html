@@ -12,56 +12,47 @@
         Dashboard
       </a>
 
-      <a class="mat-h2 xero-sidenav--nav-item" [ngClass]="{'xero-sidenav--nav-item__disabled': navDisabled}"
-        mat-list-item routerLink="{{workspace.id}}/sync_export/sync" routerLinkActive="active">
+      <a class="mat-h2 xero-sidenav--nav-item" [ngClass]="{'xero-sidenav--nav-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/sync_export/sync"
+        routerLinkActive="active">
         Import & Export
       </a>
 
-      <a class="mat-h2 xero-sidenav--nav-item" [ngClass]="{'xero-sidenav--nav-item__disabled': navDisabled}"
-        mat-list-item routerLink="{{workspace.id}}/expense_groups/" routerLinkActive="active">
+      <a class="mat-h2 xero-sidenav--nav-item" [ngClass]="{'xero-sidenav--nav-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/expense_groups/"
+        routerLinkActive="active">
         Expense Groups
       </a>
 
       <a class="mat-h3 xero-sidenav--nav-item" mat-list-item>
         Settings
       </a>
-      <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="!xeroConnected"
-        [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
-        routerLink="{{workspace.id}}/settings/configurations/general/" routerLinkActive="active"
-        (click)="onConfigurationsPageVisit()">
+      <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="!xeroConnected" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+       routerLink="{{workspace.id}}/settings/configurations/general/" routerLinkActive="active" (click)="onConfigurationsPageVisit()">
         Configurations
       </a>
-      <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="xeroConnected"
-        [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
-        routerLink="{{workspace.id}}/settings/configurations/tenant/" routerLinkActive="active"
-        (click)="onSelectTenantPageVisit()">
+      <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="xeroConnected" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+       routerLink="{{workspace.id}}/settings/configurations/tenant/" routerLinkActive="active" (click)="onSelectTenantPageVisit()">
         Configurations
       </a>
-      <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="showGeneralmappings"
-        [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
-        routerLink="{{workspace.id}}/settings/general/mappings/" routerLinkActive="active"
-        (click)="onGeneralMappingsPageVisit()">
+      <a class="mat-h3 xero-sidenav--nav-sub-item" *ngIf="showGeneralmappings" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/general/mappings/"
+        routerLinkActive="active" (click)="onGeneralMappingsPageVisit()">
         General Mappings
       </a>
-      <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}"
-        mat-list-item routerLink="{{workspace.id}}/settings/employee/mappings/" routerLinkActive="active"
-        (click)="onEmployeeMappingsPageVisit()">
+      <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+      routerLink="{{workspace.id}}/settings/employee/mappings/" routerLinkActive="active" (click)="onEmployeeMappingsPageVisit()">
         Employee Mappings
       </a>
-      <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}"
-        mat-list-item routerLink="{{workspace.id}}/settings/category/mappings/" routerLinkActive="active"
-        (click)="onCategoryMappingsPageVisit()">
+      <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item
+      routerLink="{{workspace.id}}/settings/category/mappings/" routerLinkActive="active" (click)="onCategoryMappingsPageVisit()">
         Category Mappings
       </a>
       <div *ngFor="let setting of mappingSettings">
-        <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}"
-          mat-list-item routerLink="{{workspace.id}}/settings/{{setting.source_field.toLowerCase()}}/mappings/"
-          routerLinkActive="active">
+        <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/{{setting.source_field.toLowerCase()}}/mappings/"
+        routerLinkActive="active">
           {{ getTitle(setting.source_field) | titlecase }} Mappings
-        </a>
+       </a>
       </div>
-      <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}"
-        mat-list-item routerLink="{{workspace.id}}/settings/schedule/" routerLinkActive="active">
+      <a class="mat-h3 xero-sidenav--nav-sub-item" [ngClass]="{'xero-sidenav--nav-sub-item__disabled': navDisabled}" mat-list-item routerLink="{{workspace.id}}/settings/schedule/"
+        routerLinkActive="active">
         Automated Import/Export
       </a>
     </mat-nav-list>
@@ -93,11 +84,13 @@
           <img src="assets/images/svgs/sync.svg" class="switcher--back-btn-arrow" width="12px" height="9px" />
           <span class="switcher--btn-icon">Switch to Integration 2.0</span>
         </div> -->
-
+        
         <div class="mat-small" *ngIf="showRefreshIcon">
-          <mat-icon class="refresh" mat-list-icon matTooltip="Sync Fyle and Xero Dimensions" matTooltipPosition="right"
-            (click)="syncDimension()">
-            sync
+          <mat-icon class="refresh"
+            mat-list-icon
+            matTooltip="Sync Fyle and Xero Dimensions"
+            matTooltipPosition="right" (click)="syncDimension()">
+              sync
           </mat-icon>
         </div>
       </div>
