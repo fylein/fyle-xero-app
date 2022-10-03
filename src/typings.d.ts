@@ -10,5 +10,5 @@ interface Env {
   APP_URL: string;
   SENTRY_DSN: string;
   RELEASE: string;
-  NEW_QBO_APP_URL: string;
+  NEW_XERO_APP_URL: string;
 }

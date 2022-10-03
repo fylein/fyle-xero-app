@@ -237,7 +237,7 @@ export class XeroComponent implements OnInit, AfterContentChecked {
       orgsCount: this.orgsCount
     };
 
-    this.windowReference.location.href = `${environment.new_qbo_app_url}?local_storage_dump=${encodeURIComponent(JSON.stringify(localStorageDump))}`;
+    this.windowReference.location.href = `${environment.new_xero_app_url}?local_storage_dump=${encodeURIComponent(JSON.stringify(localStorageDump))}`;
   }
 
   switchToNewApp(workspace: MinimalPatchWorkspace | void): void {

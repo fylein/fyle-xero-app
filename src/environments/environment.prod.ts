@@ -13,5 +13,5 @@ export const environment = {
   hotjar_id : '{{HOTJAR_ID}}',
   sentry_dsn: '{{SENTRY_DSN}}',
   release: '{{RELEASE}}',
-  new_qbo_app_url: '{{NEW_QBO_APP_URL}}'
+  new_xero_app_url: '{{NEW_xero_APP_URL}}'
 };
