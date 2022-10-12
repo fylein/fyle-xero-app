@@ -122,8 +122,7 @@ export class XeroComponent implements OnInit, AfterContentChecked {
       that.getConfigurations().then((results) => {
         if (!results[0].corporate_credit_card_expenses_object && !results[0].sync_fyle_to_xero_payments && !results[0].import_tax_codes) {
           that.showGeneralmappings = false;
-        }
-        else {
+        } else {
           that.showGeneralmappings = true;
         }
         that.navDisabled = false;
