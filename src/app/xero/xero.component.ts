@@ -155,7 +155,7 @@ export class XeroComponent implements OnInit, AfterContentChecked {
       // Redirect new orgs to new app
       const workspaceCreatedAt = new Date(that.workspace.created_at);
       // TODO: replace oldAppCutOffDate
-      const oldAppCutOffDate = new Date('2023-05-16T00:00:00.000Z');
+      const oldAppCutOffDate = new Date('2023-10-16T00:00:00.000Z');
       if (that.workspace.app_version === 'v2') {
         this.redirectToNewApp();
         this.showAppSwitcher();
