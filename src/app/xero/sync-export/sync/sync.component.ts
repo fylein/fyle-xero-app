@@ -46,8 +46,10 @@ export class SyncComponent implements OnInit {
   checkSyncStatus() {
     const that = this;
     const lastSyncedAt = that.workspace.last_synced_at;
+    const taskType = ['FETCHING_EXPENSES'];
+    const taskStatus = ['IN_PROGRESS', 'ENQUEUED'];
     interval(3000).pipe(
-      switchMap(() => from(that.taskService.getAllTasks('ALL'))),
+      switchMap(() => from(that.taskService.getAllTasks(taskStatus, [], taskType))),
       takeWhile((response) => response.results.filter(task => task.status === 'IN_PROGRESS'  && task.type === 'FETCHING_EXPENSES').length > 0, true)
     ).subscribe((res) => {
       if (res.results.filter(task => task.status === 'COMPLETE'  && task.type === 'FETCHING_EXPENSES').length === 1) {
