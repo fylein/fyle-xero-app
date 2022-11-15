@@ -142,12 +142,12 @@ export class XeroComponent implements OnInit, AfterContentChecked {
         that.setUserIdentity(that.user.employee_email, workspaces[0].id, { fullName: that.user.full_name });
         that.getSettingsAndNavigate();
         return workspaces[0];
-      } 
+      }
       return that.workspaceService.createWorkspace().toPromise().then(workspace => {
           that.storageService.set('workspace', workspace);
           that.setUserIdentity(that.user.employee_email, workspace.id, { fullName: that.user.full_name });
           that.getSettingsAndNavigate();
-          return workspace
+          return workspace;
         });
     });
   }
