@@ -16,7 +16,7 @@ export const environment = {
   xero_callback_uri: '{{XERO_CALLBACK_URI}}',
   sentry_dsn: '{{SENTRY_DSN}}',
   release: '{{RELEASE}}',
-  new_xero_app_url: 'NEW XERO APP URL'
+  new_xero_app_url: '{{NEW_XERO_APP_URL}}'
 };
 /*
  * For easier debugging in development mode, you can import the following file
