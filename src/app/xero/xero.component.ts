@@ -134,24 +134,29 @@ export class XeroComponent implements OnInit, AfterContentChecked {
     this.showSwitchApp = true;
   }
 
-  setupWorkspace() {
+  private getOrCreateWorkspace(): Promise<Workspace> {
     const that = this;
-    that.user = that.authService.getUser();
-    that.workspaceService.getWorkspaces(that.user.org_id).subscribe(workspaces => {
+    return that.workspaceService.getWorkspaces(that.user.org_id).toPromise().then(workspaces => {
       if (Array.isArray(workspaces) && workspaces.length > 0) {
-        that.workspace = workspaces[0];
         that.storageService.set('workspace', workspaces[0]);
         that.setUserIdentity(that.user.employee_email, workspaces[0].id, { fullName: that.user.full_name });
         that.getSettingsAndNavigate();
-      } else {
-        that.workspaceService.createWorkspace().subscribe(workspace => {
-          that.workspace = workspace;
+        return workspaces[0];
+      } 
+      return that.workspaceService.createWorkspace().toPromise().then(workspace => {
           that.storageService.set('workspace', workspace);
           that.setUserIdentity(that.user.employee_email, workspace.id, { fullName: that.user.full_name });
           that.getSettingsAndNavigate();
+          return workspace
         });
-      }
+    });
+  }
 
+  setupWorkspace() {
+    const that = this;
+    that.user = that.authService.getUser();
+    that.getOrCreateWorkspace().then((workspace: Workspace) => {
+      that.workspace = workspace;
       // Redirect new orgs to new app
       const workspaceCreatedAt = new Date(that.workspace.created_at);
       // TODO: replace oldAppCutOffDate
