@@ -13,18 +13,31 @@ export class TasksService {
     private apiService: ApiService,
     private workspaceService: WorkspaceService) {}
 
-  getTasks(limit: number, offset: number, status: string): Observable<TaskResponse> {
+  getTasks(limit: number, status: string[], expenseGroupIds: number[], taskType: string[], next: string): Observable<TaskResponse> {
     const workspaceId = this.workspaceService.getWorkspaceId();
-    return this.apiService.get(
-      `/workspaces/${workspaceId}/tasks/all/`, {
-        limit,
-        offset,
-        status
-      }
-    );
+    const offset = 0;
+    const apiParams = {
+      limit,
+      offset,
+      status
+    };
+    if (expenseGroupIds && taskType) {
+      const expenseKey = 'expense_group_ids';
+      const typeKey = 'task_type';
+      apiParams[expenseKey] = expenseGroupIds;
+      apiParams[typeKey] = taskType;
+    }
+
+    if (next) {
+      return this.apiService.get(next.split('api')[1], {});
+    } else {
+      return this.apiService.get(
+        `/workspaces/${workspaceId}/tasks/all/`, apiParams
+      );
+    }
   }
 
-  getAllTasks(status: string): Observable<TaskResponse> {
+  getAllTasks(status: string[], expenseGroupIds: number[] = null, taskType: string[] = null): Observable<TaskResponse> {
     const limit = 500;
     const offset = 0;
     const allTasks: TaskResponse = {
@@ -34,12 +47,12 @@ export class TasksService {
       results: []
     };
 
-    return from(this.getAllTasksInternal(limit, offset, status, allTasks));
+    return from(this.getAllTasksInternal(limit, status, expenseGroupIds, taskType, allTasks));
   }
   // TODO: remove promises and do with rxjs observables
-  private getAllTasksInternal(limit: number, offset: number, status: string, allTasks: TaskResponse): Promise<TaskResponse> {
+  private getAllTasksInternal(limit: number, status: string[], expenseGroupIds: number[], taskType: string[], allTasks: TaskResponse): Promise<TaskResponse> {
     const that = this;
-    return that.getTasks(limit, offset, status).toPromise().then((taskResponse) => {
+    return that.getTasks(limit, status, expenseGroupIds, taskType, allTasks.next).toPromise().then((taskResponse) => {
       if (allTasks.count === 0 ) {
         allTasks = taskResponse;
       } else {
@@ -47,7 +60,7 @@ export class TasksService {
       }
 
       if (allTasks.results.length < allTasks.count) {
-        return that.getAllTasksInternal(limit, offset + 500, status, allTasks);
+        return that.getAllTasksInternal(limit, status, expenseGroupIds, taskType, allTasks);
       } else {
         return allTasks;
       }

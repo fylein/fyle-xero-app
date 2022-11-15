@@ -54,13 +54,14 @@ export class ExportComponent implements OnInit {
 
   checkResultsOfExport(filteredIds: number[]) {
     const that = this;
+    const taskType = ['FETCHING_EXPENSE', 'CREATING_BILL', 'CREATING_BANK_TRANSACTION'];
     interval(3000).pipe(
-      switchMap(() => from(that.taskService.getAllTasks('ALL'))),
+      switchMap(() => from(that.taskService.getAllTasks([], filteredIds, taskType))),
       takeWhile((response) => response.results.filter(task => (task.status === 'IN_PROGRESS' || task.status === 'ENQUEUED')  && task.type !== 'FETCHING_EXPENSES' &&  filteredIds.includes(task.expense_group)).length > 0, true)
     ).subscribe((res) => {
       that.exportedCount = res.results.filter(task => (task.status !== 'IN_PROGRESS' && task.status !== 'ENQUEUED') && task.type !== 'FETCHING_EXPENSES' && filteredIds.includes(task.expense_group)).length;
       if (res.results.filter(task => (task.status === 'IN_PROGRESS' || task.status === 'ENQUEUED')  && task.type !== 'FETCHING_EXPENSES' &&  filteredIds.includes(task.expense_group)).length === 0) {
-        that.taskService.getAllTasks('FAILED').subscribe((taskResponse) => {
+        that.taskService.getAllTasks(['FAILED', 'FATAL']).subscribe((taskResponse) => {
           that.failedExpenseGroupCount = taskResponse.count;
           that.successfulExpenseGroupCount = filteredIds.length - that.failedExpenseGroupCount;
           that.isExporting = false;
@@ -124,7 +125,7 @@ export class ExportComponent implements OnInit {
 
     that.isProcessingExports = true;
     interval(7000).pipe(
-      switchMap(() => from(that.taskService.getAllTasks('ALL'))),
+      switchMap(() => from(that.taskService.getAllTasks(['IN_PROGRESS', 'ENQUEUED']))),
       takeWhile((response: TaskResponse) => that.filterOngoingTasks(response) > 0, true)
     ).subscribe((tasks: TaskResponse) => {
       that.processingExportsCount = that.filterOngoingTasks(tasks);
@@ -142,7 +143,7 @@ export class ExportComponent implements OnInit {
     that.isExporting = false;
     that.isLoading = true;
 
-    that.taskService.getAllTasks('ALL').subscribe((tasks: TaskResponse) => {
+    that.taskService.getAllTasks(['IN_PROGRESS', 'ENQUEUED']).subscribe((tasks: TaskResponse) => {
       that.isLoading = false;
       if (that.filterOngoingTasks(tasks) === 0) {
         that.loadExportableExpenseGroups();
