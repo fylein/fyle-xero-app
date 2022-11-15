@@ -52,7 +52,7 @@ export class SyncComponent implements OnInit {
       switchMap(() => from(that.taskService.getAllTasks(taskStatus, [], taskType))),
       takeWhile((response) => response.results.filter(task => task.status === 'IN_PROGRESS'  && task.type === 'FETCHING_EXPENSES').length > 0, true)
     ).subscribe((res) => {
-      if (res.results.filter(task => task.status === 'COMPLETE'  && task.type === 'FETCHING_EXPENSES').length === 1) {
+      if (!res.results.length) {
         that.updateLastSyncStatus().subscribe((response) => {
             if (response[0].last_synced_at !== lastSyncedAt) {
               that.snackBar.open('Import Complete');
