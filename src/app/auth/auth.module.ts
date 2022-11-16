@@ -10,6 +10,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedLoginComponent } from './shared-login/shared-login.component';
+import { RedirectComponent } from './redirect/redirect.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SharedLoginComponent } from './shared-login/shared-login.component';
     LoginComponent,
     CallbackComponent,
     LogoutComponent,
-    SharedLoginComponent
+    SharedLoginComponent,
+    RedirectComponent
   ],
   imports: [
     CommonModule,
