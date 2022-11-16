@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingsService } from 'src/app/core/services/settings.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { MappingsService } from 'src/app/core/services/mappings.service';
 import { environment } from 'src/environments/environment';
@@ -59,6 +59,7 @@ export class DashboardComponent implements OnInit {
     private expenseGroupService: ExpenseGroupsService,
     private settingsService: SettingsService,
     private route: ActivatedRoute,
+    private router: Router,
     private mappingsService: MappingsService,
     private storageService: StorageService,
     private windowReferenceService: WindowReferenceService,
@@ -284,7 +285,11 @@ export class DashboardComponent implements OnInit {
     const that = this;
     that.workspaceId = +that.route.snapshot.params.workspace_id;
     const onboarded = that.storageService.get('onboarded');
-
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        (window as any).Appcues && (window as any).Appcues.page();
+      }
+    });
     if (onboarded) {
       that.xero.showAppSwitcher();
       this.appcuesService.initialiseAppcues();
