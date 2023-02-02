@@ -30,7 +30,7 @@
     "ng2-flatpickr": "^9.0.0",
     "ngx-cacheable": "^1.4.2",
     "normalize.css": "^8.0.1",
-    "npm": "^6.14.16",
+    "npm": "^9.4.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
@@ -39,7 +39,7 @@
     "@angular-builders/custom-webpack": "^8.4.1",
     "@angular-builders/dev-server": "^7.3.1",
     "@angular-devkit/build-angular": "^0.803.25",
-    "@angular/cli": "~8.3.23",
+    "@angular/cli": "~15.1.4",
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
     "@types/jasmine": "~3.3.8",
